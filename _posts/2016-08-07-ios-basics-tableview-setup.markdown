@@ -295,6 +295,15 @@ let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
     ?? UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
 {% endhighlight %}
 
+Now, when initializing a cell, we first try to reuse a cell, using `dequeueReusableCell(withIdentifier: _)`. This function will return a cell if it succeed, and nil if it fails.
+
+Take a look at the second line.
+The `??` operator uses the first value if it's not nil, and will use the second value when the first value is nil.
+
+This way, our cell will be reused if it can, and will be initialized from scratch just like we did before if it fails. We should always have a cell to handle from now on.
+
+To be more specific, the dequeueReusableCell function will fail only the first time, because we did not registered any cell for the given identifier "ElementCell". But then, dequeuing cells will work just fine, because Apple is able to create new cells when none of them are available for dequeuing.
+
 ### Final touches
 
 Ok it begins to look right now. But I can enumerate 3 problems :
@@ -305,12 +314,14 @@ Ok it begins to look right now. But I can enumerate 3 problems :
 
 So, let correct all of that, one to three lines of code per problem !
 
-1. in `viewDidLoad`, at any place
+1) in `viewDidLoad`, at any place
 {% highlight swift %}
 navigationItem.title = "Periodic Elements"
 {% endhighlight %}
 
-2. At the bottom of the file, inside the extension implementing `UITableViewDelegate`
+The navigation item allow to customize how a ViewController will be displayed within a NavigationController. Here, we just want to set a title.
+
+2) At the bottom of the file, inside the extension implementing `UITableViewDelegate`
 {% highlight swift %}
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     ...
@@ -320,12 +331,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 }
 {% endhighlight %}
 
-3. in `viewDidLoad`, right below `elements = try! Element.loadFromPlist()`
+As part of the `UITableViewDelegate`, we implement `tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)` that is called as soon as a cell become selected. When it occurs, we ask the tableview to deselect the indexpath with an animation. Witch result a fade out of the selected cell as soon as it is selected, making the user knowing there is nothing to do by selecting cells for now in the application.
+
+3) in `viewDidLoad`, right below `elements = try! Element.loadFromPlist()`
 {% highlight swift %}
 elements.sort(isOrderedBefore: {
     $0.atomicNumber < $1.atomicNumber
 })
 {% endhighlight %}
+This will sort the array right in place.
+Swift 3 arrays have two functions to sort arrays :
+
+- `sort` : Will sort the current array right in place, witch is possible only if the array is stored in a `var` (mutable). It returns nil
+- `sorted` : Will return a sorted copy of the array. It's available on any array, mutating (`var`) or not (`let`)
 
 ### It's a wrap !
 
