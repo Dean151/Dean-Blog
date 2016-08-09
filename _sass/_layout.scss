@@ -25,11 +25,11 @@ body {
     letter-spacing: -1px;
     margin-bottom: 0;
     float: left;
+    opacity: 0.8;
+}
 
-    &,
-    &:visited {
-        color: $title-color;
-    }
+.site-title:hover {
+    opacity: 1;
 }
 
 .site-nav {
@@ -37,13 +37,10 @@ body {
     margin-left: 20px;
     line-height: 60px;
 
-    .menu-icon {
-        display: none;
-    }
-
     .page-link {
         color: $title-color;
         line-height: $base-line-height;
+        opacity: 0.8;
 
         // Gaps between nav items, but not on the last one
         &:not(:last-child) {
@@ -51,53 +48,8 @@ body {
         }
     }
 
-    @include media-query($on-palm) {
-        position: absolute;
-        top: 9px;
-        right: $spacing-unit / 2;
-        background-color: $background-color;
-        border: 1px solid $grey-color-light;
-        border-radius: 5px;
-        text-align: right;
-
-        .menu-icon {
-            display: block;
-            float: right;
-            width: 36px;
-            height: 26px;
-            line-height: 0;
-            padding-top: 10px;
-            text-align: center;
-
-            > svg {
-                width: 18px;
-                height: 15px;
-
-                path {
-                    fill: $grey-color-dark;
-                }
-            }
-        }
-
-        .trigger {
-            clear: both;
-            display: none;
-        }
-
-        &:hover .trigger {
-            display: block;
-            padding-bottom: 5px;
-        }
-
-        .page-link {
-            display: block;
-            padding: 5px 10px;
-
-            &:not(:last-child) {
-                margin-right: 0;
-            }
-            margin-left: 20px;
-        }
+    .page-link:hover {
+        opacity: 1;
     }
 }
 
