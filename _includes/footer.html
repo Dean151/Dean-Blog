@@ -5,7 +5,7 @@
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
-          <li>{{ site.title }}</li>
+          <li>{{ site.t[page.lang].title }}</li>
           <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
         </ul>
       </div>
@@ -16,18 +16,18 @@
         <ul class="social-media-list">
           {% if site.github_username %}
           <li>
-            {% include icon-github.html username=site.github_username %}
+            <a href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span> <span class="username">{{ site.github_username }}</span></a>
           </li>
           {% endif %}
 
           {% if site.twitter_username %}
           <li>
-            {% include icon-twitter.html username=site.twitter_username %}
+            <a href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span> <span class="username">{{ site.twitter_username}}</span></a>
           </li>
           {% endif %}
 
           <li>
-            {% include icon-rss.html %}
+            <a href="{{ "/feed.xml" | prepend: site.baseurl }}"><span class="fa fa-rss"></span> <span class="username">{{ site.t[page.lang].rss }}</span></a>
           </li>
         </ul>
       </div>
