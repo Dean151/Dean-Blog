@@ -27,9 +27,9 @@ Thanksfully, we're not going to implement all of the atoms data in the code. Ins
 
 ### First: about MVC
 
-MVC for "Model View Controler" is a pattern design that allow to separate differents aspects of the code in an application :
+MVC for "Model View Controller" is a pattern design that allow to separate differents aspects of the code in an application :
 
-- **Model**: Represent the data you want to display. In swift, it's recommanded to make struct oriented models insted of class oriented model ; but it depends on what you're trying to achieve
+- **Model**: Represent the data you want to display. In swift, it's recommanded to make struct oriented models instead of class oriented model ; but it depends on what you're trying to achieve
 - **View**: Here in our tutorial, the view will be the `UITableView`. Views are what are presented to the user, and the user can interact with it.
 - **Controller**: To simplify, it's the glue between your model, and your data. The user interact with the view, the view signal it to the controller, the controller update the data, and make the view follow those changes. When the data change, the controller is responsible to update the view accordingly
 
@@ -88,11 +88,11 @@ struct Element {
 }
 {% endhighlight %}
 
-Every data type is pretty simple in this exemple : Bool, Integers and Strings ; but there is also an enum type. Enums are ideal when you only need to support a limited number of options. It's the case here with an element state, that have only 4 possible values.
+Every data type is pretty simple in this example : Bool, Integers, Float and Strings ; but there is also an enum type. Enums are ideal when you only need to support a limited number of options. It's the case here with an element state, that have only 4 possible values.
 
 Note that I choose to make my enumeration inherit from String, witch mean each state is a string, and that we can try to convert a string to a State.
 
-This model map all the data from [apple plist][elements-plist] and will allow us to represent one elements.
+This model map all the data from [apple plist][elements-plist] and will allow us to represent one element.
 But what about the elements loading ? Right now, the elements are in a plist file, so we'll need to create something that allow us to receive an **array of all elements*
 
 ### Loading the data
@@ -350,7 +350,7 @@ Swift 3 arrays have two functions to sort arrays :
 ### It's a wrap !
 
 Now when you build the app, it as completely the behavior we expected.
-If you need it, you can clone download the project from [this branch on Github][repo-github]
+If you need it, you can clone or download the project from [this branch on Github][repo-github]
 
 ![Screenshot of the result][screenshot]
 
