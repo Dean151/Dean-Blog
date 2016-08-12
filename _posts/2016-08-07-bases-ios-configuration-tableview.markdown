@@ -7,7 +7,7 @@ ref: ios-tut-1
 lang: fr
 ---
 
-**Écrit pour Swift 3 et Xcode 8 beta 3**
+**Écrit pour Swift 3 avec Xcode 8 beta 3**
 
 Maintenant que je me sens très familier avec la syntaxe du *Swift* et l'architecture d'une app *iOS* ; et que je suis totalement convaincu de la simplicité à écrire du code Swift, je veux partager avec vous comment utiliser et faire l'une des interfaces les plus communes d'*iOS* : une présentation de données avec une TableView !
 
