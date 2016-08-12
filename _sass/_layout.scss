@@ -202,7 +202,7 @@ body {
 
     position: absolute;
     left: 0;
-    
+
     bottom: -10px;
     border-style: solid;
     border-width: 10px 0 0 13px;
@@ -212,6 +212,16 @@ body {
 .post-link {
     display: block;
     font-size: 24px;
+}
+
+.post-link::before {
+  content: '● ';
+  display: inline-block;
+  color: $brand-color;
+}
+
+.post-link:visited::before {
+  color: $content-back-color;
 }
 
 
