@@ -13,31 +13,31 @@ Now that I begin to feel very familiar with *Swift* syntax and *iOS* app design 
 
 This is the first article about *iOS* development on this blog and I really hope I will manage to write more.
 
-**Note:** There is two methods to implement a dynamic table view : using a `UITableViewController`, or using a `UIViewController` that implements `UITableViewDelegate` and `UITableViewDataSource`. I will explain this second solution in this tutorial, not because it's the simpliest, but because it allow way more customizations for the layout of the TableView if you need to.
+**Note:** There is two methods to implement a dynamic table view : using a `UITableViewController`, or using a `UIViewController` that implements `UITableViewDelegate` and `UITableViewDataSource`. I will explain this second solution in this tutorial, not because it's the simplest, but because it allow way more customizations for the layout of the TableView if you need to.
 
 ### What we're gonna build from scratch
 
-We are going to achive today is the list of all elements from the periodic elements, ordered by atomic number. 
+We are going to achieve today is the list of all elements from the periodic elements, ordered by atomic number.
 
 ![Screenshot of the result][screenshot]
 
-Thanksfully, we're not going to implement all of the atoms data in the code. Instead, we are going to fetch it from a plist file from an Apple sample code :
+Thankfully, we're not going to implement all of the atoms data in the code. Instead, we are going to fetch it from a plist file from an Apple sample code :
 
 [Elements.plist][elements-plist]
 
 ### First: about MVC
 
-MVC for "Model View Controller" is a pattern design that allow to separate differents aspects of the code in an application :
+MVC for "Model View Controller" is a pattern design that allow to separate different aspects of the code in an application :
 
-- **Model**: Represent the data you want to display. In swift, it's recommanded to make struct oriented models instead of class oriented model ; but it depends on what you're trying to achieve
+- **Model**: Represent the data you want to display. In swift, it's recommended to make struct oriented models instead of class oriented model ; but it depends on what you're trying to achieve
 - **View**: Here in our tutorial, the view will be the `UITableView`. Views are what are presented to the user, and the user can interact with it.
 - **Controller**: To simplify, it's the glue between your model, and your data. The user interact with the view, the view signal it to the controller, the controller update the data, and make the view follow those changes. When the data change, the controller is responsible to update the view accordingly
 
-In *iOS*, MVC is the most common pattern design, and UIKit is designed to be pro-MVC. The controller will be a subclass of `UIViewController`. 
+In *iOS*, MVC is the most common pattern design, and UIKit is designed to be pro-MVC. The controller will be a subclass of `UIViewController`.
 Every instances of `UIViewController` contains a `UIView` instance. That will be our main view.
 We will create a `UITableView` instance that will be a subview of the main `UIView`
 
-Finally our data will be structured with a simple *Swift* struct. 
+Finally our data will be structured with a simple *Swift* struct.
 
 ### Starting the project
 
@@ -71,7 +71,7 @@ struct Element {
     enum State: String {
         case Solid, Liquid, Gas, Artificial
     }
-    
+
     let atomicNumber: Int
     let atomicWeight: Float // in g.mol-1
     let discoveryYear: String
@@ -81,7 +81,7 @@ struct Element {
     let radioactive: Bool
     let state: State
     let symbol: String
-    
+
     // Position in the table
     let horizPos: Int
     let vertPos: Int
@@ -93,7 +93,7 @@ Every data type is pretty simple in this example : Bool, Integers, Float and Str
 Note that I choose to make my enumeration inherit from String, witch mean each state is a string, and that we can try to convert a string to a State.
 
 This model map all the data from [apple plist][elements-plist] and will allow us to represent one element.
-But what about the elements loading ? Right now, the elements are in a plist file, so we'll need to create something that allow us to receive an **array of all elements*
+But what about the elements loading ? Right now, the elements are in a plist file, so we'll need to create something that allow us to receive an **array of all elements**
 
 ### Loading the data
 
@@ -107,22 +107,22 @@ extension Element {
         case noPlistFile
         case cannotReadFile
     }
-    
+
     /// Load all the elements from the plist file
     static func loadFromPlist() throws -> [Element] {
         // First we need to find the plist
         guard let file = Bundle.main.pathForResource("Elements", ofType: "plist") else {
             throw Error.noPlistFile
         }
-        
+
         // Then we read it as an array of dict
         guard let array = NSArray(contentsOfFile: file) as? [[String: AnyObject]] else {
             throw Error.cannotReadFile
         }
-        
+
         // Initialize the array
         var elements: [Element] = []
-        
+
         // For each dictionary
         for dict in array {
             // We implement the element
@@ -130,11 +130,11 @@ extension Element {
             // And add it to the array
             elements.append(element)
         }
-        
+
         // Return all elements
         return elements
     }
-    
+
     /// Create an element corresponding to the given dict
     static func from(dict: [String: AnyObject]) -> Element {
         let atomicNumber = dict["atomicNumber"] as! Int
@@ -148,7 +148,7 @@ extension Element {
         let symbol = dict["symbol"] as! String
         let horizPos = dict["horizPos"] as! Int
         let vertPos = dict["vertPos"] as! Int
-        
+
         return Element(atomicNumber: atomicNumber,
                        atomicWeight: atomicWeight,
                        discoveryYear: discoveryYear,
@@ -166,17 +166,17 @@ extension Element {
 
 That a lot of code, but it's pretty strait forward, you just need to read it to understand it.
 
-To test it, you can add in the `viewDidLoad()` method of your `ViewController` : 
+To test it, you can add in the `viewDidLoad()` method of your `ViewController` :
 
 {% highlight swift %}
 class ViewController: UIViewController {
-    
+
     var elements: [Element] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+
         elements = try! Element.loadFromPlist()
         print(elements)
     }
@@ -206,7 +206,7 @@ Then we need to create the tableview, by adding those line in `viewDidLoad()` :
         let tableView = UITableView(frame: view.bounds)
         view.addSubview(tableView)
         self.tableView = tableView
-        
+
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -243,14 +243,14 @@ func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> 
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // Getting the right element
     let element = elements[indexPath.row]
-    
-    // Instanciate a cell
+
+    // Instantiate a cell
     let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "ElementCell")
-    
+
     // Adding the right informations
     cell.textLabel?.text = element.symbol
     cell.detailTextLabel?.text = element.name
-    
+
     // Returning the cell
     return cell
 }
@@ -278,15 +278,15 @@ You should **reuse** the cells. And don't freak out, it's very easy to do !
 
 ### Reusing cells
 
-As I said, it's very easy to use reusable cells, and we did half the job precedently : we already registered a cell for reuse ! Indeed, look at the code instanciating the cell, we have set a reuseIdentifier for the cell. So let just reuse it when we can.
+As I said, it's very easy to use reusable cells, and we did half the job previously : we already registered a cell for reuse ! Indeed, look at the code instantiating the cell, we have set a reuseIdentifier for the cell. So let just reuse it when we can.
 
 What will be the logic ?
 
 Well, we will try to reuse a cell, and if we cannot do so, we will create a new cell.
 
-Just replace 
+Just replace
 {% highlight swift %}
-// Instanciate a cell
+// Instantiate a cell
 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "ElementCell")
 {% endhighlight %}
 With
