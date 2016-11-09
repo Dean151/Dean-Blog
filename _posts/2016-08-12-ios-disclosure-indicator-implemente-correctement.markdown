@@ -7,7 +7,7 @@ ref: ios-disclosure-indicator
 lang: fr
 ---
 
-**Écrit pour Swift 3 avec Xcode 8 beta 3**
+**Mis à jour pour Swift 3 avec Xcode 8.1**
 
 Les *disclosure indicators* sont très communs dans les applications iOS, ils permettent
 à l'utilisateur de savoir que si ils choisissent une cellule, ils vont accéder à

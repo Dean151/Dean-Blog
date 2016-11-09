@@ -7,7 +7,7 @@ ref: ios-tut-1
 lang: en
 ---
 
-**Written for Swift 3 with Xcode 8 beta 3**
+**Updated for Swift 3 with Xcode 8.1**
 
 Now that I begin to feel very familiar with *Swift* syntax and *iOS* app design ; and that I am totally convinced by how easy it is to do swift code, I want to share with you how to use it to make one of the more common UI and UX of *iOS* : a TableView presentation for *iOS* !
 
@@ -111,13 +111,13 @@ extension Element {
     /// Load all the elements from the plist file
     static func loadFromPlist() throws -> [Element] {
         // First we need to find the plist
-        guard let file = Bundle.main.pathForResource("Elements", ofType: "plist") else {
-            throw Error.noPlistFile
+        guard let file = Bundle.main.path(forResource: "Elements", ofType: "plist") else {
+            throw ErrorType.noPlistFile
         }
 
         // Then we read it as an array of dict
         guard let array = NSArray(contentsOfFile: file) as? [[String: AnyObject]] else {
-            throw Error.cannotReadFile
+            throw ErrorType.cannotReadFile
         }
 
         // Initialize the array
@@ -337,7 +337,7 @@ As part of the `UITableViewDelegate`, we implement `tableView(_ tableView: UITab
 
 3) in `viewDidLoad`, right below `elements = try! Element.loadFromPlist()`
 {% highlight swift %}
-elements.sort(isOrderedBefore: {
+elements.sort(by: {
     $0.atomicNumber < $1.atomicNumber
 })
 {% endhighlight %}

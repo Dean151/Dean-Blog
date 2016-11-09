@@ -7,7 +7,7 @@ ref: ios-disclosure-indicator
 lang: en
 ---
 
-**Written for Swift 3 with Xcode 8 beta 3**
+**Updated for Swift 3 with Xcode 8.1**
 
 Disclosure indicators are very common in an iOS application, and they allow the
 user to know that if they select a cell, they will be pushed somewhere else.

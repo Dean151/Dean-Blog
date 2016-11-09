@@ -7,7 +7,7 @@ ref: ios-tut-1
 lang: fr
 ---
 
-**Écrit pour Swift 3 avec Xcode 8 beta 3**
+**Mis à jour pour Swift 3 avec Xcode 8.1**
 
 Maintenant que je me sens très familier avec la syntaxe du *Swift* et l'architecture d'une app *iOS* ; et que je suis totalement convaincu de la simplicité à écrire du code Swift, je veux partager avec vous comment utiliser et faire l'une des interfaces les plus communes d'*iOS* : une présentation de données avec une TableView !
 
@@ -103,7 +103,7 @@ Je l'implémenterais de cette façon :
 
 {% highlight swift %}
 extension Element {
-    enum Error: ErrorProtocol {
+    enum ErrorType: Error {
         case noPlistFile
         case cannotReadFile
     }
@@ -111,13 +111,13 @@ extension Element {
     /// Charge tous les éléments depuis le plist
     static func loadFromPlist() throws -> [Element] {
         // On cherche le plist dans le projet
-        guard let file = Bundle.main.pathForResource("Elements", ofType: "plist") else {
-            throw Error.noPlistFile
+        guard let file = Bundle.main.path(forResource "Elements", ofType: "plist") else {
+            throw ErrorType.noPlistFile
         }
 
         // Ensuite, on lit ce fichier comme un tableau de dictionnaires
         guard let array = NSArray(contentsOfFile: file) as? [[String: AnyObject]] else {
-            throw Error.cannotReadFile
+            throw ErrorType.cannotReadFile
         }
 
         // Initialisation de l'array
@@ -343,7 +343,7 @@ Méthode à implémenter de `UITableViewDelegate`, on implémente `tableView(_ t
 
 3) Dans `viewDidLoad`, juste après `elements = try! Element.loadFromPlist()`
 {% highlight swift %}
-elements.sort(isOrderedBefore: {
+elements.sort(by: {
     $0.atomicNumber < $1.atomicNumber
 })
 {% endhighlight %}
