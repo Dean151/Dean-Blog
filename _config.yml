@@ -10,7 +10,7 @@ title: Dean's blog
 email: contact@cafelembas.com
 description: "Dean's blog is a blog about computer science and development"
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://dean.cafelembas.com" # the base hostname & protocol for your site
+url: "https://blog.thomasdurand.fr" # the base hostname & protocol for your site
 twitter_username: cafelembas
 github_username:  dean151
 
