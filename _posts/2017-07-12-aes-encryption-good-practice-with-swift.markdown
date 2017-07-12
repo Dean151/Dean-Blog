@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Avoid 5 common mistakes with AES encryption"
-date:   2017-07-12 17:00:00 +0200
+date:   2017-07-12 21:30:00 +0200
 categories: Security Encryption
 ref: aes-good-practice-for-ios-app
 lang: en
@@ -11,7 +11,7 @@ lang: en
 
 With libraries like [CryptoSwift][crypto-swift-github], it's easier and easier to
 use encryption in your code. But there are also some common mistakes not to fall
-into when using cryptography !
+into when using cryptography!
 
 The rest of this article will use CryptoSwift as an example.
 
@@ -55,7 +55,7 @@ let myAES256keyData = try generateRandomData(size: 32)
 
 ### 2. Store your keys in the Keychain
 
-let make things clear right now, there are **no better place** to store sensitive
+Let make things clear right now, there are **no better place** to store sensitive
 data like cryptographic keys or password than the [Keychain][keychain-doc].
 
 It's designed by Apple to be able to store securely password, certificates and keys.
@@ -94,9 +94,9 @@ devices, and it can also make sure the device is secured by an unlock code.
 Encrypting data is a good practice to prevent anyone to read sensitive data.
 
 But what if analytics allow an attacker to read your data without the key, just
-by looking at the encrypted data ?
+by looking at the encrypted data?
 
-That's what make Initialization Vector so important !
+That's what make Initialization Vector so important!
 
 Let say you need to encrypt a boolean, because you don't wan't anyone to figure out
 who has opt-in and who haven't.
@@ -153,7 +153,7 @@ let encryptedWithCTR = try AES(key: key, iv: iv, blockMode: .CTR, padding: PKCS7
 let encryptedWithECB = try AES(key: key, iv: iv, blockMode: .ECB, padding: PKCS7()).encrypt(input)
 {% endhighlight %}
 
-But why is ECB a very poor choice ?
+But why is ECB a very poor choice?
 
 ECB stand for Electronic Code Book, that encrypt every block of your input separately.
 The treat is that this method will encrypt the same way two same blocks, and just
