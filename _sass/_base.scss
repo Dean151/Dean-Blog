@@ -95,12 +95,16 @@ a {
     text-decoration: none;
 
     &:visited {
-        color: lighten($brand-color, 15%);
+        color: lighten($brand-color, 10%);
     }
 
     &:hover {
-        color: $text-color;
+        color: darken($brand-color, 15%);
         text-decoration: underline;
+    }
+
+    &:hover:visited {
+      color: darken(lighten($brand-color, 10%), 15%);
     }
 }
 
@@ -137,6 +141,7 @@ code {
 
 code {
     padding: 1px 5px;
+    color: #C41A16;
 }
 
 pre {
