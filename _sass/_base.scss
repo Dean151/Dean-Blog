@@ -131,9 +131,21 @@ blockquote {
  */
 table {
     @extend %table;
-    @extend %table-condensed;
 }
 
+table thead {
+    background: #f0f0f0;
+}
+
+table td, table th {
+    text-align: center!important;
+}
+
+table td code {
+    background: none;
+    border: none;
+    color: #666;
+}
 
 /**
  * Code formatting

@@ -103,13 +103,13 @@ who has opt-in and who haven't.
 
 Let check the storage table after encryption:
 
-user | value   | no IV (or shared IV)       | randomized IV
------|---------|----------------------------|----------------------------
-1    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `6sM2RzgShVcu1OPM8sH0mw==`
-2    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `ylJjMWFq4MoqKvpn5WSYOQ==`
-3    | `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `JZHeEoBfgQgk8/8eOQlQxQ==`
-4    | `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `byfgDi+CD7pAo2NXYk8tVw==`
-5    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `XxWfqQXe3EwNuJ3AzvgOig==`
+ value   | no IV (or shared IV)       | randomized IV
+---------|----------------------------|----------------------------
+ `false` | `HspSmVFeseu7kpt5ZJE13A==` | `6sM2RzgShVcu1OPM8sH0mw==`
+ `false` | `HspSmVFeseu7kpt5ZJE13A==` | `ylJjMWFq4MoqKvpn5WSYOQ==`
+ `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `JZHeEoBfgQgk8/8eOQlQxQ==`
+ `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `byfgDi+CD7pAo2NXYk8tVw==`
+ `false` | `HspSmVFeseu7kpt5ZJE13A==` | `XxWfqQXe3EwNuJ3AzvgOig==`
 
 Any clue of what's wrong ?
 Well, every same value, encrypted with the same key and iv result in the same cipher result.
