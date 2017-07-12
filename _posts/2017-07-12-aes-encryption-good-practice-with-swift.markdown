@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  "Avoid 6 common mistakes with AES encryption"
-date:   2017-07-12 00:09:00 +0200
+title:  "Avoid 5 common mistakes with AES encryption"
+date:   2017-07-12 17:00:00 +0200
 categories: Security Encryption
 ref: aes-good-practice-for-ios-app
 lang: en
-published: false
 ---
 
 **Written for Swift 3 with Xcode 8.1**
@@ -92,19 +91,87 @@ devices, and it can also make sure the device is secured by an unlock code.
 
 ### 4. Use an Initialization Vector
 
-TODO...
+Encrypting data is a good practice to prevent anyone to read sensitive data.
+
+But what if analytics allow an attacker to read your data without the key, just
+by looking at the encrypted data ?
+
+That's what make Initialization Vector so important !
+
+Let say you need to encrypt a boolean, because you don't wan't anyone to figure out
+who has opt-in and who haven't.
+
+Let check the storage table after encryption:
+
+User | value   | no IV (or shared IV)       | randomized IV
+-----|---------|----------------------------|----------------------------
+1    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `6sM2RzgShVcu1OPM8sH0mw==`
+2    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `ylJjMWFq4MoqKvpn5WSYOQ==`
+3    | `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `JZHeEoBfgQgk8/8eOQlQxQ==`
+4    | `true`  | `sdkaq/5TFZKjFjx35Cl0rw==` | `byfgDi+CD7pAo2NXYk8tVw==`
+5    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `XxWfqQXe3EwNuJ3AzvgOig==`
+
+Any clue of what's wrong ?
+Well, every same value, encrypted with the same key and iv result in the same cipher result.
+
+And that's bad for your data, because an attacker that would eventually see the data
+(and trust me, he will on an iOS device except if it's in the Keychain), can perform
+some analytics process to deduct the decrypted data.
+
+To prevent that, it's important to generate a random IV for every encryption you
+may perform.
+
+Of course this IV is needed to decrypt the data, along with the key.
+A good place to store the IV is alongside the data, yes, in the table, just like you would
+do with a [salt for a password hash][password-salt].
+
+{% highlight swift %}
+// We generate a one time use IV:
+let iv = AES.randomIV(AES.blockSize)
+
+// We encrypt the data:
+let crypted = try AES(key: key, iv: iv).encrypt(data)
+
+// We then store the crypted data and the iv
+myStorage.securedData = (crypted, iv)
+{% endhighlight %}
 
 ### 5. Do not use ECB block mode
 
-TODO...
+The block mode you set in the AES algorithm correspond to the method used by the
+algorithm to perform the encryption.
+
+The choice of a good block mode is primordial to make the encryption useful and
+secure.
+
+{% highlight swift %}
+// Some encryptions available
+let encryptedWithCBC = try AES(key: key, iv: iv, blockMode: .CBC, padding: PKCS7()).encrypt(input)
+let encryptedWithCTR = try AES(key: key, iv: iv, blockMode: .CTR, padding: PKCS7()).encrypt(input)
+
+// And the one you should never use...
+let encryptedWithECB = try AES(key: key, iv: iv, blockMode: .ECB, padding: PKCS7()).encrypt(input)
+{% endhighlight %}
+
+But why is ECB a very poor choice ?
+
+ECB stand for Electronic Code Book, that encrypt every block of your input separately.
+The treat is that this method will encrypt the same way two same blocks, and just
+like the lack of Initialization Vector, makes the encryption predictable.
+
+It can also lead to replay attacks and information leaks.
+
+If you want to be confident about the ECB lack of security, check this example
+of encryption using an image, from [Wikipedia][ecb-wikipedia].
 
 ![Illustration of ECB lack of security with a picture encryption][ecb-picture]
 
-TODO...
+Wow, with ECB block mode, we cannot say that the content of the picture became
+unpredictable and unreadable. That's why it should **never** be used as a cryptographic
+block mode.
 
-### 6. Use PKCS7 padding
-
-TODO...
+To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
+dependent from the previous one, and make the result unpredictable and randomized.
 
 ### Conclusion
 
@@ -123,4 +190,6 @@ I hope that your app will become a little bit more secure with what you just rea
 [keychain-swift]: https://github.com/evgenyneu/keychain-swift
 [when-unlocked]: https://developer.apple.com/documentation/security/ksecattraccessiblewhenunlockedthisdeviceonly
 [when-password-set]: https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly
+[ecb-wikipedia]: https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
 [ecb-picture]: /assets/ios/crypto-practices/ECB-en.png
+[password-salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
