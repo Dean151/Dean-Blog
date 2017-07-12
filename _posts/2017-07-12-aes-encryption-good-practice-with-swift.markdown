@@ -103,7 +103,7 @@ who has opt-in and who haven't.
 
 Let check the storage table after encryption:
 
-User | value   | no IV (or shared IV)       | randomized IV
+user | value   | no IV (or shared IV)       | randomized IV
 -----|---------|----------------------------|----------------------------
 1    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `6sM2RzgShVcu1OPM8sH0mw==`
 2    | `false` | `HspSmVFeseu7kpt5ZJE13A==` | `ylJjMWFq4MoqKvpn5WSYOQ==`

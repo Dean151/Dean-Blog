@@ -126,6 +126,13 @@ blockquote {
     }
 }
 
+/**
+ * Tables
+ */
+table {
+    @extend %table;
+    @extend %table-condensed;
+}
 
 
 /**
