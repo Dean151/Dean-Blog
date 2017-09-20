@@ -121,11 +121,50 @@ Your password may be asked for, and then your SSH key should be added to your ke
 
 ### Configure SSH to make it work with your SSH key
 
+#### Using SSH-Agent
 
+In github's tutorial, they suggest to use the SSH-Agent :
+
+{% highlight bash %}
+$ eval "$(ssh-agent -s)"
+Agent pid 59566
+$ ssh-add -K ~/.ssh/id_rsa
+{% endhighlight %}
+
+This is not the best method.
+
+The main reason why is that you'll have to reproduce this step each time you log-in to your computer. (yurk)
+
+#### Using SSH-Config
+
+This is the method I use everyday, and that I would advice to someone!
+This method will be completely automatic.
+
+First, create your SSH config file:
+
+{% highlight bash %}
+touch ~/.ssh/config
+{% endhighlight %}
+
+Then, open it, for example with nano:
+
+{% highlight bash %}
+nano ~/.ssh/config
+{% endhighlight %}
 
 ### Test your key
 
+You can test your configuration using ssh :
 
+{% highlight bash %}
+$ ssh -T git@github.com
+Hi Dean151! You've successfully authenticated, but GitHub does not
+provide shell access.
+{% endhighlight %}
+
+When prompted, you'll need to give your passphrase, and eventually set the fingerprint of the server as trusted.
+
+### Conclusion
 
 [github]: https://github.com
 [github-token]: https://github.com/settings/tokens
