@@ -11,7 +11,7 @@ email: contact@thomasdurand.fr
 description: "Dean's blog is a blog about computer science and development"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.thomasdurand.fr" # the base hostname & protocol for your site
-twitter_username: deanette
+twitter_username: deanatoire
 github_username:  dean151
 
 # Build settings
