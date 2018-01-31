@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bases iOS: configuration d&#39;une UITableView avec Swift 3</title>
+  <meta name="description" content="Mis à jour pour Swift 3 avec Xcode 8.1">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/dist/font-awesome-4.6.3/css/font-awesome.min.css">
+  <link rel="canonical" href="https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html">
+  <link rel="alternate" type="application/rss+xml" title="Dean's blog" href="https://blog.thomasdurand.fr/feed.xml">
+
+  
+  
+  <link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" />
+  
+  <link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html" />
+  
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/articles.html">
+      <img src="/assets/design/logo-fr@2x.png" height="40" alt="Le blog de Dean"/>
+    </a>
+
+    <div class="langs fr">
+    
+    
+      <a href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" class="en">en</a>
+    
+      <a href="/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html" class="fr">fr</a>
+    
+
+    
+    
+    </div>
+
+    <nav class="site-nav">
+      
+      
+        
+        <a class="page-link" href="/articles.html">Articles</a>
+        
+      
+        
+        <a class="page-link" href="/a-propos/">À propos</a>
+        
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Bases iOS: configuration d'une UITableView avec Swift 3</h1>
+    <p class="post-meta"><time datetime="2016-08-07T12:46:07+02:00" itemprop="datePublished">
+
+
+    7
+    
+  	
+	      août
+	    
+	2016
+
+</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Mis à jour pour Swift 3 avec Xcode 8.1</strong></p>
+
+<p>Maintenant que je me sens très familier avec la syntaxe du <em>Swift</em> et l’architecture d’une app <em>iOS</em> ; et que je suis totalement convaincu de la simplicité à écrire du code Swift, je veux partager avec vous comment utiliser et faire l’une des interfaces les plus communes d’<em>iOS</em> : une présentation de données avec une TableView !</p>
+
+<p>C’est le premier article à propos du dévelopement <em>iOS</em> sur ce blog, et j’espère pouvoir en écrire beaucoup plus.</p>
+
+<p><strong>Note :</strong> il existe deux méthodes pour implémenter une TableView dynamique : en utilisant une <code class="highlighter-rouge">UITableViewController</code>, ou bien avec une <code class="highlighter-rouge">UIViewController</code> qui conforme les protocoles <code class="highlighter-rouge">UITableViewDelegate</code> and <code class="highlighter-rouge">UITableViewDataSource</code>. J’ai choisi de vous montrer la seconde solution dans ce tutoriel, non pas parce que c’est la plus simple, mais parce que c’est la méthode qui permet le plus de personnalisation dans la mise en page de la vue, ce qui peut être utile.</p>
+
+<h3 id="ce-que-lon-va-réaliser">Ce que l’on va réaliser</h3>
+
+<p>Notre but d’aujourd’hui est la réalisation de la liste des éléments du tableau périodique, classés par numéro atomique.</p>
+
+<p><img src="/assets/ios/tutorial1/Screenshot.png" alt="Image du résultat" /></p>
+
+<p>Heureusement, nous n’allons pas implémenter les données de tous les atomes directement dans le code. À la place, nous allons les récupérer depuis un fichier .plist provenant d’un code exemple d’Apple :</p>
+
+<p><a href="/assets/ios/tutorial1/Elements.plist">Elements.plist</a></p>
+
+<h3 id="dabord--à-propos-du-mvc">D’abord : À propos du MVC</h3>
+
+<p>MVC pour “Modèle Vue Contrôleur” est un design pattern qui sépare différents aspects du code dans une application :</p>
+
+<ul>
+  <li>le <strong>Modèle</strong> représente les données que l’on souhaite afficher. En swift, il est recommandé d’adopter une représentation orientée structure plutôt qu’un modèle orienté classe. Mais cela dépend de ce que l’on souhaite réaliser.</li>
+  <li>la <strong>Vue</strong>: Ici, ce sera notre TableView. Les vues sont présentées à l’utilisateur et ce dernier peu intéragir avec elles.</li>
+  <li>le <strong>Contrôleur</strong>: Pour simplifier, il s’agit de la colle entre le modèle, les vues et les données. L’utilisateur intéragit avec les vues, celles-ci le signalent au contrôleur, qui va modifier les données, et mettre à jour les vues pour prendre en compte les modifications. Lorsque les données changent, le contrôleur est responsable d’adapter les vues en conséquence.</li>
+</ul>
+
+<p>Pour le développement <em>iOS</em>, MVC est le design pattern le plus commun, et UIKit est conçu pour être pro-MVC. Le contrôleur sera une classe fille de <code class="highlighter-rouge">UIViewControler</code>.
+Toutes les instances de <code class="highlighter-rouge">UIViewController</code> contiennent une instance de <code class="highlighter-rouge">UIView</code>. Ce sera notre vue principale.
+Nous allons créer une instance de <code class="highlighter-rouge">UITableView</code> qui sera une sous-vue de notre <code class="highlighter-rouge">UIView</code> principale.</p>
+
+<p>Enfin, nos données seront structurées avec une simple structure <em>Swift</em>.</p>
+
+<h3 id="commencer-le-projet">Commencer le projet</h3>
+
+<p>Ouvrez <em>Xcode 8</em> et choisissez “create a new iOS project” avec le template “One view”. Nommez le projet <code class="highlighter-rouge">ElementsList</code>.
+Assurez-vous que CoreData, Unit Tests et UI Tests sont <em>décochés</em>.</p>
+
+<p>Xcode a créé un certain nombre de fichiers qui sont listés sur la gauche ; C’est le point de départ de toute application iOS : Un Storyboard pour construire les vues, un ViewController qui est le premier controleur de l’app, et un AppDelegate qui s’occupe de toute la logique du cycle de vie de l’application.</p>
+
+<p>Ouvrez le StoryBoard, et vous verrez juste une première vue vide. Une des nombreuses façons de procéder pour réaliser le UI des vues de l’applications est de réaliser celles-ci et les relations entre elles directement dans ce fichier. Cependant la seule chose que nous allons faire pour le moment dans ce fichier est d’ajouter un Navigation Controller pour notre application. Cela nous permettra de disposer de la barre de navigation en haut, et pour plus tard de pousser de nouvelles vues dans un tutoriel futur.</p>
+
+<p>Pour ajouter ce NavigationController, sélectionnez la vue visible, puis dans le menu : <code class="highlighter-rouge">Editor &gt; Embed in &gt; Navigation Controller</code>.</p>
+
+<p>Ceci devrait ajouter un View Controller avec une barre de navigation, et une flèche qui pointe vers notre précédent view controller. Vous venez de créer votre première relation entre contrôleurs dans un StoryBoard. Bravo !</p>
+
+<p>Prochaine étape : le modèle.</p>
+
+<h3 id="le-modèle">Le modèle</h3>
+
+<p>Un bon départ pour une application avant d’implémenter quoique ce soit, est de réfléchir à la façon dont les données vont être représentées dans le code.</p>
+
+<p>Si vous ne l’avez pas déjà fait, ouvrez le fichier de données <a href="/assets/ios/tutorial1/Elements.plist">Elements.plist</a> et jetez un coup d’œil aux données qu’il contient.</p>
+
+<p>Nous avons un fichier contenant un tableau de dictionnaires. Chaque dictionnaire représente un élément, et contient un certain nombre de données. C’est toujours une bonne habitude d’implémenter dans le modèle la totalité des données disponible, cela permet d’assurer une adaptabilité simple avec les futures fonctionnalités d’une application sans devoir toucher au modèle.</p>
+
+<p>Pour créer le modèle, créez un nouveau fichier Swift dans le projet, nommez-le <code class="highlighter-rouge">Element.swift</code>. Dans ce fichier, nous allons implémenter la totalité du modèle.</p>
+
+<p>Voici un exemple du modèle que j’ai implémenté pour cette application :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="nf">Element</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="kt">State</span><span class="p">:</span> <span class="nf">String</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="kt">Solid</span><span class="p">,</span> <span class="kt">Liquid</span><span class="p">,</span> <span class="kt">Gas</span><span class="p">,</span> <span class="kt">Artificial</span>
+    <span class="p">}</span>
+
+    <span class="k">let</span> <span class="nv">atomicNumber</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">atomicWeight</span><span class="p">:</span> <span class="kt">Float</span> <span class="c1">// en g.mol-1</span>
+    <span class="k">let</span> <span class="nv">discoveryYear</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">group</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="k">let</span> <span class="nv">period</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">radioactive</span><span class="p">:</span> <span class="kt">Bool</span>
+    <span class="k">let</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span>
+    <span class="k">let</span> <span class="nv">symbol</span><span class="p">:</span> <span class="kt">String</span>
+
+    <span class="c1">// Position dans la table</span>
+    <span class="k">let</span> <span class="nv">horizPos</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">let</span> <span class="nv">vertPos</span><span class="p">:</span> <span class="kt">Int</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Tous les types sont plutôt simples dans cet exemple : Booléen, Entier, Flottant et chaînes de caractères ; mais il y a aussi une énumération. Les énumérations sont idéals lorsqu’on ne nécessite qu’un nombre limité d’options. C’est le cas ici avec l’état d’un élément. Il n’y a que 4 valeurs possibles.</p>
+
+<p>Notez que j’ai choisi de faire une énumération de String, ce qui signifie qu’un état est en réalité une chaîne de caractères, et que l’on pourra essayer de convertir une chaîne de caractères en State et inversement.</p>
+
+<p>Ce modèle reprend toutes les données du <a href="/assets/ios/tutorial1/Elements.plist">fichier plist d’apple</a> et nous permettra de représenter un élément.
+Mais comment charger les éléments ? Actuellement, les éléments sont dans un fichier plist, donc nous allons devoir écrire quelque chose nous permettant de transformer ce fichier plist en un tableau contenant <em>tous les éléments</em>.</p>
+
+<h3 id="chargement-des-données">Chargement des données</h3>
+
+<p>Bien, nous avons un modèle, et nous avons les données dans un fichier plist. Cependant nous avons encore besoin de la traduction de nos données vers ce modèle pour pouvoir en profiter.</p>
+
+<p>Je l’implémenterais de cette façon :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="nf">Element</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="kt">ErrorType</span><span class="p">:</span> <span class="nf">Error</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">noPlistFile</span>
+        <span class="k">case</span> <span class="n">cannotReadFile</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// Charge tous les éléments depuis le plist</span>
+    <span class="kd">static</span> <span class="kd">func</span> <span class="nf">loadFromPlist</span><span class="p">()</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span> <span class="p">{</span>
+        <span class="c1">// On cherche le plist dans le projet</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">file</span> <span class="o">=</span> <span class="kt">Bundle</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">path</span><span class="p">(</span><span class="n">forResource</span> <span class="s">"Elements"</span><span class="p">,</span> <span class="nv">ofType</span><span class="p">:</span> <span class="s">"plist"</span><span class="p">)</span> <span class="nf">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">ErrorType</span><span class="o">.</span><span class="n">noPlistFile</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Ensuite, on lit ce fichier comme un tableau de dictionnaires</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">array</span> <span class="o">=</span> <span class="nf">NSArray</span><span class="p">(</span><span class="nv">contentsOfFile</span><span class="p">:</span> <span class="n">file</span><span class="p">)</span> <span class="k">as?</span> <span class="p">[[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]]</span> <span class="nf">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="kt">ErrorType</span><span class="o">.</span><span class="n">cannotReadFile</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Initialisation de l'array</span>
+        <span class="k">var</span> <span class="nv">elements</span><span class="p">:</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1">// Pour chaque dictionnaire</span>
+        <span class="k">for</span> <span class="n">dict</span> <span class="k">in</span> <span class="nf">array</span> <span class="p">{</span>
+            <span class="c1">// On implémente l'élément</span>
+            <span class="k">let</span> <span class="nv">element</span> <span class="o">=</span> <span class="kt">Element</span><span class="o">.</span><span class="nf">from</span><span class="p">(</span><span class="nv">dict</span><span class="p">:</span> <span class="n">dict</span><span class="p">)</span>
+            <span class="c1">// Et on l'ajoute à l'array</span>
+            <span class="n">elements</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Enfin on retourne les éléments</span>
+        <span class="k">return</span> <span class="n">elements</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// Créé un élément à partir du dictionnaire en paramètre</span>
+    <span class="kd">static</span> <span class="kd">func</span> <span class="nf">from</span><span class="p">(</span><span class="nv">dict</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nf">Element</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">atomicNumber</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"atomicNumber"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">Int</span>
+        <span class="k">let</span> <span class="nv">atomicWeight</span> <span class="o">=</span> <span class="nf">Float</span><span class="p">(</span><span class="n">dict</span><span class="p">[</span><span class="s">"atomicWeight"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span><span class="p">)</span> <span class="p">??</span> <span class="mi">0</span>
+        <span class="k">let</span> <span class="nv">discoveryYear</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"discoveryYear"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span>
+        <span class="k">let</span> <span class="nv">group</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"group"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">Int</span>
+        <span class="k">let</span> <span class="nv">name</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"name"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span>
+        <span class="k">let</span> <span class="nv">period</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"period"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">Int</span>
+        <span class="k">let</span> <span class="nv">radioactive</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"radioactive"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span> <span class="o">==</span> <span class="s">"True"</span>
+        <span class="k">let</span> <span class="nv">state</span> <span class="o">=</span> <span class="nf">State</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="n">dict</span><span class="p">[</span><span class="s">"state"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span><span class="p">)</span><span class="o">!</span>
+        <span class="k">let</span> <span class="nv">symbol</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"symbol"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">String</span>
+        <span class="k">let</span> <span class="nv">horizPos</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"horizPos"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">Int</span>
+        <span class="k">let</span> <span class="nv">vertPos</span> <span class="o">=</span> <span class="n">dict</span><span class="p">[</span><span class="s">"vertPos"</span><span class="p">]</span> <span class="k">as!</span> <span class="kt">Int</span>
+
+        <span class="k">return</span> <span class="nf">Element</span><span class="p">(</span><span class="nv">atomicNumber</span><span class="p">:</span> <span class="n">atomicNumber</span><span class="p">,</span>
+                       <span class="nv">atomicWeight</span><span class="p">:</span> <span class="n">atomicWeight</span><span class="p">,</span>
+                       <span class="nv">discoveryYear</span><span class="p">:</span> <span class="n">discoveryYear</span><span class="p">,</span>
+                       <span class="nv">group</span><span class="p">:</span> <span class="n">group</span><span class="p">,</span>
+                       <span class="nv">name</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                       <span class="nv">period</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+                       <span class="nv">radioactive</span><span class="p">:</span> <span class="n">radioactive</span><span class="p">,</span>
+                       <span class="nv">state</span><span class="p">:</span> <span class="n">state</span><span class="p">,</span>
+                       <span class="nv">symbol</span><span class="p">:</span> <span class="n">symbol</span><span class="p">,</span>
+                       <span class="nv">horizPos</span><span class="p">:</span> <span class="n">horizPos</span><span class="p">,</span>
+                       <span class="nv">vertPos</span><span class="p">:</span> <span class="n">vertPos</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>C’est beaucoup de code, mais cela ce lit plutôt facilement, et devrait ne pas être trop difficile à comprendre.</p>
+
+<p>Pour l’essayer, on peut ajouter dans la méthode <code class="highlighter-rouge">viewDidLoad()</code> de la classe <code class="highlighter-rouge">ViewController</code> :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="nf">UIViewController</span> <span class="p">{</span>
+
+    <span class="c1">// Contient notre array d'éléments</span>
+    <span class="k">var</span> <span class="nv">elements</span><span class="p">:</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+        <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+
+        <span class="n">elements</span> <span class="o">=</span> <span class="k">try!</span> <span class="kt">Element</span><span class="o">.</span><span class="nf">loadFromPlist</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Quand on regarde la console d’Xcode pendant l’exécution, les données sont là !</p>
+
+<p><img src="/assets/ios/tutorial1/ElementsInConsole.png" alt="The loaded elements in the console" /></p>
+
+<p><strong>Important</strong> : Dans la méthode <code class="highlighter-rouge">Element.from(dict: _)</code>, j’utilise beaucoup de “force unwrapping” <code class="highlighter-rouge">!</code> qui va forcer la donnée . J’ai fait ce choix parce que les données sont implémentées dans un fichier qui n’est pas censé changer souvent et qui ne peuvent pas être modifiées facilement. Mais dans une véritable application, l’implémenter de cette façon pourrait causer des crashs lorsque les données ne correspondent pas  à ce qui est attendu, et cela risque fort d’arriver !</p>
+
+<h3 id="créons-la-tableview">Créons la TableView</h3>
+
+<p>D’abord, nous devons créer une instance de tableview, et garder la référence à cette instance. Pour ce faire, il faut ajouter une propriété à la classe <code class="highlighter-rouge">ViewController</code> juste en dessous de <code class="highlighter-rouge">var elements</code> :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift">    <span class="k">var</span> <span class="nv">elements</span><span class="p">:</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">weak</span> <span class="k">var</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="o">!</span> <span class="c1">// On la créée weak pour une considération de mémoire</span></code></pre></figure>
+
+<p>Ensuite, on créée la tableview à la fin de la méthode <code class="highlighter-rouge">viewDidLoad()</code> :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift">    <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+        <span class="o">...</span>
+        <span class="k">let</span> <span class="nv">tableView</span> <span class="o">=</span> <span class="nf">UITableView</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="n">view</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">tableView</span><span class="p">)</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">tableView</span> <span class="o">=</span> <span class="n">tableView</span>
+
+        <span class="n">tableView</span><span class="o">.</span><span class="n">dataSource</span> <span class="o">=</span> <span class="k">self</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>Aussitôt fait, le compilateur devrait se plaindre que <em>ViewController class does not conform UITableViewDataSource and UITableViewDelegate protocols</em>, ce qui signifie qu’il faut que le contrôleur implémente les protocoles que l’on essaie d’assigner sur les deux dernières lignes.</p>
+
+<p>Que devons-nous faire ? Eh bien, disons au compilateur que nous les implémentons !
+Ajoutez à la fin du fichier :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UITableViewDataSource</span><span class="p">,</span> <span class="nf">UITableViewDelegate</span> <span class="p">{</span>
+
+<span class="p">}</span></code></pre></figure>
+
+<p>Bien, maintenant l’erreur du compilateur a changée, et dit que nous n’implémentons pas le protocole <code class="highlighter-rouge">UITableViewDataSource</code>.</p>
+
+<h3 id="configurons-la-tableview">Configurons la tableview</h3>
+
+<p>Si on regarde la documentation, on se rend compte que le protocole <code class="highlighter-rouge">UITableViewDataSource</code> contient deux méthodes qu’il est obligatoire d’implémenter :</p>
+
+<ul>
+  <li><code class="highlighter-rouge">tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int</code> : Doit retourner le nombre de lignes dans la section en paramètre de la tableview. Dans notre exemple, nous avons qu’une seule section, donc l’implémentation de celle-ci sera très simple :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">elements</span><span class="o">.</span><span class="n">count</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li><code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell</code> : Doit retourner la cellule correspondant à l’IndexPath en paramètre (un IndexPath est un couple contenant le nombre de la section et le nombre de la ligne)</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">UITableViewCell</span> <span class="p">{</span>
+    <span class="c1">// Récupérons le bon élément</span>
+    <span class="k">let</span> <span class="nv">element</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="n">indexPath</span><span class="o">.</span><span class="n">row</span><span class="p">]</span>
+
+    <span class="c1">// Créons une cellule</span>
+    <span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="nf">UITableViewCell</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="o">.</span><span class="n">subtitle</span><span class="p">,</span> <span class="nv">reuseIdentifier</span><span class="p">:</span> <span class="s">"ElementCell"</span><span class="p">)</span>
+
+    <span class="c1">// On y ajoute les bonnes informations</span>
+    <span class="n">cell</span><span class="o">.</span><span class="n">textLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">symbol</span>
+    <span class="n">cell</span><span class="o">.</span><span class="n">detailTextLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="c1">// On retourne la cellule</span>
+    <span class="k">return</span> <span class="n">cell</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Maintenant, on peut compiler et lancer l’app, et voilà, votre première tableview. Mais attendez ! Il y a plus !</p>
+
+<h3 id="un-problème-de-mémoire">Un problème de mémoire</h3>
+
+<p>Si vous lancez l’application en l’état, elle semble bien, mais <strong>Ce n’est pas le cas !</strong></p>
+
+<p>Pour comprendre pourquoi je dis cela, lorsque l’application est lancée depuis Xcode, regardez l’emprunte mémoire vive dans la console de debug d’Xcode, et faites bien attention à la quantité de mémoire que prend l’application lorsqu’on défile vers le haut ou vers le bas.</p>
+
+<p><img src="/assets/ios/tutorial1/MemoryIssue.png" alt="Graphique de la mémoire, ne faisant qu'augmenter" /></p>
+
+<p>Quoi ? Juste 33Mo ? Et vous me dite que ça ne va pas ?
+Oui, ça ne va pas, car on voit bien que lorsqu’on défile, la mémoire vive consommée par l’application ne fait qu’augmenter, augmenter et augmenter. Il existe de la mémoire qui n’est jamais déallouée.
+Cela signifie que l’application pourrait (et va) éventuellement crasher pour cause de trop forte consommation de mémoire vive. (outch !)</p>
+
+<p>Que se passe-t-il ?</p>
+
+<p>Eh bien, rappelez-vous de notre implémentation de <code class="highlighter-rouge">cellForRowAt: indexPath</code> ? Elle créé une nouvelle cellule à chaque fois qu’elle est appelée par la TableView. Est-ce la bonne façon de faire ? Non, définitivement non.</p>
+
+<p>Que faire ?</p>
+
+<p>On doit <strong>réutiliser</strong> les cellules. Et ne prenez pas peur, c’est très facile à faire !</p>
+
+<h3 id="réutilisons-les-cellules">Réutilisons les cellules</h3>
+
+<p>L’idée de base de la réutilisation des cellules est de récupérer les cellules qui disparaissent lorsqu’on défile, et de les afficher à nouveau là où on en a besoin.</p>
+
+<p>Comme je l’ai dit précédemment, c’est très facile à faire. De plus, on a déjà fait la moitié du travail : nous avons déjà enregistré notre cellule pour être réutilisée !
+En effet, regardez le code qui créé une cellule, nous avons paramétré un “reuseIdentifier” pour la cellule. Essayons donc de la réutiliser lorsqu’on le peut.</p>
+
+<p>Quelle va être la logique ?</p>
+
+<p>Eh bien, on va essayer de réutiliser une cellule, et si on ne peut pas, créons une cellule de zéro.</p>
+
+<p>Remplaçons simplement</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Créons une cellule</span>
+<span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="nf">UITableViewCell</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="o">.</span><span class="n">subtitle</span><span class="p">,</span> <span class="nv">reuseIdentifier</span><span class="p">:</span> <span class="s">"ElementCell"</span><span class="p">)</span></code></pre></figure>
+
+<p>avec</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Essayons de réutiliser une cellule</span>
+<span class="k">let</span> <span class="nv">cellIdentifier</span> <span class="o">=</span> <span class="s">"ElementCell"</span>
+<span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="n">tableView</span><span class="o">.</span><span class="nf">dequeueReusableCell</span><span class="p">(</span><span class="nv">withIdentifier</span><span class="p">:</span> <span class="n">cellIdentifier</span><span class="p">)</span>
+    <span class="p">??</span> <span class="nf">UITableViewCell</span><span class="p">(</span><span class="nv">style</span><span class="p">:</span> <span class="o">.</span><span class="n">subtitle</span><span class="p">,</span> <span class="nv">reuseIdentifier</span><span class="p">:</span> <span class="n">cellIdentifier</span><span class="p">)</span></code></pre></figure>
+
+<p>Maintenant, lorsqu’on créé une cellule, on essaie d’abord de réutiliser une cellule, en utilisant <code class="highlighter-rouge">dequeueReusableCell(withIdentifier: _)</code>. Cette fonction va retourner une cellule en cas de succès, et nil en cas d’échec.</p>
+
+<p>Regardons la seconde ligne.
+L’opérateur <code class="highlighter-rouge">??</code> utilise la première valeur quand elle n’est pas <code class="highlighter-rouge">nil</code>, et va utiliser la seconde valeur lorsque la première est <code class="highlighter-rouge">nil</code>.</p>
+
+<p>De cette façon, notre cellule sera réutilisée si on le peut, et sera initialisée de zéro comme on le faisait auparavant si cela ne réussit pas. Nous devrions toujours avoir une cellule après ces deux lignes.</p>
+
+<p>Pour être plus précis, la fonction <code class="highlighter-rouge">dequeueReusableCell</code> va rater uniquement la première fois, car on n’a pas enregistré de cellule pour l’identifiant “ElementCell”. Par contre, par la suite, réutiliser des cellules fonctionne sans problème car la fonction d’Apple créé des cellules lorsqu’elle n’en a pas de disponible à réutiliser.</p>
+
+<h3 id="touches-finales">Touches finales</h3>
+
+<p>Ok, ça commence à ressembler à quelque chose, mais on peut trouver 3 problèmes :</p>
+
+<ol>
+  <li>Il n’y a pas de titre dans la barre de navigation</li>
+  <li>Quand on touche une cellule, elle reste sélectionnée (grise)</li>
+  <li>Tu nous avais dit que les éléments seraient classés par ordre de numéro atomique ! (Hydrogène d’abord, ensuite l’Hélium, etc.)</li>
+</ol>
+
+<p>Alors corrigeons tout ça, quelques lignes de code par problème !</p>
+
+<p>1) N’importe où dans <code class="highlighter-rouge">viewDidLoad</code></p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">navigationItem</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Periodic Elements"</span></code></pre></figure>
+
+<p>NavigationItem nous permet de modifier comment un contrôleur est affiché au sein d’un NavigationController. Ici, nous avons juste besoin de modifier le titre.</p>
+
+<p>2) En bas du fichier, au sein de l’extension qui implémente <code class="highlighter-rouge">UITableViewDelegate</code></p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UITableViewDataSource</span><span class="p">,</span> <span class="nf">UITableViewDelegate</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">didSelectRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tableView</span><span class="o">.</span><span class="nf">deselectRow</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="n">indexPath</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Méthode à implémenter de <code class="highlighter-rouge">UITableViewDelegate</code>, on implémente <code class="highlighter-rouge">tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)</code> qui est appelée aussitôt qu’une cellule est sélectionnée. Quand cela arrive, on demande à la tableview de désélectionner l’indexpath avec une animation. Ce qui permet de réaliser une désélection animée pour signaler à l’utilisateur qu’il n’y a rien à faire lorsqu’on sélectionne les cellules, du moins pour l’instant.</p>
+
+<p>3) Dans <code class="highlighter-rouge">viewDidLoad</code>, juste après <code class="highlighter-rouge">elements = try! Element.loadFromPlist()</code></p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">elements</span><span class="o">.</span><span class="nf">sort</span><span class="p">(</span><span class="nv">by</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nv">$0</span><span class="o">.</span><span class="n">atomicNumber</span> <span class="o">&lt;</span> <span class="nv">$1</span><span class="o">.</span><span class="n">atomicNumber</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>Cela va classer le tableau en place.
+Les tableaux dans Swift 3 disposent de deux fonctions pour se classer :</p>
+
+<ul>
+  <li><code class="highlighter-rouge">sort</code> : Va classer le tableau actuel sur place, ce qui n’est possible que si le tableau est mutable, ce qui est le cas lorsque le tableau est stocké en tant que <code class="highlighter-rouge">var</code>. Elle retourne <code class="highlighter-rouge">nil</code></li>
+  <li><code class="highlighter-rouge">sorted</code> : Va retourner une copie du tableau, classée. Cette fonction est disponible sur tous les tableaux, y compris lorsque le tableau n’est pas mutable (<code class="highlighter-rouge">let</code>).</li>
+</ul>
+
+<h3 id="cest-dans-la-boite-">C’est dans la boite !</h3>
+
+<p>Maintenant, lorsque vous lancez l’application, elle a exactement le comportement attendu.
+Si vous le souhaitez, vous pouvez cloner le projet depuis <a href="https://github.com/Dean151/ElementsList/tree/tutorial-1">cette branche sur Github</a></p>
+
+<p><img src="/assets/ios/tutorial1/Screenshot.png" alt="Image du résultat" /></p>
+
+<h3 id="que-faire-ensuite-">Que faire ensuite ?</h3>
+
+<p>Je vais écrire des tutoriels sur la même lancée, permettant d’ajouter à cette application :</p>
+
+<ul>
+  <li>Une vue de détail pour consulter les données de tous nos éléments</li>
+  <li>Une vue doublée “split” pour adapter l’application à l’iPad</li>
+  <li>Une barre de recherche pour trouver l’élément</li>
+  <li>Un mode paysage avec les éléments disposés en table périodique</li>
+</ul>
+
+<p>Vous pouvez aussi essayer d’implémenter tout cela de vous-même, en utilisant la documentation d’Apple et d’autres blogs !</p>
+
+
+  </div>
+
+  <div class="share-page">
+    <h3>Partager sur :</h3>
+    <ul>
+    <li class="share-button share-twitter">
+    	<a href="https://twitter.com/intent/tweet?text=Bases iOS: configuration d'une UITableView avec Swift 3&url=https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html&via=deanatoire&related=deanatoire" rel="nofollow" target="_blank" title="Share on Twitter">
+    	<span class="fa fa-twitter"></span> <span class="title">Twitter</span></a>
+    </li>
+    <li class="share-button share-facebook">
+    	<a href="https://facebook.com/sharer.php?u=https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html" rel="nofollow" target="_blank" title="Share on Facebook">
+    	<span class="fa fa-facebook-official"></span> <span class="title">Facebook</span></a>
+    </li>
+    <li class="share-button share-linkedin">
+    	<a href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html&title=Bases iOS: configuration d'une UITableView avec Swift 3&summary=Le blog de Dean est un blog d'informatique et de développement&source=https://blog.thomasdurand.fr" rel="nofollow" target="_blank" title="Share on LinkedIn">
+    	<span class="fa fa-linkedin-square"></span> <span class="title">LinkedIn</span></a>
+    </li>
+    </ul>
+</div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Le blog de Dean</li>
+          <li><a href="mailto:contact@thomasdurand.fr">contact@thomasdurand.fr</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3"></div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/dean151"><span class="fa fa-github"></span> <span class="username">dean151</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/deanatoire"><span class="fa fa-twitter"></span> <span class="username">deanatoire</span></a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml"><span class="fa fa-rss"></span> <span class="username">flux rss</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.thomasdurand.fr"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        _paq.push(['setTrackerUrl', '/p/']);
+        _paq.push(['setSiteId', 14]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="/p/?idsite=14" style="border:0;" alt="" /></p></noscript>
+  </body>
+
+</html>

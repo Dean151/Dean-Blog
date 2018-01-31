@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Avoid 5 common mistakes with AES encryption</title>
+  <meta name="description" content="Written for Swift 3 with Xcode 8.1">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/dist/font-awesome-4.6.3/css/font-awesome.min.css">
+  <link rel="canonical" href="https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html">
+  <link rel="alternate" type="application/rss+xml" title="Dean's blog" href="https://blog.thomasdurand.fr/feed.xml">
+
+  
+  
+  <link rel="alternate" hreflang="en" href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" />
+  
+  <link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html" />
+  
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">
+      <img src="/assets/design/logo-en@2x.png" height="40" alt="Dean's blog"/>
+    </a>
+
+    <div class="langs en">
+    
+    
+      <a href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" class="en">en</a>
+    
+      <a href="/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html" class="fr">fr</a>
+    
+
+    
+    
+    </div>
+
+    <nav class="site-nav">
+      
+      
+        
+        <a class="page-link" href="/">Articles</a>
+        
+      
+        
+        <a class="page-link" href="/about/">About</a>
+        
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Avoid 5 common mistakes with AES encryption</h1>
+    <p class="post-meta"><time datetime="2017-07-12T21:30:00+02:00" itemprop="datePublished">
+    Jul 12, 2017
+
+
+
+</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Written for Swift 3 with Xcode 8.1</strong></p>
+
+<p>With libraries like <a href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a>, it’s easier and easier to
+use encryption in your code. But there are also some common mistakes not to fall
+into when using cryptography!</p>
+
+<p>The rest of this article will use CryptoSwift as an example.</p>
+
+<h3 id="1-dont-hard-code-your-cryptographic-key">1. Don’t hard code your cryptographic key</h3>
+
+<p>Anything you put in the code is, in a way, readable by anyone. It’s always possible
+for an attacker to find something, even hidden in the compiled code of your application.</p>
+
+<p>Plus, hardcoding a key means it’s the same encryption key for everyone, witch would
+make a very bad encryption system since the key is shipped with the app.</p>
+
+<p>One last point is randomness. It’s primordial that a key reflect entropy.
+It need to be anything. The next byte of a key need to be able anything, and there
+is no less entropic than an UTF8 string used as a key.</p>
+
+<p>Solution ?<br />
+You need to <strong>generate</strong> a key every time you need one, and store it locally in a safe place.</p>
+
+<p>You can generate a AES256 key this way :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">generateRandomData</span><span class="p">(</span><span class="nv">size</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="nf">Data</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">data</span> <span class="o">=</span> <span class="nf">Data</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="nf">withUnsafeMutableBytes</span> <span class="p">{</span>
+        <span class="p">(</span><span class="nv">mutableBytes</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int32</span> <span class="k">in</span>
+        <span class="nf">SecRandomCopyBytes</span><span class="p">(</span><span class="n">kSecRandomDefault</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">mutableBytes</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="nf">errSecSuccess</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="kt">Errors</span><span class="o">.</span><span class="n">unableToGenerateData</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">data</span>
+<span class="p">}</span>
+
+<span class="c1">// The size of the key for AES256 is 256 ÷ 8 = 32</span>
+<span class="k">let</span> <span class="nv">myAES256keyData</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">generateRandomData</span><span class="p">(</span><span class="nv">size</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
+
+<span class="c1">// Store your key in a safe place</span></code></pre></figure>
+
+<h3 id="2-store-your-keys-in-the-keychain">2. Store your keys in the Keychain</h3>
+
+<p>Let make things clear right now, there are <strong>no better place</strong> to store sensitive
+data like cryptographic keys or password than the <a href="https://developer.apple.com/documentation/security/keychain_services">Keychain</a>.</p>
+
+<p>It’s designed by Apple to be able to store securely password, certificates and keys.
+It’s also maintained by regular updates of Apple software, and finally, it uses hardware
+module like the <a href="https://www.quora.com/What-is-Apple’s-new-Secure-Enclave-and-why-is-it-important">Secure enclave</a> to assure a high level of security.</p>
+
+<p>TL;DR: Use the Keychain, it the most secure alternative you’ve got!</p>
+
+<p>You can store and access the keychain very simply on your own when you use a wrapper like <a href="https://github.com/evgenyneu/keychain-swift">Keychain-Swift</a>:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">KeychainSwift</span>
+
+<span class="k">let</span> <span class="nv">keychain</span> <span class="o">=</span> <span class="nf">KeychainSwift</span><span class="p">()</span>
+
+<span class="c1">// Store the previously created key</span>
+<span class="n">keychain</span><span class="o">.</span><span class="nf">set</span><span class="p">(</span><span class="n">dataObject</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"my key"</span><span class="p">,</span> <span class="nv">withAccess</span><span class="p">:</span> <span class="o">.</span><span class="n">accessibleWhenUnlockedThisDeviceOnly</span><span class="p">)</span>
+
+<span class="c1">// Receive from keychain our key</span>
+<span class="k">let</span> <span class="nv">key</span> <span class="o">=</span> <span class="n">keychain</span><span class="o">.</span><span class="nf">getData</span><span class="p">(</span><span class="s">"my key"</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="3-set-a-correct-keychain-item-access">3. Set a correct Keychain Item Access</h3>
+
+<p>You may have not noticed yet, but I used an access parameter to the keychain setter in point 2.</p>
+
+<p><code class="highlighter-rouge">accessibleWhenUnlockedThisDeviceOnly</code> (<a href="https://developer.apple.com/documentation/security/ksecattraccessiblewhenunlockedthisdeviceonly">ref</a>) is a bare minimum, that I use in my below example.<br />
+Use <code class="highlighter-rouge">accessibleWhenPasscodeSetThisDeviceOnly</code> (<a href="https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly">ref</a>) when available.</p>
+
+<p>That is needed to provide a correct level of security for your stored key.
+It make sure the device is unlocked, prevent backups and keychain sharing between
+devices, and it can also make sure the device is secured by an unlock code.</p>
+
+<h3 id="4-use-an-initialization-vector">4. Use an Initialization Vector</h3>
+
+<p>Encrypting data is a good practice to prevent anyone to read sensitive data.</p>
+
+<p>But what if analytics allow an attacker to read your data without the key, just
+by looking at the encrypted data?</p>
+
+<p>That’s what make Initialization Vector so important!</p>
+
+<p>Let say you need to encrypt a boolean, because you don’t wan’t anyone to figure out
+who has opt-in and who haven’t.</p>
+
+<p>Let check the storage table after encryption:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>value</th>
+      <th>no IV (or shared IV)</th>
+      <th>randomized IV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">false</code></td>
+      <td><code class="highlighter-rouge">HspSmVFeseu7kpt5ZJE13A==</code></td>
+      <td><code class="highlighter-rouge">6sM2RzgShVcu1OPM8sH0mw==</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">false</code></td>
+      <td><code class="highlighter-rouge">HspSmVFeseu7kpt5ZJE13A==</code></td>
+      <td><code class="highlighter-rouge">ylJjMWFq4MoqKvpn5WSYOQ==</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">true</code></td>
+      <td><code class="highlighter-rouge">sdkaq/5TFZKjFjx35Cl0rw==</code></td>
+      <td><code class="highlighter-rouge">JZHeEoBfgQgk8/8eOQlQxQ==</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">true</code></td>
+      <td><code class="highlighter-rouge">sdkaq/5TFZKjFjx35Cl0rw==</code></td>
+      <td><code class="highlighter-rouge">byfgDi+CD7pAo2NXYk8tVw==</code></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">false</code></td>
+      <td><code class="highlighter-rouge">HspSmVFeseu7kpt5ZJE13A==</code></td>
+      <td><code class="highlighter-rouge">XxWfqQXe3EwNuJ3AzvgOig==</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Any clue of what’s wrong ?
+Well, every same value, encrypted with the same key and iv result in the same cipher result.</p>
+
+<p>And that’s bad for your data, because an attacker that would eventually see the data
+(and trust me, he will on an iOS device except if it’s in the Keychain), can perform
+some analytics process to deduct the decrypted data.</p>
+
+<p>To prevent that, it’s important to generate a random IV for every encryption you
+may perform.</p>
+
+<p>Of course this IV is needed to decrypt the data, along with the key.
+A good place to store the IV is alongside the data, yes, in the table, just like you would
+do with a <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">salt for a password hash</a>.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// We generate a one time use IV:</span>
+<span class="k">let</span> <span class="nv">iv</span> <span class="o">=</span> <span class="kt">AES</span><span class="o">.</span><span class="nf">randomIV</span><span class="p">(</span><span class="kt">AES</span><span class="o">.</span><span class="n">blockSize</span><span class="p">)</span>
+
+<span class="c1">// We encrypt the data:</span>
+<span class="k">let</span> <span class="nv">crypted</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">AES</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="nv">iv</span><span class="p">:</span> <span class="n">iv</span><span class="p">)</span><span class="o">.</span><span class="nf">encrypt</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1">// We then store the crypted data and the iv</span>
+<span class="n">myStorage</span><span class="o">.</span><span class="n">securedData</span> <span class="o">=</span> <span class="p">(</span><span class="n">crypted</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="5-do-not-use-ecb-block-mode">5. Do not use ECB block mode</h3>
+
+<p>The block mode you set in the AES algorithm correspond to the method used by the
+algorithm to perform the encryption.</p>
+
+<p>The choice of a good block mode is primordial to make the encryption useful and
+secure.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Some encryptions available</span>
+<span class="k">let</span> <span class="nv">encryptedWithCBC</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">AES</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="nv">iv</span><span class="p">:</span> <span class="n">iv</span><span class="p">,</span> <span class="nv">blockMode</span><span class="p">:</span> <span class="o">.</span><span class="kt">CBC</span><span class="p">,</span> <span class="nv">padding</span><span class="p">:</span> <span class="nf">PKCS7</span><span class="p">())</span><span class="o">.</span><span class="nf">encrypt</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">encryptedWithCTR</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">AES</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="nv">iv</span><span class="p">:</span> <span class="n">iv</span><span class="p">,</span> <span class="nv">blockMode</span><span class="p">:</span> <span class="o">.</span><span class="kt">CTR</span><span class="p">,</span> <span class="nv">padding</span><span class="p">:</span> <span class="nf">PKCS7</span><span class="p">())</span><span class="o">.</span><span class="nf">encrypt</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
+
+<span class="c1">// And the one you should never use...</span>
+<span class="k">let</span> <span class="nv">encryptedWithECB</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">AES</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="nv">iv</span><span class="p">:</span> <span class="n">iv</span><span class="p">,</span> <span class="nv">blockMode</span><span class="p">:</span> <span class="o">.</span><span class="kt">ECB</span><span class="p">,</span> <span class="nv">padding</span><span class="p">:</span> <span class="nf">PKCS7</span><span class="p">())</span><span class="o">.</span><span class="nf">encrypt</span><span class="p">(</span><span class="n">input</span><span class="p">)</span></code></pre></figure>
+
+<p>But why is ECB a very poor choice?</p>
+
+<p>ECB stand for Electronic Code Book, that encrypt every block of your input separately.
+The treat is that this method will encrypt the same way two same blocks, and just
+like the lack of Initialization Vector, makes the encryption predictable.</p>
+
+<p>It can also lead to replay attacks and information leaks.</p>
+
+<p>If you want to be confident about the ECB lack of security, check this example
+of encryption using an image, from <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation">Wikipedia</a>.</p>
+
+<p><img src="/assets/ios/crypto-practices/ECB-en.png" alt="Illustration of ECB lack of security with a picture encryption" /></p>
+
+<p>Wow, with ECB block mode, we cannot say that the content of the picture became
+unpredictable and unreadable. That’s why it should <strong>never</strong> be used as a cryptographic
+block mode.</p>
+
+<p>To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
+dependent from the previous one, and make the result unpredictable and randomized.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Although it’s very easy to use encryption today as a developer, it’s also very easy
+to make a lot of mistakes when using AES, making the whole process unsecure and,
+sometime, useless.</p>
+
+<p>The main reason is that when dealing with encryption, it’s important to know what you do,
+what you’re dealing with, and also the classic errors to avoid.</p>
+
+<p>I hope that your app will become a little bit more secure with what you just read!</p>
+
+
+  </div>
+
+  <div class="share-page">
+    <h3>Share on:</h3>
+    <ul>
+    <li class="share-button share-twitter">
+    	<a href="https://twitter.com/intent/tweet?text=Avoid 5 common mistakes with AES encryption&url=https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html&via=deanatoire&related=deanatoire" rel="nofollow" target="_blank" title="Share on Twitter">
+    	<span class="fa fa-twitter"></span> <span class="title">Twitter</span></a>
+    </li>
+    <li class="share-button share-facebook">
+    	<a href="https://facebook.com/sharer.php?u=https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" rel="nofollow" target="_blank" title="Share on Facebook">
+    	<span class="fa fa-facebook-official"></span> <span class="title">Facebook</span></a>
+    </li>
+    <li class="share-button share-linkedin">
+    	<a href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html&title=Avoid 5 common mistakes with AES encryption&summary=Dean's blog is a blog about computer science and development&source=https://blog.thomasdurand.fr" rel="nofollow" target="_blank" title="Share on LinkedIn">
+    	<span class="fa fa-linkedin-square"></span> <span class="title">LinkedIn</span></a>
+    </li>
+    </ul>
+</div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Dean's blog</li>
+          <li><a href="mailto:contact@thomasdurand.fr">contact@thomasdurand.fr</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3"></div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/dean151"><span class="fa fa-github"></span> <span class="username">dean151</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/deanatoire"><span class="fa fa-twitter"></span> <span class="username">deanatoire</span></a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml"><span class="fa fa-rss"></span> <span class="username">rss flux</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["setDomains", ["*.thomasdurand.fr"]]);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        _paq.push(['setTrackerUrl', '/p/']);
+        _paq.push(['setSiteId', 14]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="/p/?idsite=14" style="border:0;" alt="" /></p></noscript>
+  </body>
+
+</html>
