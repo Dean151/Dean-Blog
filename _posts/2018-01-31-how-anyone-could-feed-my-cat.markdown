@@ -63,7 +63,7 @@ My first reaction to that discovery was to remove the Wi-Fi settings from the ma
 
 But that solution made the machine unusable: impossible to change the schedule or trigger a meal from my phone anymore. So I decided to continue the reverse engineering of my machine in order to implement my own secure API to use it! (crazy right?)
 
-I looked for my Raspberry Pi, that was getting some dust in a drawer, and setted up a Wi-Fi hotspot with it.
+I looked for my [Raspberry Pi][raspberry-pi], that was getting some dust in a drawer, and setted up a [Wi-Fi hotspot][hotspot-pi] with it.
 
 That allowed me to look the way my cat feeder was communicating with the outside world.
 I found out that the only address it was communicating with was `47.90.203.137`.
@@ -92,4 +92,6 @@ Am I getting a little bit paranoiac? Yes I am!
 [honey-guaridan]: /assets/pictures/honeyguaridan.jpg
 [burp-suite]: https://portswigger.net/burp
 [man-in-the-middle]: https://en.wikipedia.org/wiki/Man-in-the-middle_attack
+[raspberry-pi]: https://www.raspberrypi.org/
+[hotspot-pi]: https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md
 [alnpet]: http://alnpet.com

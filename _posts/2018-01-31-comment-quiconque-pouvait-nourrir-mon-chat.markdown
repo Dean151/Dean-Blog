@@ -63,7 +63,7 @@ Mon premier réflexe aura été de retirer la configuration Wi-Fi du distributeu
 
 Par contre, cette solution rendait la machine quasiment inutilisable. Bien qu'elle continue à suivre son planning, je ne pouvais plus changer ce dernier, ou bien déclencher un repas depuis mon téléphone. C'est pourquoi j'ai décider d'aller plus loin dans mon reverse-engineering, pour créer ma propre API, plus sécurisée, pour communiquer avec elle ! (Projet un peu fou, je l'accorde)
 
-J'ai donc cherché mon Raspberry Pi, qui prenait la poussière dans un tiroir, et paramétré un hotspot Wi-Fi avec.
+J'ai donc cherché mon [Raspberry Pi][raspberry-pi], qui prenait la poussière dans un tiroir, et paramétré un [hotspot Wi-Fi][hotspot-pi] avec.
 
 Cela m'a permis d'analyser la façon dont le distributeur communiquait avec le monde.
 Il se trouve qu'elle ne communique à priori qu'avec une seule adresse IP : `47.90.203.137`.
@@ -93,4 +93,6 @@ Suis-je en train de devenir paranoïaque ? Oh, je l'ai toujours été !
 [honey-guaridan]: /assets/pictures/honeyguaridan.jpg
 [burp-suite]: https://portswigger.net/burp
 [man-in-the-middle]: https://fr.wikipedia.org/wiki/Attaque_de_l%27homme_du_milieu
+[raspberry-pi]: https://www.raspberrypi.org/
+[hotspot-pi]: https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md
 [alnpet]: http://alnpet.com
