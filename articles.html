@@ -1,0 +1,26 @@
+---
+layout: default
+title: Articles
+ref: index
+lang: fr
+index: 1
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Articles</h1>
+
+  <ul class="post-list">
+    {% assign posts=site.posts | where:"lang", page.lang %}
+    {% for post in posts %}
+      <li>
+        <p class="post-meta">{% include date.html date=post.date %}</p>
+
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
+  
+</div>

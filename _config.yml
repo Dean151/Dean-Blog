@@ -1,0 +1,34 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: Dean's blog
+email: contact@thomasdurand.fr
+description: "Dean's blog is a blog about computer science and development"
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://blog.thomasdurand.fr" # the base hostname & protocol for your site
+twitter_username: deanatoire
+github_username: dean151
+linkedin_username: thomasdurandverjat
+
+# Build settings
+markdown: kramdown
+
+# Translations
+t:
+  en:
+    baseurl: "/"
+    title:  "Dean's blog"
+    description: "Dean's blog is a blog about computer science and development"
+    rss: "rss flux"
+    share: "Share on:"
+  fr:
+    baseurl: "/articles.html"
+    title:  "Le blog de Dean"
+    description: "Le blog de Dean est un blog d'informatique et de développement"
+    rss: "flux rss"
+    share: "Partager sur :"
