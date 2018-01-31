@@ -84,7 +84,7 @@ For now, I'm still at the reverse engineering phase in order to understand how I
 
 And lesson learned: I will always challenge any new device that connect to my network from now on.
 
-Am I getting a little bit paranoiac? Yes I am!
+Am I getting a little bit paranoid? Yes I am!
 
 [dilitrust]: https://www.dilitrust.com/en/
 [homekit-flaw]: https://9to5mac.com/2017/12/07/homekit-vulnerability/
