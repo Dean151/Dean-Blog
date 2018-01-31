@@ -7,7 +7,7 @@ ref: how-anyone-could-feed-my-cat
 lang: en
 ---
 
-As a software engineer for [DiliTrust](dilitrust), I think software security as a primary feature for any kind of product or software.
+As a software engineer for [DiliTrust][dilitrust], I think software security as a primary feature for any kind of product or software.
 Every time we heard a story about any kind of security flaw, we take it seriously: how is that possible? Am we directly or indirectly impacted?
 
 Well, I guess I wasn't yet prepared for my last discovery.

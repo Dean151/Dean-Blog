@@ -7,10 +7,10 @@ ref: how-anyone-could-feed-my-cat
 lang: fr
 ---
 
-En tant qu'ingénieur logiciel chez [DiliTrust](dilitrust), la sécurité du logiciel est la première fonctionnalité que je conçois pour n'importe quel produit ou logiciel.
+En tant qu'ingénieur logiciel chez [DiliTrust][dilitrust], la sécurité du logiciel est la première fonctionnalité que je conçois pour n'importe quel produit ou logiciel.
 À chaque fois que nous entendons parler d'une nouvelle faille, nous prenons ça très au sérieux : Comment est-ce possible ? Est-on directement ou indirectement impactés ?
 
-Je crois que je n'étais pas encore prêt pour ce que j'allai découvrir.
+Je crois que je n'étais pas encore prêt pour ce que j'allais découvrir.
 
 ### Ce que j'aime dans la domotique
 
