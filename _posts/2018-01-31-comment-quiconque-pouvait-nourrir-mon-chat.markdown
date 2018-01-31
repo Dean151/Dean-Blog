@@ -5,7 +5,6 @@ date:   2018-01-31 12:00:00 +0200
 categories: Sécurité Objet-connecté
 ref: how-anyone-could-feed-my-cat
 lang: fr
-published: false
 ---
 
 En tant qu'ingénieur logiciel chez [DiliTrust](dilitrust), la sécurité du logiciel est la première fonctionnalité que je conçois pour n'importe quel produit ou logiciel.
