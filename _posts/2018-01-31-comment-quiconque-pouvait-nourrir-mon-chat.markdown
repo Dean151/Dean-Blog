@@ -71,11 +71,13 @@ Il se trouve qu'elle ne communique à priori qu'avec une seule adresse IP : `47.
 `47.90.203.137` correspond à [alnpet.net][alnpet]. Je reconnais bien le distributeur sur ce site, mais dans une version plus avancée, avec une caméra, et d'autres fonctionnalités. Hum, étrange. De plus, le lien de pré-commande amène sur la page d'accueil de KickStarter. Oula, dans quoi je m'embarque ? Je ne sais pas quel lien il y a entre *HoneyGuaridan* et *Alnpet*. Sont-ils une seule et même entité ?
 
 Autant vous dire que cette adresse IP a été bannie de mon Raspberry Pi :
+
 ```
 iptables -A INPUT -s 47.90.203.137 -j DROP
 iptables -A FORWARD -s 47.90.203.137 -j DROP
 iptables -A OUTPUT -s 47.90.203.137 -j DROP
 ```
+
 Cela assure que le distributeur reste hors ligne, alors qu'il est bien connecté au Wi-Fi créé par mon Raspberry.
 L'étape suivante sera d'imiter le serveur d'alnpet, pour faire croire au distributeur qu'il communique avec, alors que ce sera ma propre API.
 

@@ -71,11 +71,13 @@ I found out that the only address it was communicating with was `47.90.203.137`.
 `47.90.203.137` corresponds to [alnpet.net][alnpet]. I do recognize the feeder on this website, but It's a more advanced one, with a camera, and more advanced feature. Hum, weird. And the preorder link bring to KickStarter homepage. Oh boy, what am I getting myself into? I do not know what link there is between *HoneyGuaridan* and *Alnpet*. Are they even the same?
 
 Well, let say that this IP has been banned from my Raspberry Pi
+
 ```
 iptables -A INPUT -s 47.90.203.137 -j DROP
 iptables -A FORWARD -s 47.90.203.137 -j DROP
 iptables -A OUTPUT -s 47.90.203.137 -j DROP
 ```
+
 That make sure my machine is still offline, while connected to my Raspberry. The next step would be to imitate this server to make my machine thinks it's communicating with Alnpet API, despite it would be mine.
 
 For now, I'm still at the reverse engineering phase in order to understand how I can communicate with my device. It's not the easiest part; let hope I succeed.
