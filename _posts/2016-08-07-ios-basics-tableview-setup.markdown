@@ -187,7 +187,7 @@ When we check the Xcode console while executing, we find that the data is there 
 
 ![The loaded elements in the console][elements-loaded]
 
-**Important** : In `Element.from(dict: _)` function, there is a lot of force unwrapping `!` in the code. That's because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and I will happen !
+**Important** : In `Element.from(dict: _)` function, there is a lot of force unwrapping `!` in the code. That's because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and it will happen !
 
 ### Creating the table view
 
