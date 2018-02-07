@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "How anyone could feed my cat"
-date:   2018-01-31 12:00:00 +0200
+date:   2018-01-31 12:00:00 +0100
 categories: Security IOT
 ref: how-anyone-could-feed-my-cat
 lang: en
