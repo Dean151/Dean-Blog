@@ -23,10 +23,6 @@ Deserved by my Raspberry, this Wi-Fi is fully customizable, and I can intercept,
 Using [Tcpdump][tcpdump] command on my Raspberry Pi ; I quickly noticed that my feeder was constantly calling `47.90.203.137` on port `1032`.
 But also, the feeder was getting requests from that IP on his port `9999`.
 
-```
-TODO Add tcpdump example
-```
-
 As I could not intercept any kind of request, I thought that either the device, or the server was creating a kind of [Socket][socket] to communicate in real time.
 The most logical would be that it's the device that initiate the connection to the server. I deciced to try to replicate that!
 
@@ -163,14 +159,14 @@ Here some more data I gathered for the meals:
 
 We can identify two bytes for the time ; and two bytes for the amount.
 
-Altough the time was increasing, somehow between 4PM and 6PM, it reseted. Let try a meal at 17h?
+Altough the time was increasing, somehow between 4PM and 6PM, it reseted. Let try a meal at 5PM?
 
 ```
 // 10 grams à 17h CET
 0000 000a
 ```
 
-Okay, somehow it's resetting at 17h CET. But something great is the value of 18h:
+Okay, somehow it's resetting at 5PM CET. But something great is the value of 6PM:
 in hexadecimal, 3c equals 60. b4 equals 120... And it works for each meal!
 
 So the time is encoded as a number of minutes on two bytes ; offseted at 5PM CET.
@@ -178,6 +174,68 @@ So the time is encoded as a number of minutes on two bytes ; offseted at 5PM CET
 The amount of food is a number of grams, from 5 to 150, encoded on two bytes too (where only one would have worked).
 
 ### How does the feeder responds to a request?
+
+What I needed to do next was to find out how the feeder was responding to those commands. A solution would be not to emulate the feeder like I did a few lines before, but their servers. I needed to make my feeder think I'm the rightfull server to communicate with, and therefore send it a few requests and see what happen.
+
+This is how I implemented it:
+
+```
+
+```
+
+Then, I had to test a few of the requests I could send to the feeder:
+
+#### Feeding now
+
+Let's send a request to give 5g right now (My cat was so thrilled when he got unexpected food!)
+
+```
+Data sent: 9da106a20005
+Data received: 9da114414243303132333435363738a2d0a10000
+``` 
+
+Here we have:
+  - `9da114`: The prefix
+  - `414243303132333435363738`: The code `ABC012345678` -> the identifier of the feeder (in hexadecimal)
+  - `a2`: The operation code 
+  - `d0a10000`: The suffix
+
+Somehow, I think it means "Feeder ABC012345678 have performed the feed order."
+
+#### Set this default amount
+
+If I do the same with the default feeding amount, used by the physical button:
+
+```
+Data sent: 9da106c30005
+Data received: 9da114414243303132333435363738c3d0a10000
+``` 
+
+That decompose into:
+  - `9da114`: The prefix
+  - `414243303132333435363738`: The code `ABC012345678` -> the identifier of the feeder (in hexadecimal)
+  - `c3`: The operation code
+  - `d0a10000`: The suffix
+
+### Set a planning
+
+ Finally for a feeding plan:
+
+```
+Data sent: 9da105c400
+Data received: 9da114414243303132333435363738c3d0a10000
+``` 
+
+That decompose into:
+  - `9da114`: The prefix
+  - `414243303132333435363738`: The code `ABC012345678` -> the identifier of the feeder (in hexadecimal)
+  - `c3`: The operation code
+  - `d0a10000`: The suffix
+
+
+### To sum it up
+
+
 
 [anyone-could-feed-my-cat]: /security/iot/2018/01/31/how-anyone-could-feed-my-cat.html
 [tcpdump]: https://www.tcpdump.org/tcpdump_man.html
