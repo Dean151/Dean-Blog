@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="/assets/design/favicon.png" />
+
+  <title>How anyone could feed my cat</title>
+  <meta name="description" content="As a software engineer for DiliTrust, I think software security as a primary feature for any kind of product or software.Every time we heard a story about an...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/dist/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="canonical" href="https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html">
+  <link rel="alternate" type="application/rss+xml" title="Dean's blog" href="https://blog.thomasdurand.fr/feed.xml">
+
+  
+  
+  <link rel="alternate" hreflang="en" href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" />
+  
+  <link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html" />
+  
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">
+      <img src="/assets/design/logo-en@2x.png" height="40" alt="Dean's blog"/>
+    </a>
+
+    <div class="langs en">
+    
+    
+      <a href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" class="en">en</a>
+    
+      <a href="/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html" class="fr">fr</a>
+    
+
+    
+    
+    </div>
+
+    <nav class="site-nav">
+      
+      
+        
+        <a class="page-link" href="/">Articles</a>
+        
+      
+        
+        <a class="page-link" href="/about/">About</a>
+        
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">How anyone could feed my cat</h1>
+    <p class="post-meta"><time datetime="2018-01-31T12:00:00+01:00" itemprop="datePublished">
+    Jan 31, 2018
+
+
+
+</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>As a software engineer for <a href="https://www.dilitrust.com/en/">DiliTrust</a>, I think software security as a primary feature for any kind of product or software.
+Every time we heard a story about any kind of security flaw, we take it seriously: how is that possible? Am we directly or indirectly impacted?</p>
+
+<p>Well, I guess I wasn’t yet prepared for my last discovery.</p>
+
+<h3 id="what-i-like-about-home-automation-solution">What I like about home automation solution</h3>
+
+<p>Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That’s why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.</p>
+
+<p>Every device I ever choose was HomeKit compatible, and I never intended to use any of my devices remotely. I do not have any concentrator to make HomeKit available from anywhere, and I feel confident that my devices are pretty much secure. I suppose, maybe wrongly, that Apple do impose some rules to make the device secure, and also make sure that their own implementation of HomeKit is quite secure.</p>
+
+<p>I know that HomeKit already had some security flaw <a href="https://9to5mac.com/2017/12/07/homekit-vulnerability/">in the past</a>, and may have some in the future, but I’m pretty sure Apple will always correct them.</p>
+
+<h3 id="where-my-cat-comes-in">Where my cat comes in</h3>
+
+<p><img src="/assets/pictures/newton.jpg" alt="My cat, Newton" /></p>
+
+<p>I adopted Newton in June 2016, and he’s adorable… well… most of the time. But since we’ve got him neutralized, he became trapped in gluttony. Incapable of getting himself regulated with food, we had a pretty bad time trying him not to eat more food that he needs.</p>
+
+<p>In that context, I got seduced by an automatic feeder like we can find on Amazon.
+The trademark <em>HoneyGuaridan</em> was getting very good reception and comments from many users, and their last model, the <strong>HoneyGuaridan S25</strong> was very seducing!</p>
+
+<p>Indeed, it was one of the only models that allowed me to program 10 meals or more a day! Perfect to make my cat more regulated about food. Last tinkle in my ear: The device was getting setted and triggered with a smartphone, it was a complete IoT device!</p>
+
+<h3 id="when-it-got-complicated">When it got complicated</h3>
+
+<p>I received the device about three weeks ago, and my cat adopted it very quickly!</p>
+
+<p><img src="/assets/pictures/honeyguaridan.jpg" alt="My cat, and his feeding machine" /></p>
+
+<p>Despite a buggy application, the machine works very well, and my cat gets less obsessed about food.</p>
+
+<p>Plus, the setup workflow made me fairly confident: I had to create an account, and then it seemed like we’re authenticated all the time within the app.</p>
+
+<p>But still, with some very nasty bugs, the app gave a very bad user experience, and I decided to reverse-engineer their API to make my own application, with less features, but also less UI bugs!</p>
+
+<p>I used <a href="https://portswigger.net/burp">Burp Community Edition</a> as an HTTP proxy to catch every requests sent by the application ; and find out how they’re built.</p>
+
+<h3 id="what-i-found">What I found</h3>
+
+<p>The application communicate with many differents servers: <code class="highlighter-rouge">us1.dev.alnpet.com</code>, <code class="highlighter-rouge">fr.dev.alnpet.com</code>, but also <code class="highlighter-rouge">183.232.29.249</code> to send some report data over a security layer.</p>
+
+<p>Both <code class="highlighter-rouge">fr.dev.alnpet.com</code> and <code class="highlighter-rouge">us1.dev.alnpet.com</code> does not have any security layer, and make data transmit without TLS or SSL. It means that it’s vulnerable to <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">man-in-the-middle attacks</a>, and that the password used for signin and login is sent with no encryption at all, making any attacker able to intercept it, and read it!</p>
+
+<p>But another intercepted request I got tinkled my mind: I was not able to see any authentication cookie, representing my current session, and declaring the permission to perform a feed request, or any modification on my device schedule.</p>
+
+<p>I immediately tried it with <code class="highlighter-rouge">curl</code>: Just using my machine unique ID and the url, BIM, my cat got a new meal, right from my command line interface, and without any session created.</p>
+
+<p>This is crazy. At this moment, I realize that barely <em>anyone</em> could empty my feeder from anywhere in the world and/or make my cat obese!</p>
+
+<h3 id="how-i-reacted">How I reacted</h3>
+
+<p>My first reaction to that discovery was to remove the Wi-Fi settings from the machine, making sure it’s not anymore Internet connected. Of course I tried the magic request to prove that my machine was offline, and therefore more secure.</p>
+
+<p>But that solution made the machine unusable: impossible to change the schedule or trigger a meal from my phone anymore. So I decided to continue the reverse engineering of my machine in order to implement my own secure API to use it! (crazy right?)</p>
+
+<p>I looked for my <a href="https://www.raspberrypi.org/">Raspberry Pi</a>, that was getting some dust in a drawer, and setted up a <a href="https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md">Wi-Fi hotspot</a> with it.</p>
+
+<p>That allowed me to look the way my cat feeder was communicating with the outside world.
+I found out that the only address it was communicating with was <code class="highlighter-rouge">47.90.203.137</code>.</p>
+
+<p><code class="highlighter-rouge">47.90.203.137</code> corresponds to <a href="http://alnpet.com">alnpet.net</a>. I do recognize the feeder on this website, but It’s a more advanced one, with a camera, and more advanced feature. Hum, weird. And the preorder link bring to KickStarter homepage. Oh boy, what am I getting myself into? I do not know what link there is between <em>HoneyGuaridan</em> and <em>Alnpet</em>. Are they even the same?</p>
+
+<p>Well, let say that this IP has been banned from my Raspberry Pi</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables -A INPUT -s 47.90.203.137 -j DROP
+iptables -A FORWARD -s 47.90.203.137 -j DROP
+iptables -A OUTPUT -s 47.90.203.137 -j DROP
+</code></pre></div></div>
+
+<p>That make sure my machine is still offline, while connected to my Raspberry. The next step would be to imitate this server to make my machine thinks it’s communicating with Alnpet API, despite it would be mine.</p>
+
+<p>For now, I’m still at the reverse engineering phase in order to understand how I can communicate with my device. It’s not the easiest part; let hope I succeed.</p>
+
+<p>And lesson learned: I will always challenge any new device that connect to my network from now on.</p>
+
+<p>Am I getting a little bit paranoid? Yes I am!</p>
+
+
+  </div>
+
+  <div class="share-page">
+    <h3>Share on:</h3>
+    <ul>
+    <li class="share-button share-twitter">
+    	<a href="https://twitter.com/intent/tweet?text=How anyone could feed my cat&url=https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html&via=deanatoire&related=deanatoire" rel="nofollow" target="_blank" title="Share on Twitter">
+    	<span class="fa fa-twitter"></span> <span class="title">Twitter</span></a>
+    </li>
+    <li class="share-button share-facebook">
+    	<a href="https://facebook.com/sharer.php?u=https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" rel="nofollow" target="_blank" title="Share on Facebook">
+    	<span class="fa fa-facebook-official"></span> <span class="title">Facebook</span></a>
+    </li>
+    <li class="share-button share-linkedin">
+    	<a href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html&title=How anyone could feed my cat&summary=Dean's blog is a blog about computer science and development&source=https://blog.thomasdurand.fr" rel="nofollow" target="_blank" title="Share on LinkedIn">
+    	<span class="fa fa-linkedin-square"></span> <span class="title">LinkedIn</span></a>
+    </li>
+    </ul>
+</div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Dean's blog</li>
+          <li><a href="mailto:contact@thomasdurand.fr">contact@thomasdurand.fr</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3"></div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/dean151"><span class="fa fa-github"></span> <span class="username">dean151</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://linkedin.com/in/thomasdurandverjat"><span class="fa fa-linkedin"></span> <span class="username">thomasdurandverjat</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/deanatoire"><span class="fa fa-twitter"></span> <span class="username">deanatoire</span></a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml"><span class="fa fa-rss"></span> <span class="username">rss flux</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        _paq.push(['setTrackerUrl', '/p/']);
+        _paq.push(['setSiteId', '14']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src='/p/'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="/p/?idsite=14&rec=1" style="border:0;" alt="" /></p></noscript>
+  </body>
+
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="/assets/design/favicon.png" />
+
+  <title>iOS disclosure indicators implémentés correctement</title>
+  <meta name="description" content="Mis à jour pour Swift 3 avec Xcode 8.1">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/dist/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="canonical" href="https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html">
+  <link rel="alternate" type="application/rss+xml" title="Dean's blog" href="https://blog.thomasdurand.fr/feed.xml">
+
+  
+  
+  <link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" />
+  
+  <link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html" />
+  
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/articles.html">
+      <img src="/assets/design/logo-fr@2x.png" height="40" alt="Le blog de Dean"/>
+    </a>
+
+    <div class="langs fr">
+    
+    
+      <a href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" class="en">en</a>
+    
+      <a href="/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html" class="fr">fr</a>
+    
+
+    
+    
+    </div>
+
+    <nav class="site-nav">
+      
+      
+        
+        <a class="page-link" href="/articles.html">Articles</a>
+        
+      
+        
+        <a class="page-link" href="/a-propos/">À propos</a>
+        
+      
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">iOS disclosure indicators implémentés correctement</h1>
+    <p class="post-meta"><time datetime="2016-08-12T21:18:00+02:00" itemprop="datePublished">
+
+
+    12
+    
+  	
+	      août
+	    
+	2016
+
+</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Mis à jour pour Swift 3 avec Xcode 8.1</strong></p>
+
+<p>Les <em>disclosure indicators</em> sont très communs dans les applications iOS, ils permettent
+à l’utilisateur de savoir que si ils choisissent une cellule, ils vont accéder à
+une nouvelle vue.
+Vous pouvez lire la <a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TableView_iPhone/TableViewStyles/TableViewCharacteristics.html">documentation Apple</a> à ce sujet.</p>
+
+<p><img src="/assets/ios/disclosure-indicator/cell-with-disclosure.png" alt="a cell with disclosure indicator" />
+Une cellule avec un <em>disclosure indicator</em></p>
+
+<p>Ajouter un <em>disclosure indicator</em> pourrait sembler très simple, pourtant quand on
+souhaite réaliser une application universelle supportant iPad et iPhone, les choses
+deviennent un brin plus complexe. Mais nous allons voir comment implémenter cela
+de façon à faire les choses correctement !</p>
+
+<h3 id="commencement-du-projet">Commencement du projet</h3>
+
+<p>Pour débuter le projet, vous pouvez soit choisir le template Xcode <em>Master - Details</em>,
+soit télécharger/cloner ce <a href="https://github.com/Dean151/disclosure-indicators-done-right/tree/start">repo Github</a> à la branche <code class="highlighter-rouge">start</code></p>
+
+<p>Si vous compilez et lancez l’application pour un iPhone, vous verrez qu’Apple n’a
+pas inclus de <em>disclosure indicators</em> dans son template.
+Pourtant, la sélection d’une cellule nous amène bien à une vue différente. Nous
+sommes loin des recommandations des <a href="https://developer.apple.com/ios/human-interface-guidelines/ui-views/tables/">human interface guidelines</a>.
+Peut-être est-ce là le signe que l’implémentation n’est pas si simple ? :)</p>
+
+<h3 id="ajoutons-les-disclosure-indicators">Ajoutons les <em>disclosure indicators</em></h3>
+
+<p>Dans la méthode <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>,
+ajoutez simplement juste avant de retourner la cellule :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="n">disclosureIndicator</span>
+  <span class="k">return</span> <span class="n">cell</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Désormais, lorsque vous compilez et lancez pour iPhone, toutes les cellules ont
+un <em>disclosure indicator</em>. Simple comme bonjour !</p>
+
+<p>Maintenant, corsons un peu les choses. Nous voulons faire une application universelle,
+et ce template utilise un <code class="highlighter-rouge">UISplitViewController</code> dans ce but.</p>
+
+<h3 id="adaptations-pour-la-présentation-en-split-view">Adaptations pour la présentation en split view</h3>
+
+<p>Tout d’abord, marquons notre app comme <em>universelle</em>, car pour l’instant, il s’agit
+simplement d’une application iPhone qui se lancera en mode “iPhone” sur iPad.</p>
+
+<p>Dans les paramètres du projet (l’élément le plus haut dans la liste des fichiers),
+changeons la section <em>device</em> à <code class="highlighter-rouge">Universal</code></p>
+
+<p><img src="/assets/ios/disclosure-indicator/universal.png" alt="La liste de devices dans les réglages du projet" /></p>
+
+<p>Compilez et lancez l’application pour iPad. Vous verrez que toutes les cellules
+disposent d’un <em>disclosure indicator</em>, ce qui n’est pas ce que l’utilisateur attendrait
+d’une application iPad dans une présentation split-view.</p>
+
+<p><img src="/assets/ios/disclosure-indicator/comparatif.png" alt="Comparatif entre une split view correcte et la notre avec des disclosure indicators" /></p>
+
+<p>Pour faire notre coup de maître, il faut déceler lorsque le contrôleur est actuellement
+présenté dans une split-view, et si c’est le cas, si il y a bien deux contrôleurs visibles
+en même temps.</p>
+
+<p>Pour ce faire, je propose cette variable dynamique dans <code class="highlighter-rouge">MasterViewController</code> :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Retourne false si il n'y a pas de split view ou si elle est collapsed comme sur iPhone</span>
+<span class="k">var</span> <span class="nv">isInSplitViewPresentation</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="n">splitViewController</span><span class="p">?</span><span class="o">.</span><span class="n">isCollapsed</span> <span class="p">??</span> <span class="kc">true</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Si il n’y a pas de split view controller, l’opérateur <code class="highlighter-rouge">??</code> fera que les parenthèses valent <code class="highlighter-rouge">true</code>.
+Et <code class="highlighter-rouge">isInSplitViewPresentation</code> vaut le booléen inverse donc <code class="highlighter-rouge">false</code>.</p>
+
+<p>Lorsqu’il y a un split view controller, ce qui sera toujours le cas dans notre exemple,
+cette ligne va regarder la valeur de <code class="highlighter-rouge">isCollapsed</code>.</p>
+
+<p><code class="highlighter-rouge">isCollapsed</code> sera <code class="highlighter-rouge">true</code> lorsque la split view présente un unique contrôleur,
+ce qui est le cas sur iPhone (sauf l’iPhone 6 plus en paysage, mais on y reviendra).</p>
+
+<p>Maintenant, prenons avantage de ce code,
+dans la méthode <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>
+Remplacez l’ancien code que nous utilisions pour ajouter un <em>disclosure indicator</em> par :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">!</span><span class="n">isInSplitViewPresentation</span> <span class="p">?</span> <span class="o">.</span><span class="nv">disclosureIndicator</span> <span class="p">:</span> <span class="o">.</span><span class="k">none</span>
+  <span class="k">return</span> <span class="n">cell</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Compilez et lancez l’application sur iPhone, puis iPad.
+Tout semble se passer comme prévu … Enfin <em>presque</em> comme prévu !</p>
+
+<h3 id="lexception-de-liphone-6s-plus">L’exception de l’iPhone 6(s) plus</h3>
+
+<p>L’iPhone 6 plus est un (très) gros appareil et c’est le seul iPhone qui supporte
+l’affichage de split-view en présentant deux contrôleurs.</p>
+
+<p>Faisons un essai. Compilez et lancez l’application pour un iPhone 6 plus, et créez quelques cellules
+avec le bouton +.
+Comme nous sommes en mode portrait, vous devriez avoir des <em>disclosure indicators</em>.</p>
+
+<p>Passez l’appareil en mode paysage avec <code class="highlighter-rouge">cmd + -&gt;</code> ou <code class="highlighter-rouge">cmd + &lt;-</code>.
+La split-view affiche désormais les deux contrôleurs, mais les cellules ont toujours
+leurs <em>disclosure indicators</em>.
+Si vous créez plus de cellules, ou si vous défilez, les cellules qui (ré)apparaissent
+à l’écran n’en disposent pas.</p>
+
+<p>Enfin, si vous retournez en mode portrait, les cellules qui avaient des <em>indicators</em> en ont toujours,
+et celles qui n’en avaient pas n’en ont toujours pas alors qu’elle devraient.</p>
+
+<p>Le code que nous utilisons jusqu’ici fonction correctement. Cependant, lorsque la
+split-view change d’état, nous avons la responsabilité de mettre à jour les cellules
+pour refléter ces modifications.</p>
+
+<p>Tout d’abord, modifions un peu le code qui ajoute les <em>disclosure indicators</em>.</p>
+
+<p>Créons une extension pour les cellules qui s’occupe de cela :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="kt">UITableViewCell</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">accessoryType</span> <span class="o">=</span> <span class="n">visible</span> <span class="p">?</span> <span class="o">.</span><span class="nv">disclosureIndicator</span> <span class="p">:</span> <span class="o">.</span><span class="k">none</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Et dans <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>
+remplacez</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">!</span><span class="n">isInSplitViewPresentation</span> <span class="p">?</span> <span class="o">.</span><span class="nv">disclosureIndicator</span> <span class="p">:</span> <span class="o">.</span><span class="k">none</span></code></pre></figure>
+
+<p>par</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="n">cell</span><span class="o">.</span><span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="o">!</span><span class="n">isInSplitViewPresentation</span><span class="p">)</span></code></pre></figure>
+
+<p>Voilà qui ressemble un peu plus à quelque chose.</p>
+
+<p>Maintenant, ajoutons à <code class="highlighter-rouge">MasterViewController</code> ce code qui s’occupe de gérer les
+changements de taille de notre vue.</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Sera appelé à chaque changement de taille</span>
+<span class="k">override</span> <span class="kd">func</span> <span class="nf">viewWillTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">size</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="n">with</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt">UIViewControllerTransitionCoordinator</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// On utilise le coordinator pour suivre la transition</span>
+  <span class="n">coordinator</span><span class="o">.</span><span class="nf">animate</span><span class="p">(</span><span class="nv">alongsideTransition</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span>
+    <span class="c1">// Lorsque la transition s'achève,</span>
+    <span class="c1">// On itère sur les cellules visibles</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="n">visibleCells</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span>
+      <span class="c1">// Et on rafraîchi les disclosure indicator de ces cellules</span>
+      <span class="nv">$0</span><span class="o">.</span><span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="o">!</span><span class="k">self</span><span class="o">.</span><span class="n">isInSplitViewPresentation</span><span class="p">)</span>
+      <span class="p">}</span>
+  <span class="p">})</span>
+
+  <span class="k">super</span><span class="o">.</span><span class="nf">viewWillTransition</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="n">coordinator</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Ce morceau de code est intéressant, car avant iOS8, nous avions accès aux méthodes
+<code class="highlighter-rouge">viewWillRotate</code> et <code class="highlighter-rouge">viewDidRotate</code>. Mais celles-ci ont été dépréciées et remplacées
+par <code class="highlighter-rouge">viewWillTransition</code>.</p>
+
+<p>Le principal problème est que nous n’avons pas de méthode <code class="highlighter-rouge">viewDidTransition</code>
+qui aurait été appelée à la fin. Par contre, nous avons un <code class="highlighter-rouge">TransitionCoordinator</code>
+en paramètre.</p>
+
+<p>L’idée est d’utiliser ce coordinateur pour appeler une méthode à la fin de la transition.</p>
+
+<p>Pour ce faire, on ajoute une animation qui doit se faire en même temps que la transition,
+mais sans passer aucune animation. On renseigne juste le code à appeler à la fin de la transition.
+Dans celui-ci, nous rafraîchissons les <em>disclosure indicators</em> de nos cellules visibles.
+Comme cela est fait à la fin, nous sommes certains que notre code va ajouter ou retirer
+les indicateurs si nécessaire.</p>
+
+<p>Compilez et lancez l’application sur iPhone 6 plus, et quelque soit la rotation,
+les <em>disclosure indicators</em> se rafraîchissent juste comme il faut.</p>
+
+<h3 id="bonus--le-mode-split-view-dios9-sur-ipad">Bonus : le mode Split View d’iOS9 sur iPad</h3>
+
+<p>Depuis iOS9, certains iPad peuvent afficher jusqu’à deux applications en simultané.</p>
+
+<p>Le truc, c’est que sur iPad air 2 et iPad mini 4, lorsque deux applications sont
+affichées simultanément à 50/50, elles sont affichées en mode iPhone, et la split-view
+sera donc <code class="highlighter-rouge">collapsed</code>. On s’attend donc à voir apparaître les <em>disclosure indicators</em>.</p>
+
+<p>La bonne nouvelle, c’est que notre code précédent fonctionne correctement avec ce cas
+de figure. Sans rien changer à notre code, nous pouvons donc rendre notre application
+totalement compatible avec le mode Split View.</p>
+
+<p>Pour essayer, retournez dans les réglages du projet, comme nous l’avons fait quelques points
+auparavant, et cochez la rotation supportée <code class="highlighter-rouge">upside down</code>.
+En effet, pour fonctionner, le mode split view nécessite que les 4 orientations
+soient autorisée pour l’application. Ne me demandez pas pourquoi, je n’en ai aucune idée.</p>
+
+<p>Compilez et lancez pour iPad air 2, ou pour iPad mini 4 (les deux iPad non-pro qui supportent
+à ce jour le mode Split View) et déclenchez le mode split view en glissant votre doigt depuis
+la droite de l’écran.</p>
+
+<p>Quand l’application passe en mode iPhone, les <em>disclosure indicators</em> apparaissent
+comme on pouvait s’y attendre.</p>
+
+<h3 id="intégrons-cela-à-un-protocole">Intégrons cela à un protocole</h3>
+
+<p>Notre solution n’est pas encore parfaite : elle suppose que toutes les cellules
+de notre table view sont “disclosable”, ce qui ne sera pas le cas de toutes les
+table views.</p>
+
+<p>Ensuite, notre approche utilise une extension globale sur toutes les cellules.
+On est très loin d’une approche locale qui permet d’assurer une simplification du
+code et donc de faciliter son maintien.</p>
+
+<p>Retirons donc totalmenet notre extension d’<code class="highlighter-rouge">UITableViewCell</code> et créons notre protocole :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Represente une cellule qui peut potentiellement discloser</span>
+<span class="kd">protocol</span> <span class="kt">DisclosableCell</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">canDisclose</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span>
+    <span class="kd">func</span> <span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">DisclosableCell</span> <span class="k">where</span> <span class="k">Self</span><span class="p">:</span> <span class="kt">UITableViewCell</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">accessoryType</span> <span class="o">=</span> <span class="n">canDisclose</span> <span class="o">&amp;&amp;</span> <span class="n">visible</span> <span class="p">?</span> <span class="o">.</span><span class="nv">disclosureIndicator</span> <span class="p">:</span> <span class="o">.</span><span class="k">none</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Bien sûr, cette approche va nécessiter une classe fille de <code class="highlighter-rouge">UITableViewCell</code>
+pour pouvoir fonctionner dans notre exemple de tout à l’heure :</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">class</span> <span class="kt">MyCell</span><span class="p">:</span> <span class="kt">UITableViewCell</span><span class="p">,</span> <span class="kt">DisclosableCell</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">canDisclose</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span>
+        <span class="c1">// Toutes nos cellules dans l'exemple peuvent discloser</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Soyez sûr de modifier la classe de la cellule prototype dans le StoryBoard</strong> :
+Sélectionnez la cellule prototype, et dans l’<em>Identity Inspector</em>, paramétrez la
+classe de la cellule comme étant <code class="highlighter-rouge">MyCell</code>.</p>
+
+<p>Enfin, remplacez l’implémentation de <code class="highlighter-rouge">viewWillTransition</code> avec:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Sera appelé à chaque changement de taille</span>
+<span class="k">override</span> <span class="kd">func</span> <span class="nf">viewWillTransition</span><span class="p">(</span><span class="n">to</span> <span class="nv">size</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="n">with</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt">UIViewControllerTransitionCoordinator</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// On utilise le coordinator pour suivre la transition</span>
+  <span class="n">coordinator</span><span class="o">.</span><span class="nf">animate</span><span class="p">(</span><span class="nv">alongsideTransition</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span>
+    <span class="c1">// Lorsque la transition s'achève,</span>
+    <span class="c1">// On itère sur les cellules visibles</span>
+    <span class="k">self</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="n">visibleCells</span><span class="o">.</span><span class="n">forEach</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="nv">$0</span> <span class="k">as?</span> <span class="kt">DisclosableCell</span> <span class="p">{</span>
+        <span class="c1">// Et on rafraîchi les disclosure indicator de ces cellules</span>
+        <span class="n">cell</span><span class="o">.</span><span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="o">!</span><span class="k">self</span><span class="o">.</span><span class="n">isInSplitViewPresentation</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+
+  <span class="k">super</span><span class="o">.</span><span class="nf">viewWillTransition</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="n">coordinator</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Et dans la méthode <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">override</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UITableViewCell</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">if</span> <span class="k">let</span> <span class="nv">cell</span> <span class="o">=</span> <span class="n">cell</span> <span class="k">as?</span> <span class="kt">DisclosableCell</span> <span class="p">{</span>
+    <span class="n">cell</span><span class="o">.</span><span class="nf">setDisclosureIndicator</span><span class="p">(</span><span class="nv">visible</span><span class="p">:</span> <span class="o">!</span><span class="n">isInSplitViewPresentation</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">cell</span>
+<span class="p">}</span></code></pre></figure>
+
+<p><strong>Et c’est tout !</strong>
+Vous disposez d’une implémentation complète et réutilisable pour nos cellules
+qui sont <em>disclosables</em>. C’est maintenant un protocol que différentes classes filles
+de <code class="highlighter-rouge">UITableViewCell</code> peuvent conformer.
+Le bon point, c’est donc qu’une seule instance de <code class="highlighter-rouge">UITableViewController</code> peut gérer
+différentes cellules, avec certaines qui seraient disclosables, d’autre pas, le
+tout dans une application universelle ; avec un comportement <strong>correct</strong>.</p>
+
+<p>Vous pouvez cloner le repo contenant l’implémentation complète du protocol sur <a href="https://github.com/Dean151/disclosure-indicators-done-right">github</a></p>
+
+<p>Si vous avez des idées d’amélioration pour ce code, n’hésitez pas à ouvrir une issue
+sur github afin que l’on puisse en discuter ! :)</p>
+
+
+  </div>
+
+  <div class="share-page">
+    <h3>Partager sur :</h3>
+    <ul>
+    <li class="share-button share-twitter">
+    	<a href="https://twitter.com/intent/tweet?text=iOS disclosure indicators implémentés correctement&url=https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html&via=deanatoire&related=deanatoire" rel="nofollow" target="_blank" title="Share on Twitter">
+    	<span class="fa fa-twitter"></span> <span class="title">Twitter</span></a>
+    </li>
+    <li class="share-button share-facebook">
+    	<a href="https://facebook.com/sharer.php?u=https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html" rel="nofollow" target="_blank" title="Share on Facebook">
+    	<span class="fa fa-facebook-official"></span> <span class="title">Facebook</span></a>
+    </li>
+    <li class="share-button share-linkedin">
+    	<a href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html&title=iOS disclosure indicators implémentés correctement&summary=Le blog de Dean est un blog d'informatique et de développement&source=https://blog.thomasdurand.fr" rel="nofollow" target="_blank" title="Share on LinkedIn">
+    	<span class="fa fa-linkedin-square"></span> <span class="title">LinkedIn</span></a>
+    </li>
+    </ul>
+</div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Le blog de Dean</li>
+          <li><a href="mailto:contact@thomasdurand.fr">contact@thomasdurand.fr</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3"></div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/dean151"><span class="fa fa-github"></span> <span class="username">dean151</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://linkedin.com/in/thomasdurandverjat"><span class="fa fa-linkedin"></span> <span class="username">thomasdurandverjat</span></a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/deanatoire"><span class="fa fa-twitter"></span> <span class="username">deanatoire</span></a>
+          </li>
+          
+
+          <li>
+            <a href="/feed.xml"><span class="fa fa-rss"></span> <span class="username">flux rss</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        _paq.push(['setTrackerUrl', '/p/']);
+        _paq.push(['setSiteId', '14']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src='/p/'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="/p/?idsite=14&rec=1" style="border:0;" alt="" /></p></noscript>
+  </body>
+
+</html>
