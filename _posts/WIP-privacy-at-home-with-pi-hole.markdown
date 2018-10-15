@@ -49,6 +49,13 @@ $ cd /Volumes/boot/
 $ touch ssh
 {% endhighlight %}
 
+And we unmount the disk
+
+{% highlight bash %}
+$ cd ~
+$ diskutil unmountDisk /dev/disk2
+{% endhighlight %}
+
 Now, you can plug your SD card in your Raspberry and wait it to boot.
 
 You may now connect to it using SSH:
@@ -84,6 +91,9 @@ From your Raspberry, you can run the installer by executing:
 $ wget -O basic-install.sh https://install.pi-hole.net
 $ sudo bash basic-install.sh
 {% endhighlight %}
+
+Once all is done, you only need to set up the IP of your Raspberry as your primary DNS server on your router.
+If you can't, it's still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).
 
 [pihole]: https://pi-hole.net/
 [sinkhole]: https://en.wikipedia.org/wiki/DNS_sinkhole
