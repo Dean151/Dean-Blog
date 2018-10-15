@@ -3,10 +3,10 @@
   <channel>
     <title>Dean's blog</title>
     <description>Dean's blog is a blog about computer science and development</description>
-    <link>https://blog.thomasdurand.fr/</link>
-    <atom:link href="https://blog.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 22 Sep 2018 18:06:10 +0200</pubDate>
-    <lastBuildDate>Sat, 22 Sep 2018 18:06:10 +0200</lastBuildDate>
+    <link>https://www.thomasdurand.fr/</link>
+    <atom:link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 15 Oct 2018 15:33:54 +0200</pubDate>
+    <lastBuildDate>Mon, 15 Oct 2018 15:33:54 +0200</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -91,8 +91,8 @@ iptables -A OUTPUT -s 47.90.203.137 -j DROP
 
 </description>
         <pubDate>Wed, 31 Jan 2018 12:00:00 +0100</pubDate>
-        <link>https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</guid>
+        <link>https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</guid>
         
         
         <category>Security</category>
@@ -184,8 +184,8 @@ L’étape suivante sera d’imiter le serveur d’alnpet, pour faire croire au 
 
 </description>
         <pubDate>Wed, 31 Jan 2018 12:00:00 +0100</pubDate>
-        <link>https://blog.thomasdurand.fr/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html</guid>
+        <link>https://www.thomasdurand.fr/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html</guid>
         
         
         <category>Sécurité</category>
@@ -407,8 +407,8 @@ erreurs classiques à éviter.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 12 Jul 2017 23:55:00 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html</guid>
+        <link>https://www.thomasdurand.fr/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html</guid>
         
         
         <category>Sécurité</category>
@@ -619,8 +619,8 @@ what you’re dealing with, and also the classic errors to avoid.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 12 Jul 2017 21:30:00 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</guid>
+        <link>https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</guid>
         
         
         <category>Security</category>
@@ -910,8 +910,8 @@ sur github afin que l’on puisse en discuter ! :)&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 12 Aug 2016 21:18:00 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html</guid>
+        <link>https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html</guid>
         
         
         <category>Swift3</category>
@@ -1178,8 +1178,8 @@ sure to open an issue directly on Github, and we’ll discuss about it! :)&lt;/p
 
 </description>
         <pubDate>Fri, 12 Aug 2016 21:18:00 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</guid>
+        <link>https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</guid>
         
         
         <category>Swift3</category>
@@ -1542,8 +1542,8 @@ If you need it, you can clone or download the project from &lt;a href=&quot;http
 
 </description>
         <pubDate>Sun, 07 Aug 2016 12:46:07 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</guid>
+        <link>https://www.thomasdurand.fr/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</guid>
         
         
         <category>Swift3</category>
@@ -1913,8 +1913,8 @@ Si vous le souhaitez, vous pouvez cloner le projet depuis &lt;a href=&quot;https
 
 </description>
         <pubDate>Sun, 07 Aug 2016 12:46:07 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html</guid>
+        <link>https://www.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html</guid>
         
         
         <category>Swift3</category>
@@ -1945,8 +1945,8 @@ Mais je pense toujours qu’une version française pour des articles de programm
 
 </description>
         <pubDate>Sat, 06 Aug 2016 07:55:44 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</guid>
+        <link>https://www.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</guid>
         
         
         <category>blog</category>
@@ -1975,8 +1975,8 @@ But it still think accessible french version of iOS related articles would be gr
 
 </description>
         <pubDate>Sat, 06 Aug 2016 07:55:44 +0200</pubDate>
-        <link>https://blog.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</link>
-        <guid isPermaLink="true">https://blog.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</guid>
+        <link>https://www.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</guid>
         
         
         <category>blog</category>
