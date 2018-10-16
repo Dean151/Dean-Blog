@@ -8,7 +8,7 @@ lang: en
 published: false
 ---
 
-TODO: intro
+#TODO: intro
 
 ### What is Pi-hole?
 
@@ -101,7 +101,7 @@ It's, of course, recommended to change it using  `sudo pihole -a -p`
 You then need to set up the static IP of your Raspberry as your primary DNS server on your router.
 If you can't, it's still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).
 
-// TODO screenshot
+#TODO screenshot
 
 You may now use the internet with no ads or trackers!
 
@@ -132,9 +132,9 @@ echo "addn-hosts=/etc/pihole/lan.list" | sudo tee /etc/dnsmasq.d/02-lan.conf
 sudo pihole restartdns
 {% endhighlight %}
 
-### Using the web admin to check your network
+### Using the web admin to check your traffic
 
-TODO!
+#TODO!
 
 ### Bonus: redirecting a DNS resolution
 
@@ -152,9 +152,16 @@ It's doable, simply by editing the `etc/hosts` file :
 
 Then, by restarting the DNS with `sudo pihole restartdns` ; the feeder communicate with my server, and not with theirs.
 
-### Conclusion
+### Going way further
 
-// TODO intro
+You now have a fully functional ad & tracker blocker from the network side.
+
+If you're really concerned about privacy, you should look forward of installing your [own DNS resolver using unbound][unbound]
+
+Otherwise, for more security, you should [configure DNS over HTTPS][dns-over-https] with `cloudflared`, 
+securing the DNS resolving using a TLS connexion, and preventing snooping, monitoring or other types of attacks.
+
+Finally, if you want to make your pi-hole admin interface available from the outside world, you really should consider [an HTTPS configuration][pi-hole-over-https].
 
 [pihole]: https://pi-hole.net/
 [sinkhole]: https://en.wikipedia.org/wiki/DNS_sinkhole
@@ -162,7 +169,6 @@ Then, by restarting the DNS with `sudo pihole restartdns` ; the feeder communica
 [raspbian-download]: https://downloads.raspberrypi.org/raspbian_lite_latest
 [feed-my-cat]: /security/iot/2018/01/31/how-anyone-could-feed-my-cat.html
 [aln-nodejs]: https://github.com/Dean151/Aln-NodeJs
-
-[//]: # (https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771)
-[//]: # (https://docs.pi-hole.net/guides/unbound/)
-[//]: # (https://discourse.pi-hole.net/t/add-option-to-create-dns-records-in-gui/564)
+[unbound]: https://docs.pi-hole.net/guides/unbound/
+[dns-over-https]: https://docs.pi-hole.net/guides/dns-over-https/
+[pi-hole-over-https]: https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771
