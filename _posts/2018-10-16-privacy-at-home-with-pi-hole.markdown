@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Build a privacy-safe home network using Pi-hole"
-date:   2018-10-15 18:05:00 +0200
+date:   2018-10-16 12:00:00 +0200
 categories: Security network
 ref: raspberry-pi-hole
 lang: en
@@ -21,15 +21,14 @@ It is first sent to your Raspberry Pi, and then dropped immediately if it's been
 It means that blacklisted remote servers never have to know that you even exist!
 The ad are dropped before even loading, and not at rendering time, granting your network better performances.
 
-Of course, some ad-based blacklist are provided, making Pi-hole a powerful and **untraceable** ad-blocker. 
-But we're also going to see how to take advantage of Pi-hole to grant yourself a better control of your own privacy.
+Of course, some ad-based blacklist are provided, making Pi-hole a powerful and **untraceable** ad-blocker.
 
 ### Setting up your Raspberry Pi
 
 This step if **optional**, but it's always good to start with a *fresh install*.
 You can, of course, skip immediately to [Pi-hole installation][pi-hole-install].
 
-##### Raspbian Stretch installation
+#### Raspbian Stretch installation
 
 Download the [latest release of Raspbian Stretch][raspbian-download] on your disk.
 Then, we need to copy it on your SD card, properly. 
@@ -66,7 +65,7 @@ $ ssh pi@192.168.1.x
 
 Default password is `raspberry`
 
-##### Minimal security settings
+#### Minimal security settings
 
 The bare minimum to do when the Raspberry first start is to **change the password for the pi user**.
 
@@ -92,13 +91,77 @@ $ wget -O basic-install.sh https://install.pi-hole.net
 $ sudo bash basic-install.sh
 {% endhighlight %}
 
-Once all is done, you only need to set up the IP of your Raspberry as your primary DNS server on your router.
+The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
+and always make sure that the IP is effectively static in order to work.
+
+At the end of the installation process, the administration password will be prompted to you if you choose to install the web administration interface, along with lighttp.
+
+It's, of course, recommended to change it using  `sudo pihole -a -p`
+
+You then need to set up the static IP of your Raspberry as your primary DNS server on your router.
 If you can't, it's still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).
+
+// TODO screenshot
+
+You may now use the internet with no ads or trackers!
+
+### Customize your network with aliases
+
+You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.
+
+For instance, using `box.lan` instead of `192.168.1.1` or `pi.lan` instead of `192.168.1.x`.
+
+To do so, you need to create an alias file:
+
+{% highlight bash %}
+$ sudo nano /etc/pihole/lan.conf
+{% endhighlight %}
+
+Containing, for instance:
+
+```
+192.168.1.1 box.lan
+192.168.1.2 router.lan
+192.168.1.3 pi.lan
+```
+
+Then, add this configuration file to dnsmasq, and reload it
+
+{% highlight bash %}
+echo "addn-hosts=/etc/pihole/lan.list" | sudo tee /etc/dnsmasq.d/02-lan.conf
+sudo pihole restartdns
+{% endhighlight %}
+
+### Using the web admin to check your network
+
+TODO!
+
+### Bonus: redirecting a DNS resolution
+
+As described in my article [How everyone could feed my cat][feed-my-cat], 
+I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.
+
+I have built a [custom API][aln-nodejs], that is hosted on my server. And to make it work, I have to redirect my feeder requests to my server.
+
+It's doable, simply by editing the `etc/hosts` file :
+
+```
+[...]
+51.38.185.236 dev.alnpet.com
+```
+
+Then, by restarting the DNS with `sudo pihole restartdns` ; the feeder communicate with my server, and not with theirs.
+
+### Conclusion
+
+// TODO intro
 
 [pihole]: https://pi-hole.net/
 [sinkhole]: https://en.wikipedia.org/wiki/DNS_sinkhole
 [pi-hole-install]: #installing-pi-hole
 [raspbian-download]: https://downloads.raspberrypi.org/raspbian_lite_latest
+[feed-my-cat]: /security/iot/2018/01/31/how-anyone-could-feed-my-cat.html
+[aln-nodejs]: https://github.com/Dean151/Aln-NodeJs
 
 [//]: # (https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771)
 [//]: # (https://docs.pi-hole.net/guides/unbound/)
