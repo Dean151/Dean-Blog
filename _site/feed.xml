@@ -5,9 +5,182 @@
     <description>Dean's blog is a blog about computer science and development</description>
     <link>https://www.thomasdurand.fr/</link>
     <atom:link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Oct 2018 15:33:54 +0200</pubDate>
-    <lastBuildDate>Mon, 15 Oct 2018 15:33:54 +0200</lastBuildDate>
+    <pubDate>Sat, 20 Oct 2018 17:16:36 +0200</pubDate>
+    <lastBuildDate>Sat, 20 Oct 2018 17:16:36 +0200</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Build a privacy-safe home network using Pi-hole</title>
+        <description>&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknolegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
+
+&lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-is-pi-hole&quot;&gt;What is Pi-hole?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pi-hole.net/&quot;&gt;Pi-hole&lt;/a&gt;, as they describe themselves, is an open-source &lt;a href=&quot;https://en.wikipedia.org/wiki/DNS_sinkhole&quot;&gt;DNS sinkhole&lt;/a&gt;.
+It is a custom DNS ; that will drop request during the DNS resolution step if it’s been blacklisted.&lt;/p&gt;
+
+&lt;p&gt;The main advantage of dropping request at DNS resolution step is that the request never leave your own network: 
+It is first sent to your Raspberry Pi, and then dropped immediately if it’s been blacklisted.&lt;/p&gt;
+
+&lt;p&gt;It means that blacklisted remote servers never have to know that you even exist!
+The ad are dropped before even loading, and not at rendering time, granting your network better performances.&lt;/p&gt;
+
+&lt;p&gt;Of course, some ad-based blacklist are provided, making Pi-hole a powerful and &lt;strong&gt;untraceable&lt;/strong&gt; ad-blocker.&lt;/p&gt;
+
+&lt;h3 id=&quot;setting-up-your-raspberry-pi&quot;&gt;Setting up your Raspberry Pi&lt;/h3&gt;
+
+&lt;p&gt;This step if &lt;strong&gt;optional&lt;/strong&gt;, but it’s always good to start with a &lt;em&gt;fresh install&lt;/em&gt;.
+You can, of course, skip immediately to &lt;a href=&quot;#installing-pi-hole&quot;&gt;Pi-hole installation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;raspbian-stretch-installation&quot;&gt;Raspbian Stretch installation&lt;/h4&gt;
+
+&lt;p&gt;Download the &lt;a href=&quot;https://downloads.raspberrypi.org/raspbian_lite_latest&quot;&gt;latest release of Raspbian Stretch&lt;/a&gt; on your disk.
+Then, we need to copy it on your SD card, properly.&lt;/p&gt;
+
+&lt;p&gt;On macOS, It can be done with the following commands.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil list &lt;span class=&quot;c&quot;&gt;# Note the number associated with your SD card. (ie disk2 for instance)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil unmountDisk /dev/disk2
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo dd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1m &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raspbian-stretch-lite.img &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/rdisk2 &lt;span class=&quot;nv&quot;&gt;conv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;We then need to enable SSH before plugging the SD card in the Raspberry for the first boot:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /Volumes/boot/
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;ssh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And we unmount the disk&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil unmountDisk /dev/disk2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now, you can plug your SD card in your Raspberry and wait it to boot.&lt;/p&gt;
+
+&lt;p&gt;You may now connect to it using SSH:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh pi@192.168.1.x&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Default password is &lt;code class=&quot;highlighter-rouge&quot;&gt;raspberry&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;minimal-security-settings&quot;&gt;Minimal security settings&lt;/h4&gt;
+
+&lt;p&gt;The bare minimum to do when the Raspberry first start is to &lt;strong&gt;change the password for the pi user&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;passwd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You may also want to:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;create your own user with sudo auth, and then delete the pi user&lt;/li&gt;
+  &lt;li&gt;change the SSH port&lt;/li&gt;
+  &lt;li&gt;Authenticate using a private key&lt;/li&gt;
+  &lt;li&gt;Requiring a password when using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Update the repositories and packages&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;installing-pi-hole&quot;&gt;Installing Pi-hole&lt;/h3&gt;
+
+&lt;p&gt;It is advised that your Raspberry Pi should have a static IP on your network.&lt;/p&gt;
+
+&lt;p&gt;From your Raspberry, you can run the installer by executing:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; basic-install.sh https://install.pi-hole.net
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;bash basic-install.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
+and always make sure that the IP is effectively static in order to work.&lt;/p&gt;
+
+&lt;p&gt;At the end of the installation process, the administration password will be prompted to you if you choose to install the web administration interface, along with lighttp.&lt;/p&gt;
+
+&lt;p&gt;It’s, of course, recommended to change it using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole -a -p&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You then need to set up the static IP of your Raspberry as your primary DNS server on your router.
+If you can’t, it’s still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/setting-dns.png&quot; alt=&quot;How to set primary DNS with DHCP&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You may now use the internet with no ads or trackers!&lt;/p&gt;
+
+&lt;h3 id=&quot;customize-your-network-with-aliases&quot;&gt;Customize your network with aliases&lt;/h3&gt;
+
+&lt;p&gt;You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.&lt;/p&gt;
+
+&lt;p&gt;For instance, using &lt;code class=&quot;highlighter-rouge&quot;&gt;box.lan&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;192.168.1.1&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;pi.lan&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;192.168.1.x&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To do so, you need to create an alias file:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/pihole/lan.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Containing, for instance:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;192.168.1.1 box.lan
+192.168.1.2 router.lan
+192.168.1.3 pi.lan
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, add this configuration file to dnsmasq, and reload it&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;addn-hosts=/etc/pihole/lan.list&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/dnsmasq.d/02-lan.conf
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pihole restartdns&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;using-the-web-admin-to-check-your-traffic&quot;&gt;Using the web admin to check your traffic&lt;/h3&gt;
+
+&lt;p&gt;Once Pi-hole is enabled, you can access &lt;a href=&quot;http://pi.hole/&quot;&gt;http://pi.hole&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-home.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To have access to a lot of more informations, you may login with the password you have setted during installation.&lt;/p&gt;
+
+&lt;p&gt;If you forgot your password already, you can reset it easily using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole -a -p&lt;/code&gt; (I know, I repeat myself!)&lt;/p&gt;
+
+&lt;p&gt;You’ll see the top blocked domains, and the most recents requests.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-blocked.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you don’t want to track your network that much, you may want to change &lt;a href=&quot;http://pi.hole/admin/settings.php?tab=privacy&quot;&gt;privacy level mode in the settings&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;By regulary check the requests that have been blocked, and the one that are allowed, you’ll be able to whitelist some request you don’t mind see go threw, and blacklist the one that looks shady.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Fun fact:&lt;/strong&gt; When I connected the Android phone of my girlfriend, this is what happened:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-android.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;bonus-redirecting-a-dns-resolution&quot;&gt;Bonus: redirecting a DNS resolution&lt;/h3&gt;
+
+&lt;p&gt;As described in my article &lt;a href=&quot;/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html&quot;&gt;How everyone could feed my cat&lt;/a&gt;, 
+I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.&lt;/p&gt;
+
+&lt;p&gt;I have built a &lt;a href=&quot;https://github.com/Dean151/Aln-NodeJs&quot;&gt;custom API&lt;/a&gt;, that is hosted on my server. And to make it work, I have to redirect my feeder requests to my server.&lt;/p&gt;
+
+&lt;p&gt;It’s doable, simply by editing the &lt;code class=&quot;highlighter-rouge&quot;&gt;etc/hosts&lt;/code&gt; file :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[...]
+51.38.185.236 dev.alnpet.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, by restarting the DNS with &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole restartdns&lt;/code&gt; ; the feeder communicate with my server, and not with theirs.&lt;/p&gt;
+
+&lt;h3 id=&quot;going-way-further&quot;&gt;Going way further&lt;/h3&gt;
+
+&lt;p&gt;You now have a fully functional ad &amp;amp; tracker blocker from the network side.&lt;/p&gt;
+
+&lt;p&gt;If you’re really concerned about privacy, you should look forward of installing your &lt;a href=&quot;https://docs.pi-hole.net/guides/unbound/&quot;&gt;own DNS resolver using unbound&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Otherwise, for more security, you should &lt;a href=&quot;https://docs.pi-hole.net/guides/dns-over-https/&quot;&gt;configure DNS over HTTPS&lt;/a&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;cloudflared&lt;/code&gt;, 
+securing the DNS resolving using a TLS connexion, and preventing snooping, monitoring or other types of attacks.&lt;/p&gt;
+
+&lt;p&gt;Finally, if you want to make your pi-hole admin interface available from the outside world, you really should consider &lt;a href=&quot;https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771&quot;&gt;an HTTPS configuration&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 20 Oct 2018 17:00:00 +0200</pubDate>
+        <link>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html</link>
+        <guid isPermaLink="true">https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html</guid>
+        
+        
+        <category>Security</category>
+        
+        <category>network</category>
+        
+      </item>
     
       <item>
         <title>How anyone could feed my cat</title>
@@ -1947,36 +2120,6 @@ Mais je pense toujours qu’une version française pour des articles de programm
         <pubDate>Sat, 06 Aug 2016 07:55:44 +0200</pubDate>
         <link>https://www.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</link>
         <guid isPermaLink="true">https://www.thomasdurand.fr/blog/2016/08/06/renouvellement-du-blog.html</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Renewing the blog</title>
-        <description>&lt;p&gt;For the people who knew the blog before this update, it’s completely gone.&lt;/p&gt;
-
-&lt;h3 id=&quot;why-&quot;&gt;Why ?&lt;/h3&gt;
-
-&lt;p&gt;Because I used Dotclear, and it didn’t really fit my needs. There were no multilingual possibility, and it was too complex compared with my real needs.
-There were also an issue with the Dotclear’s comment system, polluted with bots.
-So I decided to retire it.&lt;/p&gt;
-
-&lt;p&gt;Now I use &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, and it’s really great. It allow to generate a completely static website !&lt;/p&gt;
-
-&lt;p&gt;If you’re interested by getting started with Jekyll, you can check &lt;a href=&quot;https://www.sylvaindurand.org&quot;&gt;this blog&lt;/a&gt; that have plenty of Jekyll related posts. A must see !&lt;/p&gt;
-
-&lt;h3 id=&quot;mais-où-est-le-français-&quot;&gt;Mais où est le Français ?&lt;/h3&gt;
-
-&lt;p&gt;All the articles were in french, but from now on, I decided the main language of the blog will be english.
-Indeed, english is by far the main language of programming articles over the web.
-But it still think accessible french version of iOS related articles would be great on the web, this is why I work on a french version of each article !&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 06 Aug 2016 07:55:44 +0200</pubDate>
-        <link>https://www.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</link>
-        <guid isPermaLink="true">https://www.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</guid>
         
         
         <category>blog</category>
