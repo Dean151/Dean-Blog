@@ -1,14 +1,15 @@
 ---
 layout: post
 title:  "Build a privacy-safe home network using Pi-hole"
-date:   2018-10-16 12:00:00 +0200
+date:   2018-10-20 17:00:00 +0200
 categories: Security network
 ref: raspberry-pi-hole
 lang: en
-published: false
 ---
 
-#TODO: intro
+Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknolegde more and more the importance of keeping private data ; and private life … well … private.
+
+In this tutorial, you'll see what solution I came around keeping my own privacy at my home network.
 
 ### What is Pi-hole?
 
@@ -96,12 +97,12 @@ and always make sure that the IP is effectively static in order to work.
 
 At the end of the installation process, the administration password will be prompted to you if you choose to install the web administration interface, along with lighttp.
 
-It's, of course, recommended to change it using  `sudo pihole -a -p`
+It's, of course, recommended to change it using `sudo pihole -a -p`
 
 You then need to set up the static IP of your Raspberry as your primary DNS server on your router.
 If you can't, it's still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).
 
-#TODO screenshot
+![How to set primary DNS with DHCP][set-primary-dns-dhcp]
 
 You may now use the internet with no ads or trackers!
 
@@ -134,7 +135,25 @@ sudo pihole restartdns
 
 ### Using the web admin to check your traffic
 
-#TODO!
+Once Pi-hole is enabled, you can access [http://pi.hole][pi-hole].
+
+![The home page of Pi Hole Admin][pi-hole-admin-home]
+
+To have access to a lot of more informations, you may login with the password you have setted during installation.
+
+If you forgot your password already, you can reset it easily using `sudo pihole -a -p` (I know, I repeat myself!)
+
+You'll see the top blocked domains, and the most recents requests. 
+
+![The home page of Pi Hole Admin][pi-hole-admin-blocked]
+
+If you don't want to track your network that much, you may want to change [privacy level mode in the settings][pi-hole-privacy-level].
+
+By regulary check the requests that have been blocked, and the one that are allowed, you'll be able to whitelist some request you don't mind see go threw, and blacklist the one that looks shady.
+
+**Fun fact:** When I connected the Android phone of my girlfriend, this is what happened:
+
+![The home page of Pi Hole Admin][pi-hole-admin-android]
 
 ### Bonus: redirecting a DNS resolution
 
@@ -167,6 +186,12 @@ Finally, if you want to make your pi-hole admin interface available from the out
 [sinkhole]: https://en.wikipedia.org/wiki/DNS_sinkhole
 [pi-hole-install]: #installing-pi-hole
 [raspbian-download]: https://downloads.raspberrypi.org/raspbian_lite_latest
+[set-primary-dns-dhcp]: /assets/screenshots/setting-dns.png
+[pi-hole]: http://pi.hole/
+[pi-hole-admin-home]: /assets/screenshots/pi-hole-home.png
+[pi-hole-admin-blocked]: /assets/screenshots/pi-hole-blocked.png
+[pi-hole-privacy-level]: http://pi.hole/admin/settings.php?tab=privacy
+[pi-hole-admin-android]: /assets/screenshots/pi-hole-android.png
 [feed-my-cat]: /security/iot/2018/01/31/how-anyone-could-feed-my-cat.html
 [aln-nodejs]: https://github.com/Dean151/Aln-NodeJs
 [unbound]: https://docs.pi-hole.net/guides/unbound/
