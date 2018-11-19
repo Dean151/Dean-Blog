@@ -7,7 +7,7 @@ ref: raspberry-pi-hole
 lang: en
 ---
 
-Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknolegde more and more the importance of keeping private data ; and private life … well … private.
+Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.
 
 In this tutorial, you'll see what solution I came around keeping my own privacy at my home network.
 
