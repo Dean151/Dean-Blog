@@ -5,13 +5,13 @@
     <description>Dean's blog is a blog about computer science and development</description>
     <link>https://www.thomasdurand.fr/</link>
     <atom:link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 20 Oct 2018 17:16:36 +0200</pubDate>
-    <lastBuildDate>Sat, 20 Oct 2018 17:16:36 +0200</lastBuildDate>
+    <pubDate>Mon, 19 Nov 2018 14:52:15 +0100</pubDate>
+    <lastBuildDate>Mon, 19 Nov 2018 14:52:15 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
         <title>Build a privacy-safe home network using Pi-hole</title>
-        <description>&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknolegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
+        <description>&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
 
 &lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
 
