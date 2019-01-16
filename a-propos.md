@@ -5,6 +5,7 @@ permalink: /a-propos/
 ref: about
 lang: fr
 index: 99
+published: false
 ---
 
 Lead iOS dévelopeur à Paris, et co-créateur d'une saga mp3 appelée Café et Lembas,

@@ -5,6 +5,7 @@ date:   2017-07-12 23:55:00 +0200
 categories: Sécurité Chiffrement
 ref: aes-good-practice-for-ios-app
 lang: fr
+published: false
 ---
 
 **Écrit pour Swift 3 avec Xcode 8.1**

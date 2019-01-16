@@ -6,6 +6,7 @@
       <img src="/assets/design/logo-{{ page.lang }}@2x.png" height="40" alt="{{ site.t[page.lang].title }}"/>
     </a>
 
+    {% if false %}
     <div class="langs {{ page.lang }}">
     {% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
     {% for post in posts %}
@@ -17,6 +18,7 @@
       <a href="{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
     {% endfor %}
     </div>
+    {% endif %}
 
     <nav class="site-nav">
       {% assign pages=site.pages | where:"lang", page.lang | sort: 'index' %}

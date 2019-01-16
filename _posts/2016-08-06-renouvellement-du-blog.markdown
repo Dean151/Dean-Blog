@@ -5,6 +5,7 @@ date:   2016-08-06 07:55:44 +0200
 categories: blog
 ref: renewing-blog
 lang: fr
+published: false
 ---
 
 Pour ceux qui auraient connu le blog avant cette version, elle a disparu à jamais.

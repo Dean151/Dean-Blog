@@ -20,37 +20,7 @@
         
           <xhtml:link rel="alternate" hreflang="en" href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" />
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html" />
-        
         <lastmod>2018-01-31T12:00:00+01:00</lastmod>
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
-        <loc>/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" />
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/objet-connect%C3%A9/2018/01/31/comment-quiconque-pouvait-nourrir-mon-chat.html" />
-        
-        <lastmod>2018-01-31T12:00:00+01:00</lastmod>
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
-        <loc>/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" />
-        
-        <lastmod>2017-07-12T23:55:00+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
     
@@ -59,8 +29,6 @@
       <url>
         <loc>/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</loc>
         
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/s%C3%A9curit%C3%A9/chiffrement/2017/07/12/bonnes-pratiques-de-chiffrement-aes-avec-swift.html" />
         
           <xhtml:link rel="alternate" hreflang="en" href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" />
         
@@ -71,24 +39,8 @@
   
     
       <url>
-        <loc>/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" />
-        
-        <lastmod>2016-08-12T21:18:00+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
         <loc>/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</loc>
         
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-implemente-correctement.html" />
         
           <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" />
         
@@ -104,37 +56,7 @@
         
           <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" />
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html" />
-        
         <lastmod>2016-08-07T12:46:07+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
-        <loc>/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" />
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/swift3/ios/2016/08/07/bases-ios-configuration-tableview.html" />
-        
-        <lastmod>2016-08-07T12:46:07+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
-        <loc>/blog/2016/08/06/renouvellement-du-blog.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/blog/2016/08/06/renouvellement-du-blog.html" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/blog/2016/08/06/renewing-the-blog.html" />
-        
-        <lastmod>2016-08-06T07:55:44+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
     
@@ -144,8 +66,6 @@
         <loc>/blog/2016/08/06/renewing-the-blog.html</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/blog/2016/08/06/renouvellement-du-blog.html" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/blog/2016/08/06/renewing-the-blog.html" />
         
         <lastmod>2016-08-06T07:55:44+02:00</lastmod>
@@ -156,38 +76,10 @@
   
     
       <url>
-        <loc>/a-propos/</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/a-propos/" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
         <loc>/about/</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/a-propos/" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-        <changefreq>weekly</changefreq>
-      </url>
-    
-  
-    
-      <url>
-        <loc>/articles.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/articles.html" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/" />
         
         <changefreq>weekly</changefreq>
       </url>
@@ -198,11 +90,7 @@
         <loc>/feed.xml</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/a-propos/" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/articles.html" />
         
           <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
         
@@ -221,8 +109,6 @@
         <loc>/</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/articles.html" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/" />
         
         <changefreq>weekly</changefreq>
@@ -234,11 +120,7 @@
         <loc>/css/main.css</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/a-propos/" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/articles.html" />
         
           <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
         
@@ -257,11 +139,7 @@
         <loc>/sitemaps.xml</loc>
         
         
-          <xhtml:link rel="alternate" hreflang="fr" href="/a-propos/" />
-        
           <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="fr" href="/articles.html" />
         
           <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
         
