@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Renewing the blog"
+author: Dean
 date:   2016-08-06 07:55:44 +0200
 categories: blog
 ref: renewing-blog

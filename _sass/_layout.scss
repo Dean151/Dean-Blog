@@ -13,8 +13,8 @@ body {
     border-bottom: 1px solid $main-green-color-dark;
     min-height: 56px;
 
-    // Positioning context for the mobile navigation icon
-    position: relative;
+    padding-bottom: $spacing-unit;
+    margin-bottom: -($spacing-unit);
 }
 
 .site-title {
@@ -138,7 +138,7 @@ body {
 }
 
 .page-content .wrapper {
-    padding: $spacing-unit 15px;
+    padding: $spacing-unit;
     background-color: $content-back-color;
     border-color: $border-color;
     box-shadow: 0 1px 5px 1px rgba(150, 150, 150, 0.1);
@@ -155,33 +155,6 @@ body {
     > li {
         margin-bottom: $spacing-unit;
     }
-}
-
-.post-meta {
-    background: $main-green-color-light;
-    color: white;
-    font-size: $small-font-size;
-    text-align: right;
-
-    width: 100px;
-    position: relative;
-    padding: 2px 15px;
-    margin-left: -28px;
-
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-}
-
-.post-meta:after {
-    content: " ";
-
-    position: absolute;
-    left: 0;
-
-    bottom: -10px;
-    border-style: solid;
-    border-width: 10px 0 0 13px;
-    border-color: $sec-green-color-dark transparent transparent transparent;
 }
 
 .post-link {
@@ -206,6 +179,34 @@ body {
  */
 .post-header {
     margin-bottom: $spacing-unit;
+
+    .post-meta {
+        display: inline-block;
+
+        background: $main-green-color-light;
+        color: white;
+        font-size: $small-font-size;
+        text-align: right;
+
+        position: relative;
+        padding: 2px $spacing-unit/2 2px ($spacing-unit+13);
+        margin-left: -($spacing-unit+13);
+
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+
+    .post-meta:after {
+        content: " ";
+
+        position: absolute;
+        left: 0;
+
+        bottom: -10px;
+        border-style: solid;
+        border-width: 10px 0 0 13px;
+        border-color: $sec-green-color-dark transparent transparent transparent;
+    }
 }
 
 .post-title {
@@ -253,6 +254,33 @@ body {
         box-shadow: 0 1px 4px 1px rgba(150, 150, 150, 0.3);
         border-radius: 4px;
     }
+
+.post-meta {
+    background: $main-green-color-light;
+    color: white;
+    font-size: $small-font-size;
+    text-align: right;
+
+    width: 100px;
+    position: relative;
+    padding: 2px 15px;
+    margin-left: -28px;
+
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.post-meta:after {
+    content: " ";
+
+    position: absolute;
+    left: 0;
+
+    bottom: -10px;
+    border-style: solid;
+    border-width: 10px 0 0 13px;
+    border-color: $sec-green-color-dark transparent transparent transparent;
+}
 }
 
 
