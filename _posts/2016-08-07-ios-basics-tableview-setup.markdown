@@ -14,7 +14,7 @@ This is the first article about *iOS* development on this blog and I really hope
 
 **Note:** There is two methods to implement a dynamic table view : using a `UITableViewController`, or using a `UIViewController` that implements `UITableViewDelegate` and `UITableViewDataSource`. I will explain this second solution in this tutorial, not because it's the simplest, but because it allow way more customizations for the layout of the TableView if you need to.
 
-### What we're gonna build from scratch
+## What we're gonna build from scratch
 
 We are going to achieve today is the list of all elements from the periodic elements, ordered by atomic number.
 
@@ -24,7 +24,7 @@ Thankfully, we're not going to implement all of the atoms data in the code. Inst
 
 [Elements.plist][elements-plist]
 
-### First: about MVC
+## First: about MVC
 
 MVC for "Model View Controller" is a pattern design that allow to separate different aspects of the code in an application :
 
@@ -38,7 +38,7 @@ We will create a `UITableView` instance that will be a subview of the main `UIVi
 
 Finally our data will be structured with a simple *Swift* struct.
 
-### Starting the project
+## Starting the project
 
 Open *Xcode 8* and create a new iOS project with the "One view" template. Name the project `ElementsList`.
 Make sure that CoreData, Unit Tests and UI Tests are *unchecked*.
@@ -53,7 +53,7 @@ This should add a view controller with a navigation bar, and an arrow lead now t
 
 Next step is the model layer
 
-### The model layer
+## The model layer
 
 A good start before implementing something is to think about how the data will be represented in our code.
 
@@ -94,7 +94,7 @@ Note that I choose to make my enumeration inherit from String, witch mean each s
 This model map all the data from [apple plist][elements-plist] and will allow us to represent one element.
 But what about the elements loading ? Right now, the elements are in a plist file, so we'll need to create something that allow us to receive an **array of all elements**
 
-### Loading the data
+## Loading the data
 
 Great, we have a model, and we have a plist file that contains our data. But we still need to translate the data in order to take advantage of our model.
 
@@ -188,7 +188,7 @@ When we check the Xcode console while executing, we find that the data is there 
 
 **Important** : In `Element.from(dict: _)` function, there is a lot of force unwrapping `!` in the code. That's because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and it will happen !
 
-### Creating the table view
+## Creating the table view
 
 First, we need to create a UITableView instance, and keep reference to this instance. To do so, just add a property right below `var elements` :
 
@@ -224,7 +224,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 
 Right, now the compiler's error have changed, and say we does not implement `UITableViewDataSource` protocol.
 
-### Configuring the table view
+## Configuring the table view
 
 If we look in the documentation, we find out that `UITableViewDataSource` protocol contains two methods that are required to implement :
 
@@ -257,7 +257,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 
 Now, you should build and run, and *voilà* your first tableview. But wait ! There is more !
 
-### A memory problem
+## A memory problem
 
 If you build and run the application at the current state, it seems right. But **it's not !**
 
@@ -275,7 +275,7 @@ What should I do ?
 
 You should **reuse** the cells. And don't freak out, it's very easy to do !
 
-### Reusing cells
+## Reusing cells
 
 As I said, it's very easy to use reusable cells, and we did half the job previously : we already registered a cell for reuse ! Indeed, look at the code instantiating the cell, we have set a reuseIdentifier for the cell. So let just reuse it when we can.
 
@@ -305,7 +305,7 @@ This way, our cell will be reused if it can, and will be initialized from scratc
 
 To be more specific, the dequeueReusableCell function will fail only the first time, because we did not registered any cell for the given identifier "ElementCell". But then, dequeuing cells will work just fine, because Apple is able to create new cells when none of them are available for dequeuing.
 
-### Final touches
+## Final touches
 
 Ok it begins to look right now. But I can enumerate 3 problems :
 
@@ -346,14 +346,14 @@ Swift 3 arrays have two functions to sort arrays :
 - `sort` : Will sort the current array right in place, witch is possible only if the array is stored in a `var` (mutable). It returns nil
 - `sorted` : Will return a sorted copy of the array. It's available on any array, mutating (`var`) or not (`let`)
 
-### It's a wrap !
+## It's a wrap !
 
 Now when you build the app, it as completely the behavior we expected.
 If you need it, you can clone or download the project from [this branch on Github][repo-github]
 
 ![Screenshot of the result][screenshot]
 
-### What to do next ?
+## What to do next ?
 
 I will write the next tutorials, witch should include:
 

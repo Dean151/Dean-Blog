@@ -10,7 +10,7 @@ Data privacy, and the usage of collected data have now became a controversial su
 
 In this tutorial, you'll see what solution I came around keeping my own privacy at my home network.
 
-### What is Pi-hole?
+## What is Pi-hole?
 
 [Pi-hole][pihole], as they describe themselves, is an open-source [DNS sinkhole][sinkhole].
 It is a custom DNS ; that will drop request during the DNS resolution step if it's been blacklisted.
@@ -23,12 +23,12 @@ The ad are dropped before even loading, and not at rendering time, granting your
 
 Of course, some ad-based blacklist are provided, making Pi-hole a powerful and **untraceable** ad-blocker.
 
-### Setting up your Raspberry Pi
+## Setting up your Raspberry Pi
 
 This step if **optional**, but it's always good to start with a *fresh install*.
 You can, of course, skip immediately to [Pi-hole installation][pi-hole-install].
 
-#### Raspbian Stretch installation
+### Raspbian Stretch installation
 
 Download the [latest release of Raspbian Stretch][raspbian-download] on your disk.
 Then, we need to copy it on your SD card, properly. 
@@ -65,7 +65,7 @@ $ ssh pi@192.168.1.x
 
 Default password is `raspberry`
 
-#### Minimal security settings
+### Minimal security settings
 
 The bare minimum to do when the Raspberry first start is to **change the password for the pi user**.
 
@@ -80,7 +80,7 @@ You may also want to:
 - Requiring a password when using `sudo`
 - Update the repositories and packages
 
-### Installing Pi-hole
+## Installing Pi-hole
 
 It is advised that your Raspberry Pi should have a static IP on your network.
 
@@ -105,7 +105,7 @@ If you can't, it's still possible to use the Raspberry as your main DHCP server.
 
 You may now use the internet with no ads or trackers!
 
-### Customize your network with aliases
+## Customize your network with aliases
 
 You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.
 
@@ -132,7 +132,7 @@ echo "addn-hosts=/etc/pihole/lan.list" | sudo tee /etc/dnsmasq.d/02-lan.conf
 sudo pihole restartdns
 {% endhighlight %}
 
-### Using the web admin to check your traffic
+## Using the web admin to check your traffic
 
 Once Pi-hole is enabled, you can access [http://pi.hole][pi-hole].
 
@@ -154,7 +154,7 @@ By regulary check the requests that have been blocked, and the one that are allo
 
 ![The home page of Pi Hole Admin][pi-hole-admin-android]
 
-### Bonus: redirecting a DNS resolution
+## Bonus: redirecting a DNS resolution
 
 As described in my article [How everyone could feed my cat][feed-my-cat], 
 I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.
@@ -170,7 +170,7 @@ It's doable, simply by editing the `etc/hosts` file :
 
 Then, by restarting the DNS with `sudo pihole restartdns` ; the feeder communicate with my server, and not with theirs.
 
-### Going way further
+## Going way further
 
 You now have a fully functional ad & tracker blocker from the network side.
 

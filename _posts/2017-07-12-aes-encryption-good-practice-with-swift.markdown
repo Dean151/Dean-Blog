@@ -14,7 +14,7 @@ into when using cryptography!
 
 The rest of this article will use CryptoSwift as an example.
 
-### 1. Don't hard code your cryptographic key
+## 1. Don't hard code your cryptographic key
 
 Anything you put in the code is, in a way, readable by anyone. It's always possible
 for an attacker to find something, even hidden in the compiled code of your application.
@@ -52,7 +52,7 @@ let myAES256keyData = try generateRandomData(size: 32)
 // Store your key in a safe place
 {% endhighlight %}
 
-### 2. Store your keys in the Keychain
+## 2. Store your keys in the Keychain
 
 Let make things clear right now, there are **no better place** to store sensitive
 data like cryptographic keys or password than the [Keychain][keychain-doc].
@@ -77,7 +77,7 @@ keychain.set(dataObject, forKey: "my key", withAccess: .accessibleWhenUnlockedTh
 let key = keychain.getData("my key")
 {% endhighlight %}
 
-### 3. Set a correct Keychain Item Access
+## 3. Set a correct Keychain Item Access
 
 You may have not noticed yet, but I used an access parameter to the keychain setter in point 2.
 
@@ -88,7 +88,7 @@ That is needed to provide a correct level of security for your stored key.
 It make sure the device is unlocked, prevent backups and keychain sharing between
 devices, and it can also make sure the device is secured by an unlock code.
 
-### 4. Use an Initialization Vector
+## 4. Use an Initialization Vector
 
 Encrypting data is a good practice to prevent anyone to read sensitive data.
 
@@ -135,7 +135,7 @@ let crypted = try AES(key: key, iv: iv).encrypt(data)
 myStorage.securedData = (crypted, iv)
 {% endhighlight %}
 
-### 5. Do not use ECB block mode
+## 5. Do not use ECB block mode
 
 The block mode you set in the AES algorithm correspond to the method used by the
 algorithm to perform the encryption.
@@ -172,7 +172,7 @@ block mode.
 To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
 dependent from the previous one, and make the result unpredictable and randomized.
 
-### Conclusion
+## Conclusion
 
 Although it's very easy to use encryption today as a developer, it's also very easy
 to make a lot of mistakes when using AES, making the whole process unsecure and,
@@ -190,5 +190,5 @@ I hope that your app will become a little bit more secure with what you just rea
 [when-unlocked]: https://developer.apple.com/documentation/security/ksecattraccessiblewhenunlockedthisdeviceonly
 [when-password-set]: https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly
 [ecb-wikipedia]: https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation
-[ecb-picture]: /assets/ios/crypto-practices/ECB-en.png
+[ecb-picture]: /assets/ios/crypto-practices/ECB.png
 [password-salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)

@@ -60,7 +60,7 @@ into when using cryptography!</p>
 
 <p>The rest of this article will use CryptoSwift as an example.</p>
 
-<h3 id="1-dont-hard-code-your-cryptographic-key">1. Don’t hard code your cryptographic key</h3>
+<h2 id="1-dont-hard-code-your-cryptographic-key">1. Don’t hard code your cryptographic key</h2>
 
 <p>Anything you put in the code is, in a way, readable by anyone. It’s always possible
 for an attacker to find something, even hidden in the compiled code of your application.</p>
@@ -96,7 +96,7 @@ You need to <strong>generate</strong> a key every time you need one, and store i
 
 <span class="c1">// Store your key in a safe place</span></code></pre></figure>
 
-<h3 id="2-store-your-keys-in-the-keychain">2. Store your keys in the Keychain</h3>
+<h2 id="2-store-your-keys-in-the-keychain">2. Store your keys in the Keychain</h2>
 
 <p>Let make things clear right now, there are <strong>no better place</strong> to store sensitive
 data like cryptographic keys or password than the <a href="https://developer.apple.com/documentation/security/keychain_services">Keychain</a>.</p>
@@ -119,7 +119,7 @@ module like the <a href="https://www.quora.com/What-is-Apple’s-new-Secure-Encl
 <span class="c1">// Receive from keychain our key</span>
 <span class="k">let</span> <span class="nv">key</span> <span class="o">=</span> <span class="n">keychain</span><span class="o">.</span><span class="nf">getData</span><span class="p">(</span><span class="s">"my key"</span><span class="p">)</span></code></pre></figure>
 
-<h3 id="3-set-a-correct-keychain-item-access">3. Set a correct Keychain Item Access</h3>
+<h2 id="3-set-a-correct-keychain-item-access">3. Set a correct Keychain Item Access</h2>
 
 <p>You may have not noticed yet, but I used an access parameter to the keychain setter in point 2.</p>
 
@@ -130,7 +130,7 @@ Use <code class="highlighter-rouge">accessibleWhenPasscodeSetThisDeviceOnly</cod
 It make sure the device is unlocked, prevent backups and keychain sharing between
 devices, and it can also make sure the device is secured by an unlock code.</p>
 
-<h3 id="4-use-an-initialization-vector">4. Use an Initialization Vector</h3>
+<h2 id="4-use-an-initialization-vector">4. Use an Initialization Vector</h2>
 
 <p>Encrypting data is a good practice to prevent anyone to read sensitive data.</p>
 
@@ -204,7 +204,7 @@ do with a <a href="https://en.wikipedia.org/wiki/Salt_(cryptography)">salt for a
 <span class="c1">// We then store the crypted data and the iv</span>
 <span class="n">myStorage</span><span class="o">.</span><span class="n">securedData</span> <span class="o">=</span> <span class="p">(</span><span class="n">crypted</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span></code></pre></figure>
 
-<h3 id="5-do-not-use-ecb-block-mode">5. Do not use ECB block mode</h3>
+<h2 id="5-do-not-use-ecb-block-mode">5. Do not use ECB block mode</h2>
 
 <p>The block mode you set in the AES algorithm correspond to the method used by the
 algorithm to perform the encryption.</p>
@@ -230,7 +230,7 @@ like the lack of Initialization Vector, makes the encryption predictable.</p>
 <p>If you want to be confident about the ECB lack of security, check this example
 of encryption using an image, from <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation">Wikipedia</a>.</p>
 
-<p><img src="/assets/ios/crypto-practices/ECB-en.png" alt="Illustration of ECB lack of security with a picture encryption" /></p>
+<p><img src="/assets/ios/crypto-practices/ECB.png" alt="Illustration of ECB lack of security with a picture encryption" /></p>
 
 <p>Wow, with ECB block mode, we cannot say that the content of the picture became
 unpredictable and unreadable. That’s why it should <strong>never</strong> be used as a cryptographic
@@ -239,7 +239,7 @@ block mode.</p>
 <p>To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
 dependent from the previous one, and make the result unpredictable and randomized.</p>
 
-<h3 id="conclusion">Conclusion</h3>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>Although it’s very easy to use encryption today as a developer, it’s also very easy
 to make a lot of mistakes when using AES, making the whole process unsecure and,

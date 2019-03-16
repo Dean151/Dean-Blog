@@ -5,8 +5,8 @@
     <description>Dean's blog is a blog about computer science and development</description>
     <link>https://www.thomasdurand.fr/</link>
     <atom:link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 16 Mar 2019 16:07:57 +0100</pubDate>
-    <lastBuildDate>Sat, 16 Mar 2019 16:07:57 +0100</lastBuildDate>
+    <pubDate>Sat, 16 Mar 2019 16:47:16 +0100</pubDate>
+    <lastBuildDate>Sat, 16 Mar 2019 16:47:16 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -15,7 +15,7 @@
 
 &lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-is-pi-hole&quot;&gt;What is Pi-hole?&lt;/h3&gt;
+&lt;h2 id=&quot;what-is-pi-hole&quot;&gt;What is Pi-hole?&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://pi-hole.net/&quot;&gt;Pi-hole&lt;/a&gt;, as they describe themselves, is an open-source &lt;a href=&quot;https://en.wikipedia.org/wiki/DNS_sinkhole&quot;&gt;DNS sinkhole&lt;/a&gt;.
 It is a custom DNS ; that will drop request during the DNS resolution step if it’s been blacklisted.&lt;/p&gt;
@@ -28,12 +28,12 @@ The ad are dropped before even loading, and not at rendering time, granting your
 
 &lt;p&gt;Of course, some ad-based blacklist are provided, making Pi-hole a powerful and &lt;strong&gt;untraceable&lt;/strong&gt; ad-blocker.&lt;/p&gt;
 
-&lt;h3 id=&quot;setting-up-your-raspberry-pi&quot;&gt;Setting up your Raspberry Pi&lt;/h3&gt;
+&lt;h2 id=&quot;setting-up-your-raspberry-pi&quot;&gt;Setting up your Raspberry Pi&lt;/h2&gt;
 
 &lt;p&gt;This step if &lt;strong&gt;optional&lt;/strong&gt;, but it’s always good to start with a &lt;em&gt;fresh install&lt;/em&gt;.
 You can, of course, skip immediately to &lt;a href=&quot;#installing-pi-hole&quot;&gt;Pi-hole installation&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h4 id=&quot;raspbian-stretch-installation&quot;&gt;Raspbian Stretch installation&lt;/h4&gt;
+&lt;h3 id=&quot;raspbian-stretch-installation&quot;&gt;Raspbian Stretch installation&lt;/h3&gt;
 
 &lt;p&gt;Download the &lt;a href=&quot;https://downloads.raspberrypi.org/raspbian_lite_latest&quot;&gt;latest release of Raspbian Stretch&lt;/a&gt; on your disk.
 Then, we need to copy it on your SD card, properly.&lt;/p&gt;
@@ -62,7 +62,7 @@ Then, we need to copy it on your SD card, properly.&lt;/p&gt;
 
 &lt;p&gt;Default password is &lt;code class=&quot;highlighter-rouge&quot;&gt;raspberry&lt;/code&gt;&lt;/p&gt;
 
-&lt;h4 id=&quot;minimal-security-settings&quot;&gt;Minimal security settings&lt;/h4&gt;
+&lt;h3 id=&quot;minimal-security-settings&quot;&gt;Minimal security settings&lt;/h3&gt;
 
 &lt;p&gt;The bare minimum to do when the Raspberry first start is to &lt;strong&gt;change the password for the pi user&lt;/strong&gt;.&lt;/p&gt;
 
@@ -77,7 +77,7 @@ Then, we need to copy it on your SD card, properly.&lt;/p&gt;
   &lt;li&gt;Update the repositories and packages&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;installing-pi-hole&quot;&gt;Installing Pi-hole&lt;/h3&gt;
+&lt;h2 id=&quot;installing-pi-hole&quot;&gt;Installing Pi-hole&lt;/h2&gt;
 
 &lt;p&gt;It is advised that your Raspberry Pi should have a static IP on your network.&lt;/p&gt;
 
@@ -100,7 +100,7 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 
 &lt;p&gt;You may now use the internet with no ads or trackers!&lt;/p&gt;
 
-&lt;h3 id=&quot;customize-your-network-with-aliases&quot;&gt;Customize your network with aliases&lt;/h3&gt;
+&lt;h2 id=&quot;customize-your-network-with-aliases&quot;&gt;Customize your network with aliases&lt;/h2&gt;
 
 &lt;p&gt;You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.&lt;/p&gt;
 
@@ -122,7 +122,7 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;addn-hosts=/etc/pihole/lan.list&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/dnsmasq.d/02-lan.conf
 &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pihole restartdns&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;using-the-web-admin-to-check-your-traffic&quot;&gt;Using the web admin to check your traffic&lt;/h3&gt;
+&lt;h2 id=&quot;using-the-web-admin-to-check-your-traffic&quot;&gt;Using the web admin to check your traffic&lt;/h2&gt;
 
 &lt;p&gt;Once Pi-hole is enabled, you can access &lt;a href=&quot;http://pi.hole/&quot;&gt;http://pi.hole&lt;/a&gt;.&lt;/p&gt;
 
@@ -144,7 +144,7 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 
 &lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-android.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;bonus-redirecting-a-dns-resolution&quot;&gt;Bonus: redirecting a DNS resolution&lt;/h3&gt;
+&lt;h2 id=&quot;bonus-redirecting-a-dns-resolution&quot;&gt;Bonus: redirecting a DNS resolution&lt;/h2&gt;
 
 &lt;p&gt;As described in my article &lt;a href=&quot;/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html&quot;&gt;How everyone could feed my cat&lt;/a&gt;, 
 I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.&lt;/p&gt;
@@ -159,7 +159,7 @@ I needed to redirect the resolution of my feeder to prevent it to communicate wi
 
 &lt;p&gt;Then, by restarting the DNS with &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole restartdns&lt;/code&gt; ; the feeder communicate with my server, and not with theirs.&lt;/p&gt;
 
-&lt;h3 id=&quot;going-way-further&quot;&gt;Going way further&lt;/h3&gt;
+&lt;h2 id=&quot;going-way-further&quot;&gt;Going way further&lt;/h2&gt;
 
 &lt;p&gt;You now have a fully functional ad &amp;amp; tracker blocker from the network side.&lt;/p&gt;
 
@@ -189,7 +189,7 @@ Every time we heard a story about any kind of security flaw, we take it seriousl
 
 &lt;p&gt;Well, I guess I wasn’t yet prepared for my last discovery.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-i-like-about-home-automation-solution&quot;&gt;What I like about home automation solution&lt;/h3&gt;
+&lt;h2 id=&quot;what-i-like-about-home-automation-solution&quot;&gt;What I like about home automation solution&lt;/h2&gt;
 
 &lt;p&gt;Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That’s why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.&lt;/p&gt;
 
@@ -197,7 +197,7 @@ Every time we heard a story about any kind of security flaw, we take it seriousl
 
 &lt;p&gt;I know that HomeKit already had some security flaw &lt;a href=&quot;https://9to5mac.com/2017/12/07/homekit-vulnerability/&quot;&gt;in the past&lt;/a&gt;, and may have some in the future, but I’m pretty sure Apple will always correct them.&lt;/p&gt;
 
-&lt;h3 id=&quot;where-my-cat-comes-in&quot;&gt;Where my cat comes in&lt;/h3&gt;
+&lt;h2 id=&quot;where-my-cat-comes-in&quot;&gt;Where my cat comes in&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/pictures/newton.jpg&quot; alt=&quot;My cat, Newton&quot; /&gt;&lt;/p&gt;
 
@@ -208,7 +208,7 @@ The trademark &lt;em&gt;HoneyGuaridan&lt;/em&gt; was getting very good reception
 
 &lt;p&gt;Indeed, it was one of the only models that allowed me to program 10 meals or more a day! Perfect to make my cat more regulated about food. Last tinkle in my ear: The device was getting setted and triggered with a smartphone, it was a complete IoT device!&lt;/p&gt;
 
-&lt;h3 id=&quot;when-it-got-complicated&quot;&gt;When it got complicated&lt;/h3&gt;
+&lt;h2 id=&quot;when-it-got-complicated&quot;&gt;When it got complicated&lt;/h2&gt;
 
 &lt;p&gt;I received the device about three weeks ago, and my cat adopted it very quickly!&lt;/p&gt;
 
@@ -222,7 +222,7 @@ The trademark &lt;em&gt;HoneyGuaridan&lt;/em&gt; was getting very good reception
 
 &lt;p&gt;I used &lt;a href=&quot;https://portswigger.net/burp&quot;&gt;Burp Community Edition&lt;/a&gt; as an HTTP proxy to catch every requests sent by the application ; and find out how they’re built.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-i-found&quot;&gt;What I found&lt;/h3&gt;
+&lt;h2 id=&quot;what-i-found&quot;&gt;What I found&lt;/h2&gt;
 
 &lt;p&gt;The application communicate with many differents servers: &lt;code class=&quot;highlighter-rouge&quot;&gt;us1.dev.alnpet.com&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;fr.dev.alnpet.com&lt;/code&gt;, but also &lt;code class=&quot;highlighter-rouge&quot;&gt;183.232.29.249&lt;/code&gt; to send some report data over a security layer.&lt;/p&gt;
 
@@ -234,7 +234,7 @@ The trademark &lt;em&gt;HoneyGuaridan&lt;/em&gt; was getting very good reception
 
 &lt;p&gt;This is crazy. At this moment, I realize that barely &lt;em&gt;anyone&lt;/em&gt; could empty my feeder from anywhere in the world and/or make my cat obese!&lt;/p&gt;
 
-&lt;h3 id=&quot;how-i-reacted&quot;&gt;How I reacted&lt;/h3&gt;
+&lt;h2 id=&quot;how-i-reacted&quot;&gt;How I reacted&lt;/h2&gt;
 
 &lt;p&gt;My first reaction to that discovery was to remove the Wi-Fi settings from the machine, making sure it’s not anymore Internet connected. Of course I tried the magic request to prove that my machine was offline, and therefore more secure.&lt;/p&gt;
 
@@ -284,7 +284,7 @@ into when using cryptography!&lt;/p&gt;
 
 &lt;p&gt;The rest of this article will use CryptoSwift as an example.&lt;/p&gt;
 
-&lt;h3 id=&quot;1-dont-hard-code-your-cryptographic-key&quot;&gt;1. Don’t hard code your cryptographic key&lt;/h3&gt;
+&lt;h2 id=&quot;1-dont-hard-code-your-cryptographic-key&quot;&gt;1. Don’t hard code your cryptographic key&lt;/h2&gt;
 
 &lt;p&gt;Anything you put in the code is, in a way, readable by anyone. It’s always possible
 for an attacker to find something, even hidden in the compiled code of your application.&lt;/p&gt;
@@ -320,7 +320,7 @@ You need to &lt;strong&gt;generate&lt;/strong&gt; a key every time you need one,
 
 &lt;span class=&quot;c1&quot;&gt;// Store your key in a safe place&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;2-store-your-keys-in-the-keychain&quot;&gt;2. Store your keys in the Keychain&lt;/h3&gt;
+&lt;h2 id=&quot;2-store-your-keys-in-the-keychain&quot;&gt;2. Store your keys in the Keychain&lt;/h2&gt;
 
 &lt;p&gt;Let make things clear right now, there are &lt;strong&gt;no better place&lt;/strong&gt; to store sensitive
 data like cryptographic keys or password than the &lt;a href=&quot;https://developer.apple.com/documentation/security/keychain_services&quot;&gt;Keychain&lt;/a&gt;.&lt;/p&gt;
@@ -343,7 +343,7 @@ module like the &lt;a href=&quot;https://www.quora.com/What-is-Apple’s-new-Sec
 &lt;span class=&quot;c1&quot;&gt;// Receive from keychain our key&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keychain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;my key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;3-set-a-correct-keychain-item-access&quot;&gt;3. Set a correct Keychain Item Access&lt;/h3&gt;
+&lt;h2 id=&quot;3-set-a-correct-keychain-item-access&quot;&gt;3. Set a correct Keychain Item Access&lt;/h2&gt;
 
 &lt;p&gt;You may have not noticed yet, but I used an access parameter to the keychain setter in point 2.&lt;/p&gt;
 
@@ -354,7 +354,7 @@ Use &lt;code class=&quot;highlighter-rouge&quot;&gt;accessibleWhenPasscodeSetThi
 It make sure the device is unlocked, prevent backups and keychain sharing between
 devices, and it can also make sure the device is secured by an unlock code.&lt;/p&gt;
 
-&lt;h3 id=&quot;4-use-an-initialization-vector&quot;&gt;4. Use an Initialization Vector&lt;/h3&gt;
+&lt;h2 id=&quot;4-use-an-initialization-vector&quot;&gt;4. Use an Initialization Vector&lt;/h2&gt;
 
 &lt;p&gt;Encrypting data is a good practice to prevent anyone to read sensitive data.&lt;/p&gt;
 
@@ -428,7 +428,7 @@ do with a &lt;a href=&quot;https://en.wikipedia.org/wiki/Salt_(cryptography)&quo
 &lt;span class=&quot;c1&quot;&gt;// We then store the crypted data and the iv&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;myStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;securedData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;crypted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;5-do-not-use-ecb-block-mode&quot;&gt;5. Do not use ECB block mode&lt;/h3&gt;
+&lt;h2 id=&quot;5-do-not-use-ecb-block-mode&quot;&gt;5. Do not use ECB block mode&lt;/h2&gt;
 
 &lt;p&gt;The block mode you set in the AES algorithm correspond to the method used by the
 algorithm to perform the encryption.&lt;/p&gt;
@@ -454,7 +454,7 @@ like the lack of Initialization Vector, makes the encryption predictable.&lt;/p&
 &lt;p&gt;If you want to be confident about the ECB lack of security, check this example
 of encryption using an image, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/ios/crypto-practices/ECB-en.png&quot; alt=&quot;Illustration of ECB lack of security with a picture encryption&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/ios/crypto-practices/ECB.png&quot; alt=&quot;Illustration of ECB lack of security with a picture encryption&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Wow, with ECB block mode, we cannot say that the content of the picture became
 unpredictable and unreadable. That’s why it should &lt;strong&gt;never&lt;/strong&gt; be used as a cryptographic
@@ -463,7 +463,7 @@ block mode.&lt;/p&gt;
 &lt;p&gt;To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
 dependent from the previous one, and make the result unpredictable and randomized.&lt;/p&gt;
 
-&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;Although it’s very easy to use encryption today as a developer, it’s also very easy
 to make a lot of mistakes when using AES, making the whole process unsecure and,
@@ -501,7 +501,7 @@ A cell with disclosure indicator&lt;/p&gt;
 a universal app supporting iPhone and iPad, things become trickier, and we’ll
 see how to make it right !&lt;/p&gt;
 
-&lt;h3 id=&quot;beginning-the-project&quot;&gt;Beginning the project&lt;/h3&gt;
+&lt;h2 id=&quot;beginning-the-project&quot;&gt;Beginning the project&lt;/h2&gt;
 
 &lt;p&gt;To begin the project, you can either create a &lt;em&gt;Master - Details&lt;/em&gt; template
 application with Xcode, or download/clone this &lt;a href=&quot;https://github.com/Dean151/disclosure-indicators-done-right/tree/start&quot;&gt;Github repo&lt;/a&gt; at the branch &lt;code class=&quot;highlighter-rouge&quot;&gt;start&lt;/code&gt;&lt;/p&gt;
@@ -512,7 +512,7 @@ But if you select a cell, a new view controller will be pushed. Not quite like
 described in the &lt;a href=&quot;https://developer.apple.com/ios/human-interface-guidelines/ui-views/tables/&quot;&gt;human interface guidelines&lt;/a&gt;.
 Maybe it’s the sign that it’s not that easy to do ? :)&lt;/p&gt;
 
-&lt;h3 id=&quot;adding-a-disclosure-indicator&quot;&gt;Adding a disclosure indicator&lt;/h3&gt;
+&lt;h2 id=&quot;adding-a-disclosure-indicator&quot;&gt;Adding a disclosure indicator&lt;/h2&gt;
 
 &lt;p&gt;In the function &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)&lt;/code&gt;,
 simply add right before returning the cell :&lt;/p&gt;
@@ -529,7 +529,7 @@ Easy as pie !&lt;/p&gt;
 &lt;p&gt;Now, let complicate things. We want to make a universal app, and this template
 use a &lt;code class=&quot;highlighter-rouge&quot;&gt;UISplitViewController&lt;/code&gt; for that purpose.&lt;/p&gt;
 
-&lt;h3 id=&quot;adapting-disclosure-indicators-for-split-view-presentation&quot;&gt;Adapting disclosure indicators for split view presentation&lt;/h3&gt;
+&lt;h2 id=&quot;adapting-disclosure-indicators-for-split-view-presentation&quot;&gt;Adapting disclosure indicators for split view presentation&lt;/h2&gt;
 
 &lt;p&gt;Let register the app as Universal, because right now it’s just an iPhone app.&lt;/p&gt;
 
@@ -573,7 +573,7 @@ the code we wrote before for the accessoryType :&lt;/p&gt;
 
 &lt;p&gt;Now build and run for iPhone, or for iPad, and it works as expected … well, &lt;em&gt;almost&lt;/em&gt; as expected !&lt;/p&gt;
 
-&lt;h3 id=&quot;the-iphone-6s-plus-exception&quot;&gt;The iPhone 6(s) plus exception&lt;/h3&gt;
+&lt;h2 id=&quot;the-iphone-6s-plus-exception&quot;&gt;The iPhone 6(s) plus exception&lt;/h2&gt;
 
 &lt;p&gt;The iPhone 6 plus is a (very) big device and is the only iPhone that is able to show
 split views in non-collapsed mode.&lt;/p&gt;
@@ -647,7 +647,7 @@ remove, or add disclosure indicators only if needed.&lt;/p&gt;
 &lt;p&gt;Build and run the app for iPhone 6 plus and rotate as you like to see the disclosure indicators doing
 things just right.&lt;/p&gt;
 
-&lt;h3 id=&quot;bonus-ios9-split-view-mode-on-ipad&quot;&gt;Bonus: iOS9 Split view mode on iPad&lt;/h3&gt;
+&lt;h2 id=&quot;bonus-ios9-split-view-mode-on-ipad&quot;&gt;Bonus: iOS9 Split view mode on iPad&lt;/h2&gt;
 
 &lt;p&gt;Since iOS9, some iPad models can became in Split view mode.
 It allow two apps to be displayed at the same time in the screen.&lt;/p&gt;
@@ -667,7 +667,7 @@ and trigger the split view with a pan gesture from the right border of the scree
 
 &lt;p&gt;When the app become collapsed, the disclosure indicators appears as we could expect them to.&lt;/p&gt;
 
-&lt;h3 id=&quot;wrapping-this-as-a-protocol&quot;&gt;Wrapping this as a Protocol&lt;/h3&gt;
+&lt;h2 id=&quot;wrapping-this-as-a-protocol&quot;&gt;Wrapping this as a Protocol&lt;/h2&gt;
 
 &lt;p&gt;Our solution is not perfect yet : it assume that every cell is disclosable in our
 table view, which will not be always the case in all tableviews.&lt;/p&gt;
@@ -764,7 +764,7 @@ sure to open an issue directly on Github, and we’ll discuss about it! :)&lt;/p
 
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; There is two methods to implement a dynamic table view : using a &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewController&lt;/code&gt;, or using a &lt;code class=&quot;highlighter-rouge&quot;&gt;UIViewController&lt;/code&gt; that implements &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewDelegate&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewDataSource&lt;/code&gt;. I will explain this second solution in this tutorial, not because it’s the simplest, but because it allow way more customizations for the layout of the TableView if you need to.&lt;/p&gt;
 
-&lt;h3 id=&quot;what-were-gonna-build-from-scratch&quot;&gt;What we’re gonna build from scratch&lt;/h3&gt;
+&lt;h2 id=&quot;what-were-gonna-build-from-scratch&quot;&gt;What we’re gonna build from scratch&lt;/h2&gt;
 
 &lt;p&gt;We are going to achieve today is the list of all elements from the periodic elements, ordered by atomic number.&lt;/p&gt;
 
@@ -774,7 +774,7 @@ sure to open an issue directly on Github, and we’ll discuss about it! :)&lt;/p
 
 &lt;p&gt;&lt;a href=&quot;/assets/ios/tutorial1/Elements.plist&quot;&gt;Elements.plist&lt;/a&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;first-about-mvc&quot;&gt;First: about MVC&lt;/h3&gt;
+&lt;h2 id=&quot;first-about-mvc&quot;&gt;First: about MVC&lt;/h2&gt;
 
 &lt;p&gt;MVC for “Model View Controller” is a pattern design that allow to separate different aspects of the code in an application :&lt;/p&gt;
 
@@ -790,7 +790,7 @@ We will create a &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableView&lt;
 
 &lt;p&gt;Finally our data will be structured with a simple &lt;em&gt;Swift&lt;/em&gt; struct.&lt;/p&gt;
 
-&lt;h3 id=&quot;starting-the-project&quot;&gt;Starting the project&lt;/h3&gt;
+&lt;h2 id=&quot;starting-the-project&quot;&gt;Starting the project&lt;/h2&gt;
 
 &lt;p&gt;Open &lt;em&gt;Xcode 8&lt;/em&gt; and create a new iOS project with the “One view” template. Name the project &lt;code class=&quot;highlighter-rouge&quot;&gt;ElementsList&lt;/code&gt;.
 Make sure that CoreData, Unit Tests and UI Tests are &lt;em&gt;unchecked&lt;/em&gt;.&lt;/p&gt;
@@ -805,7 +805,7 @@ Make sure that CoreData, Unit Tests and UI Tests are &lt;em&gt;unchecked&lt;/em&
 
 &lt;p&gt;Next step is the model layer&lt;/p&gt;
 
-&lt;h3 id=&quot;the-model-layer&quot;&gt;The model layer&lt;/h3&gt;
+&lt;h2 id=&quot;the-model-layer&quot;&gt;The model layer&lt;/h2&gt;
 
 &lt;p&gt;A good start before implementing something is to think about how the data will be represented in our code.&lt;/p&gt;
 
@@ -844,7 +844,7 @@ Make sure that CoreData, Unit Tests and UI Tests are &lt;em&gt;unchecked&lt;/em&
 &lt;p&gt;This model map all the data from &lt;a href=&quot;/assets/ios/tutorial1/Elements.plist&quot;&gt;apple plist&lt;/a&gt; and will allow us to represent one element.
 But what about the elements loading ? Right now, the elements are in a plist file, so we’ll need to create something that allow us to receive an &lt;strong&gt;array of all elements&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;loading-the-data&quot;&gt;Loading the data&lt;/h3&gt;
+&lt;h2 id=&quot;loading-the-data&quot;&gt;Loading the data&lt;/h2&gt;
 
 &lt;p&gt;Great, we have a model, and we have a plist file that contains our data. But we still need to translate the data in order to take advantage of our model.&lt;/p&gt;
 
@@ -934,7 +934,7 @@ But what about the elements loading ? Right now, the elements are in a plist fil
 
 &lt;p&gt;&lt;strong&gt;Important&lt;/strong&gt; : In &lt;code class=&quot;highlighter-rouge&quot;&gt;Element.from(dict: _)&lt;/code&gt; function, there is a lot of force unwrapping &lt;code class=&quot;highlighter-rouge&quot;&gt;!&lt;/code&gt; in the code. That’s because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and it will happen !&lt;/p&gt;
 
-&lt;h3 id=&quot;creating-the-table-view&quot;&gt;Creating the table view&lt;/h3&gt;
+&lt;h2 id=&quot;creating-the-table-view&quot;&gt;Creating the table view&lt;/h2&gt;
 
 &lt;p&gt;First, we need to create a UITableView instance, and keep reference to this instance. To do so, just add a property right below &lt;code class=&quot;highlighter-rouge&quot;&gt;var elements&lt;/code&gt; :&lt;/p&gt;
 
@@ -964,7 +964,7 @@ Add at the end of the file :&lt;/p&gt;
 
 &lt;p&gt;Right, now the compiler’s error have changed, and say we does not implement &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewDataSource&lt;/code&gt; protocol.&lt;/p&gt;
 
-&lt;h3 id=&quot;configuring-the-table-view&quot;&gt;Configuring the table view&lt;/h3&gt;
+&lt;h2 id=&quot;configuring-the-table-view&quot;&gt;Configuring the table view&lt;/h2&gt;
 
 &lt;p&gt;If we look in the documentation, we find out that &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewDataSource&lt;/code&gt; protocol contains two methods that are required to implement :&lt;/p&gt;
 
@@ -997,7 +997,7 @@ Add at the end of the file :&lt;/p&gt;
 
 &lt;p&gt;Now, you should build and run, and &lt;em&gt;voilà&lt;/em&gt; your first tableview. But wait ! There is more !&lt;/p&gt;
 
-&lt;h3 id=&quot;a-memory-problem&quot;&gt;A memory problem&lt;/h3&gt;
+&lt;h2 id=&quot;a-memory-problem&quot;&gt;A memory problem&lt;/h2&gt;
 
 &lt;p&gt;If you build and run the application at the current state, it seems right. But &lt;strong&gt;it’s not !&lt;/strong&gt;&lt;/p&gt;
 
@@ -1015,7 +1015,7 @@ Add at the end of the file :&lt;/p&gt;
 
 &lt;p&gt;You should &lt;strong&gt;reuse&lt;/strong&gt; the cells. And don’t freak out, it’s very easy to do !&lt;/p&gt;
 
-&lt;h3 id=&quot;reusing-cells&quot;&gt;Reusing cells&lt;/h3&gt;
+&lt;h2 id=&quot;reusing-cells&quot;&gt;Reusing cells&lt;/h2&gt;
 
 &lt;p&gt;As I said, it’s very easy to use reusable cells, and we did half the job previously : we already registered a cell for reuse ! Indeed, look at the code instantiating the cell, we have set a reuseIdentifier for the cell. So let just reuse it when we can.&lt;/p&gt;
 
@@ -1044,7 +1044,7 @@ The &lt;code class=&quot;highlighter-rouge&quot;&gt;??&lt;/code&gt; operator use
 
 &lt;p&gt;To be more specific, the dequeueReusableCell function will fail only the first time, because we did not registered any cell for the given identifier “ElementCell”. But then, dequeuing cells will work just fine, because Apple is able to create new cells when none of them are available for dequeuing.&lt;/p&gt;
 
-&lt;h3 id=&quot;final-touches&quot;&gt;Final touches&lt;/h3&gt;
+&lt;h2 id=&quot;final-touches&quot;&gt;Final touches&lt;/h2&gt;
 
 &lt;p&gt;Ok it begins to look right now. But I can enumerate 3 problems :&lt;/p&gt;
 
@@ -1087,14 +1087,14 @@ Swift 3 arrays have two functions to sort arrays :&lt;/p&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sorted&lt;/code&gt; : Will return a sorted copy of the array. It’s available on any array, mutating (&lt;code class=&quot;highlighter-rouge&quot;&gt;var&lt;/code&gt;) or not (&lt;code class=&quot;highlighter-rouge&quot;&gt;let&lt;/code&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;its-a-wrap-&quot;&gt;It’s a wrap !&lt;/h3&gt;
+&lt;h2 id=&quot;its-a-wrap-&quot;&gt;It’s a wrap !&lt;/h2&gt;
 
 &lt;p&gt;Now when you build the app, it as completely the behavior we expected.
 If you need it, you can clone or download the project from &lt;a href=&quot;https://github.com/Dean151/ElementsList/tree/tutorial-1&quot;&gt;this branch on Github&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/ios/tutorial1/Screenshot.png&quot; alt=&quot;Screenshot of the result&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;what-to-do-next-&quot;&gt;What to do next ?&lt;/h3&gt;
+&lt;h2 id=&quot;what-to-do-next-&quot;&gt;What to do next ?&lt;/h2&gt;
 
 &lt;p&gt;I will write the next tutorials, witch should include:&lt;/p&gt;
 
@@ -1120,9 +1120,11 @@ If you need it, you can clone or download the project from &lt;a href=&quot;http
     
       <item>
         <title>Renewing the blog</title>
-        <description>&lt;p&gt;For the people who knew the blog before this update, it’s completely gone.&lt;/p&gt;
+        <description>&lt;p&gt;&lt;strong&gt;Updated on Mar 16, 2019&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;why-&quot;&gt;Why ?&lt;/h3&gt;
+&lt;p&gt;For the people who knew the blog before this update, it’s completely gone.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-&quot;&gt;Why ?&lt;/h2&gt;
 
 &lt;p&gt;Because I used Dotclear, and it didn’t really fit my needs. There were no multilingual possibility, and it was too complex compared with my real needs.
 There were also an issue with the Dotclear’s comment system, polluted with bots.
@@ -1132,11 +1134,19 @@ So I decided to retire it.&lt;/p&gt;
 
 &lt;p&gt;If you’re interested by getting started with Jekyll, you can check &lt;a href=&quot;https://www.sylvaindurand.org&quot;&gt;this blog&lt;/a&gt; that have plenty of Jekyll related posts. A must see !&lt;/p&gt;
 
-&lt;h3 id=&quot;mais-où-est-le-français-&quot;&gt;Mais où est le Français ?&lt;/h3&gt;
+&lt;h2 id=&quot;mais-où-est-le-français-&quot;&gt;&lt;em&gt;Mais où est le Français ?&lt;/em&gt;&lt;/h2&gt;
 
-&lt;p&gt;All the articles were in french, but from now on, I decided the main language of the blog will be english.
-Indeed, english is by far the main language of programming articles over the web.
-But it still think accessible french version of iOS related articles would be great on the web, this is why I work on a french version of each article !&lt;/p&gt;
+&lt;p&gt;All the stories were in french, but from now on, I decided the main language of the blog will be english.&lt;/p&gt;
+
+&lt;p&gt;The main motivation is that there is not enough traffic for french articles, and english is the standard language for any developer.&lt;/p&gt;
+
+&lt;p&gt;It would have been nice to maintain a french version as a multilingual blog. I’ve tryed that, but it’s already complicated to write stories, and translating them have becomen a bottleneck, so I’ve decided to stop.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-kind-of-article-will-i-find-now-on-the-blog&quot;&gt;What kind of article will I find now on the blog?&lt;/h2&gt;
+
+&lt;p&gt;It depends on what topic I want to abord, but it’ll be mainly about computing and other software tweaks I’ve been into in my past. Web or iOS development, few tools I’ve tried like Pi.Hole, Homebridge… etc. Also I’ll try to abord topic about security, IoT…&lt;/p&gt;
+
+&lt;p&gt;The only main lock for this blog is that I don’t always have enough time or motivation to write. Don’t expect an new story each week.&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 06 Aug 2016 07:55:44 +0200</pubDate>

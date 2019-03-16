@@ -13,8 +13,8 @@ body {
     border-bottom: 1px solid $main-green-color-dark;
     min-height: 56px;
 
-    padding-bottom: $spacing-unit;
-    margin-bottom: -($spacing-unit);
+    padding-bottom: $spacing-unit * 1.5;
+    margin-bottom: -($spacing-unit * 1.5);
 }
 
 .site-title {

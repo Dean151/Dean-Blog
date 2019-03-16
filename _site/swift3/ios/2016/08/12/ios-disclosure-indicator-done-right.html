@@ -65,7 +65,7 @@ A cell with disclosure indicator</p>
 a universal app supporting iPhone and iPad, things become trickier, and we’ll
 see how to make it right !</p>
 
-<h3 id="beginning-the-project">Beginning the project</h3>
+<h2 id="beginning-the-project">Beginning the project</h2>
 
 <p>To begin the project, you can either create a <em>Master - Details</em> template
 application with Xcode, or download/clone this <a href="https://github.com/Dean151/disclosure-indicators-done-right/tree/start">Github repo</a> at the branch <code class="highlighter-rouge">start</code></p>
@@ -76,7 +76,7 @@ But if you select a cell, a new view controller will be pushed. Not quite like
 described in the <a href="https://developer.apple.com/ios/human-interface-guidelines/ui-views/tables/">human interface guidelines</a>.
 Maybe it’s the sign that it’s not that easy to do ? :)</p>
 
-<h3 id="adding-a-disclosure-indicator">Adding a disclosure indicator</h3>
+<h2 id="adding-a-disclosure-indicator">Adding a disclosure indicator</h2>
 
 <p>In the function <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>,
 simply add right before returning the cell :</p>
@@ -93,7 +93,7 @@ Easy as pie !</p>
 <p>Now, let complicate things. We want to make a universal app, and this template
 use a <code class="highlighter-rouge">UISplitViewController</code> for that purpose.</p>
 
-<h3 id="adapting-disclosure-indicators-for-split-view-presentation">Adapting disclosure indicators for split view presentation</h3>
+<h2 id="adapting-disclosure-indicators-for-split-view-presentation">Adapting disclosure indicators for split view presentation</h2>
 
 <p>Let register the app as Universal, because right now it’s just an iPhone app.</p>
 
@@ -137,7 +137,7 @@ the code we wrote before for the accessoryType :</p>
 
 <p>Now build and run for iPhone, or for iPad, and it works as expected … well, <em>almost</em> as expected !</p>
 
-<h3 id="the-iphone-6s-plus-exception">The iPhone 6(s) plus exception</h3>
+<h2 id="the-iphone-6s-plus-exception">The iPhone 6(s) plus exception</h2>
 
 <p>The iPhone 6 plus is a (very) big device and is the only iPhone that is able to show
 split views in non-collapsed mode.</p>
@@ -211,7 +211,7 @@ remove, or add disclosure indicators only if needed.</p>
 <p>Build and run the app for iPhone 6 plus and rotate as you like to see the disclosure indicators doing
 things just right.</p>
 
-<h3 id="bonus-ios9-split-view-mode-on-ipad">Bonus: iOS9 Split view mode on iPad</h3>
+<h2 id="bonus-ios9-split-view-mode-on-ipad">Bonus: iOS9 Split view mode on iPad</h2>
 
 <p>Since iOS9, some iPad models can became in Split view mode.
 It allow two apps to be displayed at the same time in the screen.</p>
@@ -231,7 +231,7 @@ and trigger the split view with a pan gesture from the right border of the scree
 
 <p>When the app become collapsed, the disclosure indicators appears as we could expect them to.</p>
 
-<h3 id="wrapping-this-as-a-protocol">Wrapping this as a Protocol</h3>
+<h2 id="wrapping-this-as-a-protocol">Wrapping this as a Protocol</h2>
 
 <p>Our solution is not perfect yet : it assume that every cell is disclosable in our
 table view, which will not be always the case in all tableviews.</p>

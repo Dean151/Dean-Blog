@@ -11,7 +11,7 @@ Every time we heard a story about any kind of security flaw, we take it seriousl
 
 Well, I guess I wasn't yet prepared for my last discovery.
 
-### What I like about home automation solution
+## What I like about home automation solution
 
 Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That's why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.
 
@@ -19,7 +19,7 @@ Every device I ever choose was HomeKit compatible, and I never intended to use a
 
 I know that HomeKit already had some security flaw [in the past][homekit-flaw], and may have some in the future, but I'm pretty sure Apple will always correct them.
 
-### Where my cat comes in
+## Where my cat comes in
 
 ![My cat, Newton][newton]
 
@@ -30,7 +30,7 @@ The trademark *HoneyGuaridan* was getting very good reception and comments from 
 
 Indeed, it was one of the only models that allowed me to program 10 meals or more a day! Perfect to make my cat more regulated about food. Last tinkle in my ear: The device was getting setted and triggered with a smartphone, it was a complete IoT device!
 
-### When it got complicated
+## When it got complicated
 
 I received the device about three weeks ago, and my cat adopted it very quickly!
 
@@ -44,7 +44,7 @@ But still, with some very nasty bugs, the app gave a very bad user experience, a
 
 I used [Burp Community Edition][burp-suite] as an HTTP proxy to catch every requests sent by the application ; and find out how they're built.
 
-### What I found
+## What I found
 
 The application communicate with many differents servers: `us1.dev.alnpet.com`, `fr.dev.alnpet.com`, but also `183.232.29.249` to send some report data over a security layer.
 
@@ -56,7 +56,7 @@ I immediately tried it with `curl`: Just using my machine unique ID and the url,
 
 This is crazy. At this moment, I realize that barely *anyone* could empty my feeder from anywhere in the world and/or make my cat obese!
 
-### How I reacted
+## How I reacted
 
 My first reaction to that discovery was to remove the Wi-Fi settings from the machine, making sure it's not anymore Internet connected. Of course I tried the magic request to prove that my machine was offline, and therefore more secure.
 
