@@ -4,10 +4,7 @@
     
       <url>
         <loc>/security/network/2018/10/20/privacy-at-home-with-pi-hole.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" />
         <lastmod>2018-10-20T17:00:00+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -16,10 +13,7 @@
     
       <url>
         <loc>/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" />
         <lastmod>2018-01-31T12:00:00+01:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -28,10 +22,7 @@
     
       <url>
         <loc>/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" />
         <lastmod>2017-07-12T21:30:00+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -40,10 +31,7 @@
     
       <url>
         <loc>/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" />
         <lastmod>2016-08-12T21:18:00+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -52,10 +40,7 @@
     
       <url>
         <loc>/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/swift3/ios/2016/08/07/ios-basics-tableview-setup.html" />
         <lastmod>2016-08-07T12:46:07+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -64,10 +49,7 @@
     
       <url>
         <loc>/blog/2016/08/06/renewing-the-blog.html</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/blog/2016/08/06/renewing-the-blog.html" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/blog/2016/08/06/renewing-the-blog.html" />
         <lastmod>2016-08-06T07:55:44+02:00</lastmod>
         <changefreq>weekly</changefreq>
       </url>
@@ -77,10 +59,7 @@
     
       <url>
         <loc>/about/</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/about/" />
         <changefreq>weekly</changefreq>
       </url>
     
@@ -88,18 +67,7 @@
     
       <url>
         <loc>/feed.xml</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/css/main.css" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/sitemaps.xml" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/feed.xml" />
         <changefreq>weekly</changefreq>
       </url>
     
@@ -107,10 +75,7 @@
     
       <url>
         <loc>/</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/" />
         <changefreq>weekly</changefreq>
       </url>
     
@@ -118,18 +83,7 @@
     
       <url>
         <loc>/css/main.css</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/css/main.css" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/sitemaps.xml" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/css/main.css" />
         <changefreq>weekly</changefreq>
       </url>
     
@@ -137,18 +91,7 @@
     
       <url>
         <loc>/sitemaps.xml</loc>
-        
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/about/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/feed.xml" />
-        
-          <xhtml:link rel="alternate" hreflang="en" href="/" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/css/main.css" />
-        
-          <xhtml:link rel="alternate" hreflang="" href="/sitemaps.xml" />
-        
+        <xhtml:link rel="alternate" hreflang="en" href="/sitemaps.xml" />
         <changefreq>weekly</changefreq>
       </url>
     

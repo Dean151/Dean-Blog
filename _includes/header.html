@@ -2,31 +2,15 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="{{ site.t[page.lang].baseurl }}">
-      <img src="/assets/design/logo-{{ page.lang }}@2x.png" height="40" alt="{{ site.t[page.lang].title }}"/>
+    <a class="site-title" href="/">
+      <img src="/assets/design/logo@2x.png" height="40" alt="{{ site.title }}"/>
     </a>
 
-    {% if false %}
-    <div class="langs {{ page.lang }}">
-    {% assign posts=site.posts | where:"ref", page.ref | sort: 'lang' %}
-    {% for post in posts %}
-      <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
-    {% endfor %}
-
-    {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
-    {% for page in pages %}
-      <a href="{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
-    {% endfor %}
-    </div>
-    {% endif %}
-
     <nav class="site-nav">
-      {% assign pages=site.pages | where:"lang", page.lang | sort: 'index' %}
-      {% for my_page in pages %}
-        {% if my_page.title %}
+      {% assign pages=site.pages | sort: 'index' %}
+      {% for my_page in pages %}{% if my_page.title %}
         <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
-        {% endif %}
-      {% endfor %}
+      {% endif %}{% endfor %}
     </nav>
 
   </div>

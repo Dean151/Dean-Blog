@@ -2,7 +2,6 @@
 layout: default
 title: Articles
 ref: index
-lang: en
 index: 1
 ---
 
@@ -11,11 +10,10 @@ index: 1
   <h1 class="page-heading">Articles</h1>
 
   <ul class="post-list">
-    {% assign posts=site.posts | where:"lang", page.lang %}
+    {% assign posts=site.posts %}
     {% for post in posts %}
       <li>
-        <p class="post-meta">{% include date.html date=post.date %}</p>
-
+        <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         </h2>

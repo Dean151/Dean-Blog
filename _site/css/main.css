@@ -207,22 +207,6 @@ body {
     opacity: 1; }
 
 /**
- * Lang picker
- */
-.langs {
-  float: right;
-  font-size: 18px;
-  line-height: 60px; }
-  .langs a {
-    color: #50c144;
-    margin-left: 3px; }
-  .langs a:hover {
-    color: white; }
-
-.en .en, .fr .fr {
-  color: white; }
-
-/**
  * Site footer
  */
 .site-footer {

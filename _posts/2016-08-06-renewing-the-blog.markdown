@@ -4,7 +4,6 @@ title:  "Renewing the blog"
 date:   2016-08-06 07:55:44 +0200
 categories: blog
 ref: renewing-blog
-lang: en
 ---
 
 For the people who knew the blog before this update, it's completely gone.
