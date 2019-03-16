@@ -48,7 +48,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">iOS disclosure indicators done right</h1>
-    <p class="post-meta"><time datetime="2016-08-12T21:18:00+02:00" itemprop="datePublished">Aug 12, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-08-12T21:18:00+02:00" itemprop="datePublished">Aug 12, 2016</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Dean</span></span></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -64,8 +64,13 @@ A cell with disclosure indicator</p>
 <p>Adding a disclosure indicator may seem easy at first, but when you want to make
 a universal app supporting iPhone and iPad, things become trickier, and we’ll
 see how to make it right !</p>
-
-<h2 id="beginning-the-project">Beginning the project</h2>
+      <h2 id="beginning-the-project">
+        
+        
+          Beginning the project <a href="#beginning-the-project" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>To begin the project, you can either create a <em>Master - Details</em> template
 application with Xcode, or download/clone this <a href="https://github.com/Dean151/disclosure-indicators-done-right/tree/start">Github repo</a> at the branch <code class="highlighter-rouge">start</code></p>
@@ -75,8 +80,14 @@ hasn’t added a disclosure indicator to their project.
 But if you select a cell, a new view controller will be pushed. Not quite like
 described in the <a href="https://developer.apple.com/ios/human-interface-guidelines/ui-views/tables/">human interface guidelines</a>.
 Maybe it’s the sign that it’s not that easy to do ? :)</p>
-
-<h2 id="adding-a-disclosure-indicator">Adding a disclosure indicator</h2>
+    
+      <h2 id="adding-a-disclosure-indicator">
+        
+        
+          Adding a disclosure indicator <a href="#adding-a-disclosure-indicator" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>In the function <code class="highlighter-rouge">tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)</code>,
 simply add right before returning the cell :</p>
@@ -92,8 +103,14 @@ Easy as pie !</p>
 
 <p>Now, let complicate things. We want to make a universal app, and this template
 use a <code class="highlighter-rouge">UISplitViewController</code> for that purpose.</p>
-
-<h2 id="adapting-disclosure-indicators-for-split-view-presentation">Adapting disclosure indicators for split view presentation</h2>
+    
+      <h2 id="adapting-disclosure-indicators-for-split-view-presentation">
+        
+        
+          Adapting disclosure indicators for split view presentation <a href="#adapting-disclosure-indicators-for-split-view-presentation" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Let register the app as Universal, because right now it’s just an iPhone app.</p>
 
@@ -136,8 +153,14 @@ the code we wrote before for the accessoryType :</p>
 <span class="p">}</span></code></pre></figure>
 
 <p>Now build and run for iPhone, or for iPad, and it works as expected … well, <em>almost</em> as expected !</p>
-
-<h2 id="the-iphone-6s-plus-exception">The iPhone 6(s) plus exception</h2>
+    
+      <h2 id="the-iphone-6s-plus-exception">
+        
+        
+          The iPhone 6(s) plus exception <a href="#the-iphone-6s-plus-exception" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>The iPhone 6 plus is a (very) big device and is the only iPhone that is able to show
 split views in non-collapsed mode.</p>
@@ -210,8 +233,14 @@ remove, or add disclosure indicators only if needed.</p>
 
 <p>Build and run the app for iPhone 6 plus and rotate as you like to see the disclosure indicators doing
 things just right.</p>
-
-<h2 id="bonus-ios9-split-view-mode-on-ipad">Bonus: iOS9 Split view mode on iPad</h2>
+    
+      <h2 id="bonus-ios9-split-view-mode-on-ipad">
+        
+        
+          Bonus: iOS9 Split view mode on iPad <a href="#bonus-ios9-split-view-mode-on-ipad" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Since iOS9, some iPad models can became in Split view mode.
 It allow two apps to be displayed at the same time in the screen.</p>
@@ -230,8 +259,14 @@ Indeed, to work, split view need all 4 orientations supported. Don’t ask me wh
 and trigger the split view with a pan gesture from the right border of the screen.</p>
 
 <p>When the app become collapsed, the disclosure indicators appears as we could expect them to.</p>
-
-<h2 id="wrapping-this-as-a-protocol">Wrapping this as a Protocol</h2>
+    
+      <h2 id="wrapping-this-as-a-protocol">
+        
+        
+          Wrapping this as a Protocol <a href="#wrapping-this-as-a-protocol" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Our solution is not perfect yet : it assume that every cell is disclosable in our
 table view, which will not be always the case in all tableviews.</p>
@@ -305,8 +340,6 @@ expected</strong> behavior.</p>
 
 <p>If you have any idea of improvement we can achieve on this implementation, make
 sure to open an issue directly on Github, and we’ll discuss about it! :)</p>
-
-
   </div>
 
   <div class="share-page">

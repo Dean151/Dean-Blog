@@ -48,7 +48,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">iOS basics: UITableView setup with Swift 3</h1>
-    <p class="post-meta"><time datetime="2016-08-07T12:46:07+02:00" itemprop="datePublished">Aug 7, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-08-07T12:46:07+02:00" itemprop="datePublished">Aug 7, 2016</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Dean</span></span></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -59,8 +59,13 @@
 <p>This is the first article about <em>iOS</em> development on this blog and I really hope I will manage to write more.</p>
 
 <p><strong>Note:</strong> There is two methods to implement a dynamic table view : using a <code class="highlighter-rouge">UITableViewController</code>, or using a <code class="highlighter-rouge">UIViewController</code> that implements <code class="highlighter-rouge">UITableViewDelegate</code> and <code class="highlighter-rouge">UITableViewDataSource</code>. I will explain this second solution in this tutorial, not because it’s the simplest, but because it allow way more customizations for the layout of the TableView if you need to.</p>
-
-<h2 id="what-were-gonna-build-from-scratch">What we’re gonna build from scratch</h2>
+      <h2 id="what-were-gonna-build-from-scratch">
+        
+        
+          What we’re gonna build from scratch <a href="#what-were-gonna-build-from-scratch" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>We are going to achieve today is the list of all elements from the periodic elements, ordered by atomic number.</p>
 
@@ -69,8 +74,14 @@
 <p>Thankfully, we’re not going to implement all of the atoms data in the code. Instead, we are going to fetch it from a plist file from an Apple sample code :</p>
 
 <p><a href="/assets/ios/tutorial1/Elements.plist">Elements.plist</a></p>
-
-<h2 id="first-about-mvc">First: about MVC</h2>
+    
+      <h2 id="first-about-mvc">
+        
+        
+          First: about MVC <a href="#first-about-mvc" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>MVC for “Model View Controller” is a pattern design that allow to separate different aspects of the code in an application :</p>
 
@@ -85,8 +96,14 @@ Every instances of <code class="highlighter-rouge">UIViewController</code> conta
 We will create a <code class="highlighter-rouge">UITableView</code> instance that will be a subview of the main <code class="highlighter-rouge">UIView</code></p>
 
 <p>Finally our data will be structured with a simple <em>Swift</em> struct.</p>
-
-<h2 id="starting-the-project">Starting the project</h2>
+    
+      <h2 id="starting-the-project">
+        
+        
+          Starting the project <a href="#starting-the-project" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Open <em>Xcode 8</em> and create a new iOS project with the “One view” template. Name the project <code class="highlighter-rouge">ElementsList</code>.
 Make sure that CoreData, Unit Tests and UI Tests are <em>unchecked</em>.</p>
@@ -100,8 +117,14 @@ Make sure that CoreData, Unit Tests and UI Tests are <em>unchecked</em>.</p>
 <p>This should add a view controller with a navigation bar, and an arrow lead now to our previous view controller. You just created your first Storyboard relation, congrats !</p>
 
 <p>Next step is the model layer</p>
-
-<h2 id="the-model-layer">The model layer</h2>
+    
+      <h2 id="the-model-layer">
+        
+        
+          The model layer <a href="#the-model-layer" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>A good start before implementing something is to think about how the data will be represented in our code.</p>
 
@@ -139,8 +162,14 @@ Make sure that CoreData, Unit Tests and UI Tests are <em>unchecked</em>.</p>
 
 <p>This model map all the data from <a href="/assets/ios/tutorial1/Elements.plist">apple plist</a> and will allow us to represent one element.
 But what about the elements loading ? Right now, the elements are in a plist file, so we’ll need to create something that allow us to receive an <strong>array of all elements</strong></p>
-
-<h2 id="loading-the-data">Loading the data</h2>
+    
+      <h2 id="loading-the-data">
+        
+        
+          Loading the data <a href="#loading-the-data" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Great, we have a model, and we have a plist file that contains our data. But we still need to translate the data in order to take advantage of our model.</p>
 
@@ -229,8 +258,14 @@ But what about the elements loading ? Right now, the elements are in a plist fil
 <p><img src="/assets/ios/tutorial1/ElementsInConsole.png" alt="The loaded elements in the console" /></p>
 
 <p><strong>Important</strong> : In <code class="highlighter-rouge">Element.from(dict: _)</code> function, there is a lot of force unwrapping <code class="highlighter-rouge">!</code> in the code. That’s because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and it will happen !</p>
-
-<h2 id="creating-the-table-view">Creating the table view</h2>
+    
+      <h2 id="creating-the-table-view">
+        
+        
+          Creating the table view <a href="#creating-the-table-view" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>First, we need to create a UITableView instance, and keep reference to this instance. To do so, just add a property right below <code class="highlighter-rouge">var elements</code> :</p>
 
@@ -259,8 +294,14 @@ Add at the end of the file :</p>
 <span class="p">}</span></code></pre></figure>
 
 <p>Right, now the compiler’s error have changed, and say we does not implement <code class="highlighter-rouge">UITableViewDataSource</code> protocol.</p>
-
-<h2 id="configuring-the-table-view">Configuring the table view</h2>
+    
+      <h2 id="configuring-the-table-view">
+        
+        
+          Configuring the table view <a href="#configuring-the-table-view" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>If we look in the documentation, we find out that <code class="highlighter-rouge">UITableViewDataSource</code> protocol contains two methods that are required to implement :</p>
 
@@ -292,8 +333,14 @@ Add at the end of the file :</p>
 <span class="p">}</span></code></pre></figure>
 
 <p>Now, you should build and run, and <em>voilà</em> your first tableview. But wait ! There is more !</p>
-
-<h2 id="a-memory-problem">A memory problem</h2>
+    
+      <h2 id="a-memory-problem">
+        
+        
+          A memory problem <a href="#a-memory-problem" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>If you build and run the application at the current state, it seems right. But <strong>it’s not !</strong></p>
 
@@ -310,8 +357,14 @@ Add at the end of the file :</p>
 <p>What should I do ?</p>
 
 <p>You should <strong>reuse</strong> the cells. And don’t freak out, it’s very easy to do !</p>
-
-<h2 id="reusing-cells">Reusing cells</h2>
+    
+      <h2 id="reusing-cells">
+        
+        
+          Reusing cells <a href="#reusing-cells" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>As I said, it’s very easy to use reusable cells, and we did half the job previously : we already registered a cell for reuse ! Indeed, look at the code instantiating the cell, we have set a reuseIdentifier for the cell. So let just reuse it when we can.</p>
 
@@ -339,8 +392,14 @@ The <code class="highlighter-rouge">??</code> operator uses the first value if i
 <p>This way, our cell will be reused if it can, and will be initialized from scratch just like we did before if it fails. We should always have a cell to handle from now on.</p>
 
 <p>To be more specific, the dequeueReusableCell function will fail only the first time, because we did not registered any cell for the given identifier “ElementCell”. But then, dequeuing cells will work just fine, because Apple is able to create new cells when none of them are available for dequeuing.</p>
-
-<h2 id="final-touches">Final touches</h2>
+    
+      <h2 id="final-touches">
+        
+        
+          Final touches <a href="#final-touches" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Ok it begins to look right now. But I can enumerate 3 problems :</p>
 
@@ -382,15 +441,27 @@ Swift 3 arrays have two functions to sort arrays :</p>
   <li><code class="highlighter-rouge">sort</code> : Will sort the current array right in place, witch is possible only if the array is stored in a <code class="highlighter-rouge">var</code> (mutable). It returns nil</li>
   <li><code class="highlighter-rouge">sorted</code> : Will return a sorted copy of the array. It’s available on any array, mutating (<code class="highlighter-rouge">var</code>) or not (<code class="highlighter-rouge">let</code>)</li>
 </ul>
-
-<h2 id="its-a-wrap-">It’s a wrap !</h2>
+    
+      <h2 id="its-a-wrap-">
+        
+        
+          It’s a wrap ! <a href="#its-a-wrap-" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Now when you build the app, it as completely the behavior we expected.
 If you need it, you can clone or download the project from <a href="https://github.com/Dean151/ElementsList/tree/tutorial-1">this branch on Github</a></p>
 
 <p><img src="/assets/ios/tutorial1/Screenshot.png" alt="Screenshot of the result" /></p>
-
-<h2 id="what-to-do-next-">What to do next ?</h2>
+    
+      <h2 id="what-to-do-next-">
+        
+        
+          What to do next ? <a href="#what-to-do-next-" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>I will write the next tutorials, witch should include:</p>
 
@@ -401,8 +472,6 @@ If you need it, you can clone or download the project from <a href="https://gith
 </ul>
 
 <p>You can also try to do so by yourself ; using Apple documentation and any other blog !</p>
-
-
   </div>
 
   <div class="share-page">

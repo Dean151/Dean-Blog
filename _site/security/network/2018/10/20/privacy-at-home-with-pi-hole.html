@@ -48,15 +48,20 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Build a privacy-safe home network using Pi-hole</h1>
-    <p class="post-meta"><time datetime="2018-10-20T17:00:00+02:00" itemprop="datePublished">Oct 20, 2018</time></p>
+    <p class="post-meta"><time datetime="2018-10-20T17:00:00+02:00" itemprop="datePublished">Oct 20, 2018</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Dean</span></span></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
     <p>Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.</p>
 
 <p>In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.</p>
-
-<h2 id="what-is-pi-hole">What is Pi-hole?</h2>
+      <h2 id="what-is-pi-hole">
+        
+        
+          What is Pi-hole? <a href="#what-is-pi-hole" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p><a href="https://pi-hole.net/">Pi-hole</a>, as they describe themselves, is an open-source <a href="https://en.wikipedia.org/wiki/DNS_sinkhole">DNS sinkhole</a>.
 It is a custom DNS ; that will drop request during the DNS resolution step if it’s been blacklisted.</p>
@@ -68,13 +73,25 @@ It is first sent to your Raspberry Pi, and then dropped immediately if it’s be
 The ad are dropped before even loading, and not at rendering time, granting your network better performances.</p>
 
 <p>Of course, some ad-based blacklist are provided, making Pi-hole a powerful and <strong>untraceable</strong> ad-blocker.</p>
-
-<h2 id="setting-up-your-raspberry-pi">Setting up your Raspberry Pi</h2>
+    
+      <h2 id="setting-up-your-raspberry-pi">
+        
+        
+          Setting up your Raspberry Pi <a href="#setting-up-your-raspberry-pi" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>This step if <strong>optional</strong>, but it’s always good to start with a <em>fresh install</em>.
 You can, of course, skip immediately to <a href="#installing-pi-hole">Pi-hole installation</a>.</p>
-
-<h3 id="raspbian-stretch-installation">Raspbian Stretch installation</h3>
+    
+      <h3 id="raspbian-stretch-installation">
+        
+        
+          Raspbian Stretch installation <a href="#raspbian-stretch-installation" class="post-link-anchor">&para;</a>
+        
+        
+      </h3>
 
 <p>Download the <a href="https://downloads.raspberrypi.org/raspbian_lite_latest">latest release of Raspbian Stretch</a> on your disk.
 Then, we need to copy it on your SD card, properly.</p>
@@ -102,8 +119,14 @@ Then, we need to copy it on your SD card, properly.</p>
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh pi@192.168.1.x</code></pre></figure>
 
 <p>Default password is <code class="highlighter-rouge">raspberry</code></p>
-
-<h3 id="minimal-security-settings">Minimal security settings</h3>
+    
+      <h3 id="minimal-security-settings">
+        
+        
+          Minimal security settings <a href="#minimal-security-settings" class="post-link-anchor">&para;</a>
+        
+        
+      </h3>
 
 <p>The bare minimum to do when the Raspberry first start is to <strong>change the password for the pi user</strong>.</p>
 
@@ -117,8 +140,14 @@ Then, we need to copy it on your SD card, properly.</p>
   <li>Requiring a password when using <code class="highlighter-rouge">sudo</code></li>
   <li>Update the repositories and packages</li>
 </ul>
-
-<h2 id="installing-pi-hole">Installing Pi-hole</h2>
+    
+      <h2 id="installing-pi-hole">
+        
+        
+          Installing Pi-hole <a href="#installing-pi-hole" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>It is advised that your Raspberry Pi should have a static IP on your network.</p>
 
@@ -140,8 +169,14 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 <p><img src="/assets/screenshots/setting-dns.png" alt="How to set primary DNS with DHCP" /></p>
 
 <p>You may now use the internet with no ads or trackers!</p>
-
-<h2 id="customize-your-network-with-aliases">Customize your network with aliases</h2>
+    
+      <h2 id="customize-your-network-with-aliases">
+        
+        
+          Customize your network with aliases <a href="#customize-your-network-with-aliases" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.</p>
 
@@ -162,8 +197,14 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">"addn-hosts=/etc/pihole/lan.list"</span> | <span class="nb">sudo tee</span> /etc/dnsmasq.d/02-lan.conf
 <span class="nb">sudo </span>pihole restartdns</code></pre></figure>
-
-<h2 id="using-the-web-admin-to-check-your-traffic">Using the web admin to check your traffic</h2>
+    
+      <h2 id="using-the-web-admin-to-check-your-traffic">
+        
+        
+          Using the web admin to check your traffic <a href="#using-the-web-admin-to-check-your-traffic" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Once Pi-hole is enabled, you can access <a href="http://pi.hole/">http://pi.hole</a>.</p>
 
@@ -184,8 +225,14 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 <p><strong>Fun fact:</strong> When I connected the Android phone of my girlfriend, this is what happened:</p>
 
 <p><img src="/assets/screenshots/pi-hole-android.png" alt="The home page of Pi Hole Admin" /></p>
-
-<h2 id="bonus-redirecting-a-dns-resolution">Bonus: redirecting a DNS resolution</h2>
+    
+      <h2 id="bonus-redirecting-a-dns-resolution">
+        
+        
+          Bonus: redirecting a DNS resolution <a href="#bonus-redirecting-a-dns-resolution" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>As described in my article <a href="/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html">How everyone could feed my cat</a>, 
 I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.</p>
@@ -199,8 +246,14 @@ I needed to redirect the resolution of my feeder to prevent it to communicate wi
 </code></pre></div></div>
 
 <p>Then, by restarting the DNS with <code class="highlighter-rouge">sudo pihole restartdns</code> ; the feeder communicate with my server, and not with theirs.</p>
-
-<h2 id="going-way-further">Going way further</h2>
+    
+      <h2 id="going-way-further">
+        
+        
+          Going way further <a href="#going-way-further" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>You now have a fully functional ad &amp; tracker blocker from the network side.</p>
 
@@ -210,8 +263,6 @@ I needed to redirect the resolution of my feeder to prevent it to communicate wi
 securing the DNS resolving using a TLS connexion, and preventing snooping, monitoring or other types of attacks.</p>
 
 <p>Finally, if you want to make your pi-hole admin interface available from the outside world, you really should consider <a href="https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771">an HTTPS configuration</a>.</p>
-
-
   </div>
 
   <div class="share-page">

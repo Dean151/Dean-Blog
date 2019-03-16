@@ -48,7 +48,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">How anyone could feed my cat</h1>
-    <p class="post-meta"><time datetime="2018-01-31T12:00:00+01:00" itemprop="datePublished">Jan 31, 2018</time></p>
+    <p class="post-meta"><time datetime="2018-01-31T12:00:00+01:00" itemprop="datePublished">Jan 31, 2018</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Dean</span></span></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -56,16 +56,27 @@
 Every time we heard a story about any kind of security flaw, we take it seriously: how is that possible? Am we directly or indirectly impacted?</p>
 
 <p>Well, I guess I wasn’t yet prepared for my last discovery.</p>
-
-<h2 id="what-i-like-about-home-automation-solution">What I like about home automation solution</h2>
+      <h2 id="what-i-like-about-home-automation-solution">
+        
+        
+          What I like about home automation solution <a href="#what-i-like-about-home-automation-solution" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That’s why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.</p>
 
 <p>Every device I ever choose was HomeKit compatible, and I never intended to use any of my devices remotely. I do not have any concentrator to make HomeKit available from anywhere, and I feel confident that my devices are pretty much secure. I suppose, maybe wrongly, that Apple do impose some rules to make the device secure, and also make sure that their own implementation of HomeKit is quite secure.</p>
 
 <p>I know that HomeKit already had some security flaw <a href="https://9to5mac.com/2017/12/07/homekit-vulnerability/">in the past</a>, and may have some in the future, but I’m pretty sure Apple will always correct them.</p>
-
-<h2 id="where-my-cat-comes-in">Where my cat comes in</h2>
+    
+      <h2 id="where-my-cat-comes-in">
+        
+        
+          Where my cat comes in <a href="#where-my-cat-comes-in" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p><img src="/assets/pictures/newton.jpg" alt="My cat, Newton" /></p>
 
@@ -75,8 +86,14 @@ Every time we heard a story about any kind of security flaw, we take it seriousl
 The trademark <em>HoneyGuaridan</em> was getting very good reception and comments from many users, and their last model, the <strong>HoneyGuaridan S25</strong> was very seducing!</p>
 
 <p>Indeed, it was one of the only models that allowed me to program 10 meals or more a day! Perfect to make my cat more regulated about food. Last tinkle in my ear: The device was getting setted and triggered with a smartphone, it was a complete IoT device!</p>
-
-<h2 id="when-it-got-complicated">When it got complicated</h2>
+    
+      <h2 id="when-it-got-complicated">
+        
+        
+          When it got complicated <a href="#when-it-got-complicated" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>I received the device about three weeks ago, and my cat adopted it very quickly!</p>
 
@@ -89,8 +106,14 @@ The trademark <em>HoneyGuaridan</em> was getting very good reception and comment
 <p>But still, with some very nasty bugs, the app gave a very bad user experience, and I decided to reverse-engineer their API to make my own application, with less features, but also less UI bugs!</p>
 
 <p>I used <a href="https://portswigger.net/burp">Burp Community Edition</a> as an HTTP proxy to catch every requests sent by the application ; and find out how they’re built.</p>
-
-<h2 id="what-i-found">What I found</h2>
+    
+      <h2 id="what-i-found">
+        
+        
+          What I found <a href="#what-i-found" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>The application communicate with many differents servers: <code class="highlighter-rouge">us1.dev.alnpet.com</code>, <code class="highlighter-rouge">fr.dev.alnpet.com</code>, but also <code class="highlighter-rouge">183.232.29.249</code> to send some report data over a security layer.</p>
 
@@ -101,8 +124,14 @@ The trademark <em>HoneyGuaridan</em> was getting very good reception and comment
 <p>I immediately tried it with <code class="highlighter-rouge">curl</code>: Just using my machine unique ID and the url, BIM, my cat got a new meal, right from my command line interface, and without any session created.</p>
 
 <p>This is crazy. At this moment, I realize that barely <em>anyone</em> could empty my feeder from anywhere in the world and/or make my cat obese!</p>
-
-<h2 id="how-i-reacted">How I reacted</h2>
+    
+      <h2 id="how-i-reacted">
+        
+        
+          How I reacted <a href="#how-i-reacted" class="post-link-anchor">&para;</a>
+        
+        
+      </h2>
 
 <p>My first reaction to that discovery was to remove the Wi-Fi settings from the machine, making sure it’s not anymore Internet connected. Of course I tried the magic request to prove that my machine was offline, and therefore more secure.</p>
 
@@ -129,8 +158,6 @@ iptables -A OUTPUT -s 47.90.203.137 -j DROP
 <p>And lesson learned: I will always challenge any new device that connect to my network from now on.</p>
 
 <p>Am I getting a little bit paranoid? Yes I am!</p>
-
-
   </div>
 
   <div class="share-page">

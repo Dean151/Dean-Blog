@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "iOS disclosure indicators done right"
+author: Dean
 date:   2016-08-12 21:18:00 +0200
 categories: Swift3 iOS
 ref: ios-disclosure-indicator

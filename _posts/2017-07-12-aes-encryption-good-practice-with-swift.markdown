@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Avoid 5 common mistakes with AES encryption"
+author: Dean
 date:   2017-07-12 21:30:00 +0200
 categories: Security Encryption
 ref: aes-good-practice-for-ios-app

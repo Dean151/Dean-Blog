@@ -233,6 +233,33 @@ body {
 }
 
 /**
+ * Link anchors
+ */
+
+.post-link-anchor {
+    display: inline-block;
+    opacity: 0;
+    line-height: 1em;
+    font-size: 0.8em;
+
+    transition: opacity 0.3s;
+}
+
+h1:hover .post-link-anchor,
+h2:hover .post-link-anchor,
+h3:hover .post-link-anchor,
+h4:hover .post-link-anchor,
+h5:hover .post-link-anchor,
+h6:hover .post-link-anchor {
+    opacity: 1;
+}
+
+.post-link-anchor:hover, .post-link-anchor:focus {
+    text-decoration: none;
+}
+
+
+/**
  * Site footer
  */
  .site-footer {

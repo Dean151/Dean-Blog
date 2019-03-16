@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Build a privacy-safe home network using Pi-hole"
+author: Dean
 date:   2018-10-20 17:00:00 +0200
 categories: Security network
 ref: raspberry-pi-hole
