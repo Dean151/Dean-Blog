@@ -4,7 +4,6 @@ title:  "Reverse engineering HoneyGuaridan S25 cat feeder"
 date:   2018-02-08 12:00:00 +0100
 categories: Security IOT
 ref: reverse-engineering-a-cat-feeder
-lang: en
 published: false
 ---
 

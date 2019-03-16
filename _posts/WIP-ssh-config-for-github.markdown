@@ -4,7 +4,6 @@ title:  "Seamless SSH configuration for git with GitHub"
 date:   2017-07-12 23:55:00 +0200
 categories: Git
 ref: ssh-config-for-github
-lang: en
 published: false
 ---
 

@@ -4,7 +4,6 @@ title:  "iOS disclosure indicators done right"
 date:   2016-08-12 21:18:00 +0200
 categories: Swift3 iOS
 ref: ios-disclosure-indicator
-lang: en
 ---
 
 **Updated for Swift 3 with Xcode 8.1**

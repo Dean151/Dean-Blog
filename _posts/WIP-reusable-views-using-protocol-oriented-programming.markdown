@@ -4,7 +4,6 @@ title:  "Reusable views using Swift and Protocol Oriented Programming"
 date:   2016-11-20 18:05:00 +0200
 categories: Swift3 iOS
 ref: ios-reusable-views
-lang: en
 published: false
 ---
 
