@@ -226,6 +226,14 @@ body {
   list-style: none; }
   .post-list > li {
     margin-bottom: 30px; }
+  .post-list .post-link {
+    display: inline; }
+  .post-list .post-meta {
+    font-size: 14px;
+    color: #828282; }
+  .post-list .post-date {
+    font-size: 22px;
+    padding-left: 60px; }
 
 .post-link {
   display: block;
@@ -252,7 +260,7 @@ body {
       .post-header .post-title {
         font-size: 36px; } }
 
-.post-meta {
+.post-date {
   display: inline-block;
   background: #5EAE56;
   color: white;
@@ -264,7 +272,7 @@ body {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px; }
 
-.post-meta:after {
+.post-date:after {
   content: " ";
   position: absolute;
   left: 0;

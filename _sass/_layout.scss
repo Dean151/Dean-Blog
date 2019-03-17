@@ -79,6 +79,20 @@ body {
     > li {
         margin-bottom: $spacing-unit;
     }
+
+    .post-link {
+        display: inline;
+    }
+
+    .post-meta {
+        font-size: $small-font-size;
+        color: $grey-color;
+    }
+
+    .post-date {
+        font-size: $large-font-size;
+        padding-left: 60px;
+    }
 }
 
 .post-link {
@@ -115,7 +129,7 @@ body {
     }
 }
 
-.post-meta {
+.post-date {
     display: inline-block;
 
     background: $main-green-color-light;
@@ -131,7 +145,7 @@ body {
     border-bottom-right-radius: 2px;
 }
 
-.post-meta:after {
+.post-date:after {
     content: " ";
 
     position: absolute;
