@@ -75,40 +75,36 @@ body {
     margin-left: 0;
     list-style: none;
 
-    > li {
-        margin-bottom: $spacing-unit;
-    }
-
-    .post-link {
-        display: inline;
-    }
-
-    .post-meta {
-        font-size: $small-font-size;
-        color: $grey-color;
-    }
-
     .post-date {
         font-size: $large-font-size;
         padding-left: 60px;
     }
-}
 
-.post-link {
-    display: block;
-    font-size: 24px;
-}
+    > li {
+        margin-bottom: $spacing-unit;
+    }
 
-.post-link::before {
-  content: '● ';
-  display: inline-block;
-  color: $brand-color;
-}
+    .post-meta {
+        display: inline-block;
+        font-size: $small-font-size;
+        color: $grey-color;
+    }
 
-.post-link:visited::before {
-  color: $content-back-color;
-}
+    .post-link::before {
+        content: '● ';
+        display: inline-block;
+        color: $brand-color;
+    }
+    
+    .post-link:visited::before {
+        color: $content-back-color;
+    }
 
+    .post-link {
+        display: inline;
+        font-size: 24px;
+    }
+}
 
 
 /**

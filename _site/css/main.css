@@ -83,7 +83,7 @@ hr {
     font-weight: 100;
     font-size: 1.5em;
     padding: 0 0.25em;
-    background: white; }
+    background: #fff; }
 
 /**
  * Links
@@ -245,28 +245,24 @@ body {
 .post-list {
   margin-left: 0;
   list-style: none; }
-  .post-list > li {
-    margin-bottom: 30px; }
-  .post-list .post-link {
-    display: inline; }
-  .post-list .post-meta {
-    font-size: 14px;
-    color: #828282; }
   .post-list .post-date {
     font-size: 22px;
     padding-left: 60px; }
-
-.post-link {
-  display: block;
-  font-size: 24px; }
-
-.post-link::before {
-  content: '● ';
-  display: inline-block;
-  color: #378B2E; }
-
-.post-link:visited::before {
-  color: #fff; }
+  .post-list > li {
+    margin-bottom: 30px; }
+  .post-list .post-meta {
+    display: inline-block;
+    font-size: 14px;
+    color: #828282; }
+  .post-list .post-link::before {
+    content: '● ';
+    display: inline-block;
+    color: #378B2E; }
+  .post-list .post-link:visited::before {
+    color: #fff; }
+  .post-list .post-link {
+    display: inline;
+    font-size: 24px; }
 
 /**
  * Posts
