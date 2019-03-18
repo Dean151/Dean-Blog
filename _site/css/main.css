@@ -241,14 +241,13 @@ body {
 
 .page-heading {
   font-size: 36px; }
-
-.page-heading a {
-  color: #828282;
-  font-size: 22px; }
-  .page-heading a:hover {
-    color: #378B2E; }
-  .page-heading a.rss-feed:hover {
-    color: #ee802f; }
+  .page-heading a {
+    color: #828282;
+    font-size: 22px; }
+    .page-heading a:hover {
+      color: #378B2E; }
+    .page-heading a.rss-feed:hover {
+      color: #ee802f; }
 
 .post-list {
   margin-left: 0;

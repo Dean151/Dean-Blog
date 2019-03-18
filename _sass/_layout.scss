@@ -69,18 +69,18 @@ body {
 
 .page-heading {
     font-size: $title-font-size;
-}
 
-.page-heading a {
-    color: $grey-color;
-    font-size: $large-font-size;
-
-    &:hover {
-        color: $main-green-color;
-    }
-
-    &.rss-feed:hover {
-        color: #ee802f;
+    a {
+        color: $grey-color;
+        font-size: $large-font-size;
+    
+        &:hover {
+            color: $main-green-color;
+        }
+    
+        &.rss-feed:hover {
+            color: #ee802f;
+        }
     }
 }
 
