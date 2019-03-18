@@ -205,6 +205,10 @@ body {
     justify-content: center;
     align-items: center;
 
+    h3 {
+        font-size: $base-font-size * 1.5;
+    }
+
     ul {
         display: inline-block;
         list-style: none;
