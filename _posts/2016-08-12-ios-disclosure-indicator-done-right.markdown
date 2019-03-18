@@ -13,6 +13,8 @@ Disclosure indicators are very common in an iOS application, and they allow the
 user to know that if they select a cell, they will be pushed somewhere else.
 You can also read [Apple documentation][doc-apple-disclosure] about them.
 
+<!--more-->
+
 ![a cell with disclosure indicator][cell-with-disclosure-indicator]
 A cell with disclosure indicator
 

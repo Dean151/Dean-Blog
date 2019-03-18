@@ -17,6 +17,8 @@ Because I previously used Dotclear, and it didn't really fit my needs: it was to
 Plus, there were an issue with the Dotclear's comment system, it was polluted by bots.
 So I decided to retire it.
 
+<!--more-->
+
 Now I use [Jekyll][jekyll], and it's really great. It allows to generate a completely static website !
 
 If you're interested by getting started with Jekyll, you can check out [this blog][sylvain-blog] that have plenty of Jekyll related posts. A must see !

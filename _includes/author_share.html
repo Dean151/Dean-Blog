@@ -24,7 +24,7 @@
             </a>
         </li>
         <li class="share-button share-linkedin">
-            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;title={{ page.title | url_encode }}&amp;summary={{ site.description | url_encode }}&amp;source={{ site.url | url_encode }}" rel="nofollow" target="_blank" title="Share on LinkedIn">
+            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;title={{ page.title | url_encode }}&amp;summary={% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | url_encode }}{% else %}{{ site.description | url_encode }}{% endif %}&amp;source={{ site.url | url_encode }}" rel="nofollow" target="_blank" title="Share on LinkedIn">
                 <span class="fa fa-linkedin-square"></span>
             </a>
         </li>

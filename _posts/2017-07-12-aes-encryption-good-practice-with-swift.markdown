@@ -15,6 +15,8 @@ into when using cryptography!
 
 The rest of this article will use CryptoSwift as an example.
 
+<!--more-->
+
 ## 1. Don't hard code your cryptographic key
 
 Anything you put in the code is, in a way, readable by anyone. It's always possible

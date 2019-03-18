@@ -11,6 +11,8 @@ Data privacy, and the usage of collected data have now became a controversial su
 
 In this tutorial, you'll see what solution I came around keeping my own privacy at my home network.
 
+<!--more-->
+
 ## What is Pi-hole?
 
 [Pi-hole][pihole], as they describe themselves, is an open-source [DNS sinkhole][sinkhole].

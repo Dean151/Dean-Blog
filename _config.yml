@@ -17,3 +17,4 @@ linkedin_username: thomasdurandverjat
 
 # Build settings
 markdown: kramdown
+excerpt_separator: <!--more-->

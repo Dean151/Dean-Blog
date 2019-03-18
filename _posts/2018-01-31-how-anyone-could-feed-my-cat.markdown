@@ -12,6 +12,8 @@ Every time we heard a story about any kind of security flaw, we take it seriousl
 
 Well, I guess I wasn't yet prepared for my last discovery.
 
+<!--more-->
+
 ## What I like about home automation solution
 
 Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That's why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.

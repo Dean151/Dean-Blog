@@ -13,6 +13,8 @@ Now that I begin to feel very familiar with *Swift* syntax and *iOS* app design 
 
 This is the first article about *iOS* development on this blog and I really hope I will manage to write more.
 
+<!--more-->
+
 **Note:** There is two methods to implement a dynamic table view : using a `UITableViewController`, or using a `UIViewController` that implements `UITableViewDelegate` and `UITableViewDataSource`. I will explain this second solution in this tutorial, not because it's the simplest, but because it allow way more customizations for the layout of the TableView if you need to.
 
 ## What we're gonna build from scratch
