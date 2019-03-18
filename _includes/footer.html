@@ -43,6 +43,7 @@
 
 </footer>
 
+{% if jekyll.environment == "production" %}
 <script type="text/javascript">
   var _paq = _paq || [];
   _paq.push(['trackPageView']);
@@ -55,3 +56,4 @@
   })();
 </script>
 <noscript><p><img src="/p/?idsite=14&rec=1" style="border:0;" alt="" /></p></noscript>
+{% endif %}
