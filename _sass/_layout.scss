@@ -33,8 +33,7 @@ body {
 }
 
 .site-nav {
-    float: left;
-    margin-left: 20px;
+    float: right;
     line-height: 60px;
 
     .page-link {
@@ -388,4 +387,14 @@ h6:hover .post-link-anchor {
         width: -webkit-calc(100% - (#{$spacing-unit} / 2));
         width:         calc(100% - (#{$spacing-unit} / 2));
     }
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+
+    float: left;
+    margin-right: $spacing-unit !important;
+    border-radius: 50% !important;
+    box-shadow: none;
 }

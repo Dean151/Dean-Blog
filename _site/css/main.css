@@ -216,8 +216,7 @@ body {
   opacity: 1; }
 
 .site-nav {
-  float: left;
-  margin-left: 20px;
+  float: right;
   line-height: 60px; }
   .site-nav .page-link {
     color: #efefef;
@@ -336,6 +335,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center; }
+  .share-section h3 {
+    font-size: 24px; }
   .share-section ul {
     display: inline-block;
     list-style: none;
@@ -468,6 +469,14 @@ h6:hover .post-link-anchor {
     float: none;
     width: -webkit-calc(100% - (30px / 2));
     width: calc(100% - (30px / 2)); } }
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  float: left;
+  margin-right: 30px !important;
+  border-radius: 50% !important;
+  box-shadow: none; }
+
 /* =============================================================
 
     Tables v1.0

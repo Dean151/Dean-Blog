@@ -5,8 +5,8 @@
     <description>Dean's blog is a blog about computer science and development</description>
     <link>https://www.thomasdurand.fr/</link>
     <atom:link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Mar 2019 11:43:02 +0100</pubDate>
-    <lastBuildDate>Mon, 18 Mar 2019 11:43:02 +0100</lastBuildDate>
+    <pubDate>Mon, 18 Mar 2019 17:21:36 +0100</pubDate>
+    <lastBuildDate>Mon, 18 Mar 2019 17:21:36 +0100</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -1122,17 +1122,17 @@ If you need it, you can clone or download the project from &lt;a href=&quot;http
         <title>Renewing the blog</title>
         <description>&lt;p&gt;&lt;strong&gt;Updated on Mar 16, 2019&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;For the people who knew the blog before this update, it’s completely gone.&lt;/p&gt;
+&lt;p&gt;For the people who knew the blog from before 2016, it’s completely gone.&lt;/p&gt;
 
 &lt;h2 id=&quot;why-&quot;&gt;Why ?&lt;/h2&gt;
 
-&lt;p&gt;Because I used Dotclear, and it didn’t really fit my needs. There were no multilingual possibility, and it was too complex compared with my real needs.
-There were also an issue with the Dotclear’s comment system, polluted with bots.
+&lt;p&gt;Because I previously used Dotclear, and it didn’t really fit my needs: it was too complex compared with my real needs.
+Plus, there were an issue with the Dotclear’s comment system, it was polluted by bots.
 So I decided to retire it.&lt;/p&gt;
 
-&lt;p&gt;Now I use &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, and it’s really great. It allow to generate a completely static website !&lt;/p&gt;
+&lt;p&gt;Now I use &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt;, and it’s really great. It allows to generate a completely static website !&lt;/p&gt;
 
-&lt;p&gt;If you’re interested by getting started with Jekyll, you can check &lt;a href=&quot;https://www.sylvaindurand.org&quot;&gt;this blog&lt;/a&gt; that have plenty of Jekyll related posts. A must see !&lt;/p&gt;
+&lt;p&gt;If you’re interested by getting started with Jekyll, you can check out &lt;a href=&quot;https://www.sylvaindurand.org&quot;&gt;this blog&lt;/a&gt; that have plenty of Jekyll related posts. A must see !&lt;/p&gt;
 
 &lt;h2 id=&quot;mais-où-est-le-français-&quot;&gt;&lt;em&gt;Mais où est le Français ?&lt;/em&gt;&lt;/h2&gt;
 
