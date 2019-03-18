@@ -4,14 +4,15 @@
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
+        <img src="/assets/pictures/dean.jpg" class="profile-picture" alt="Profile picture">
+        <h2 class="footer-heading">Thomas Durand (a.k.a. Dean)</h2>
         <ul class="contact-list">
-          <li>{{ site.title }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li>Software architect, code owner and security engineer at <a href="https://www.dilitrust.com/" target="_blank">DiliTrust</a> in Paris.</li>
+            <li>Co-creator of a french amateur audiodrama, <a href="https://www.cafelembas.com/" target="_blank">Café & Lembas</a>.</li>
+            <li>iOS and web developer, keen photographer, currently in love with <a href="https://swift.org/">Swift</a>.</li>
         </ul>
       </div>
-
-      <div class="footer-col footer-col-3"></div>
-
+      
       <div class="footer-col footer-col-2">
         <ul class="social-media-list">
           {% if site.github_username %}
@@ -19,22 +20,21 @@
             <a href="https://github.com/{{ site.github_username }}"><span class="fa fa-github"></span> <span class="username">{{ site.github_username }}</span></a>
           </li>
           {% endif %}
-
-          {% if site.linkedin_username %}
-          <li>
-            <a href="https://linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span> <span class="username">{{ site.linkedin_username}}</span></a>
-          </li>
-          {% endif %}
-
           {% if site.twitter_username %}
           <li>
             <a href="https://twitter.com/{{ site.twitter_username }}"><span class="fa fa-twitter"></span> <span class="username">{{ site.twitter_username}}</span></a>
           </li>
           {% endif %}
-
+          {% if site.linkedin_username %}
           <li>
-            <a href="{{ '/feed.xml' | prepend: site.baseurl }}"><span class="fa fa-rss"></span> <span class="username">rss flux</span></a>
+            <a href="https://linkedin.com/in/{{ site.linkedin_username }}"><span class="fa fa-linkedin"></span> <span class="username">{{ site.linkedin_username}}</span></a>
           </li>
+          {% endif %}
+          {% if site.email %}
+          <li>
+            <a href="mailto:{{ site.email }}"><span class="fa fa-envelope-o"></span> <span class="username">{{ site.email }}</span></a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -42,6 +42,7 @@
   </div>
 
 </footer>
+
 {% unless site.url contains "localhost" %}
 <script type="text/javascript">
   var _paq = _paq || [];

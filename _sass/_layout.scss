@@ -328,9 +328,24 @@ h6:hover .post-link-anchor {
     margin-bottom: $spacing-unit / 2;
 }
 
+.profile-picture {
+    width: 100px;
+    height: 100px;
+
+    float: left;
+    margin-right: $spacing-unit / 2 !important;
+    border-radius: 50% !important;
+    box-shadow: none;
+}
+
 .contact-list,
 .social-media-list {
     list-style: none;
+}
+.contact-list {
+    margin-left: 100 + ($spacing-unit / 2);
+}
+.social-media-list {
     margin-left: 0;
 }
 
@@ -341,7 +356,7 @@ h6:hover .post-link-anchor {
 }
 
 .footer-col-wrapper {
-    font-size: 15px;
+    font-size: $small-font-size;
     color: $grey-color;
     margin-left: -$spacing-unit / 2;
     @extend %clearfix;
@@ -354,8 +369,8 @@ h6:hover .post-link-anchor {
 }
 
 .footer-col-1 {
-    width: -webkit-calc(35% - (#{$spacing-unit} / 2));
-    width:         calc(35% - (#{$spacing-unit} / 2));
+    width: -webkit-calc(75% - (#{$spacing-unit} / 2));
+    width:         calc(75% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-2 {
@@ -363,21 +378,20 @@ h6:hover .post-link-anchor {
     width:         calc(25% - (#{$spacing-unit} / 2));
 }
 
-.footer-col-3 {
-    width: -webkit-calc(40% - (#{$spacing-unit} / 2));
-    width:         calc(40% - (#{$spacing-unit} / 2));
-}
-
 @include media-query($on-laptop) {
-    .footer-col-1,
-    .footer-col-2 {
-        width: -webkit-calc(50% - (#{$spacing-unit} / 2));
-        width:         calc(50% - (#{$spacing-unit} / 2));
+    .profile-picture {
+        width: 50px;
+        height: 50px;
     }
-
-    .footer-col-3 {
-        width: -webkit-calc(100% - (#{$spacing-unit} / 2));
-        width:         calc(100% - (#{$spacing-unit} / 2));
+    .contact-list {
+        margin-left: 50px + ($spacing-unit / 2);
+    }
+    .footer-col-1 {
+        width: -webkit-calc(100% - 185px - (#{$spacing-unit}));
+        width:         calc(100% - 185px - (#{$spacing-unit}));
+    }
+    .footer-col-2 {
+        width: 185px;
     }
 }
 
@@ -387,14 +401,7 @@ h6:hover .post-link-anchor {
         width: -webkit-calc(100% - (#{$spacing-unit} / 2));
         width:         calc(100% - (#{$spacing-unit} / 2));
     }
-}
-
-.profile-picture {
-    width: 100px;
-    height: 100px;
-
-    float: left;
-    margin-right: $spacing-unit !important;
-    border-radius: 50% !important;
-    box-shadow: none;
+    .social-media-list {
+        margin-left: 50px + ($spacing-unit / 2);
+    }
 }

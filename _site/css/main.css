@@ -423,9 +423,22 @@ h6:hover .post-link-anchor {
   font-size: 18px;
   margin-bottom: 15px; }
 
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  float: left;
+  margin-right: 15px !important;
+  border-radius: 50% !important;
+  box-shadow: none; }
+
 .contact-list,
 .social-media-list {
-  list-style: none;
+  list-style: none; }
+
+.contact-list {
+  margin-left: 115px; }
+
+.social-media-list {
   margin-left: 0; }
 
 .social-media-list li a span.icon {
@@ -434,7 +447,7 @@ h6:hover .post-link-anchor {
   width: 21px; }
 
 .footer-col-wrapper {
-  font-size: 15px;
+  font-size: 14px;
   color: #828282;
   margin-left: -15px; }
 
@@ -444,39 +457,35 @@ h6:hover .post-link-anchor {
   padding-left: 15px; }
 
 .footer-col-1 {
-  width: -webkit-calc(35% - (30px / 2));
-  width: calc(35% - (30px / 2)); }
+  width: -webkit-calc(75% - (30px / 2));
+  width: calc(75% - (30px / 2)); }
 
 .footer-col-2 {
   width: -webkit-calc(25% - (30px / 2));
   width: calc(25% - (30px / 2)); }
 
-.footer-col-3 {
-  width: -webkit-calc(40% - (30px / 2));
-  width: calc(40% - (30px / 2)); }
-
 @media screen and (max-width: 1000px) {
-  .footer-col-1,
-  .footer-col-2 {
-    width: -webkit-calc(50% - (30px / 2));
-    width: calc(50% - (30px / 2)); }
+  .profile-picture {
+    width: 50px;
+    height: 50px; }
 
-  .footer-col-3 {
-    width: -webkit-calc(100% - (30px / 2));
-    width: calc(100% - (30px / 2)); } }
+  .contact-list {
+    margin-left: 65px; }
+
+  .footer-col-1 {
+    width: -webkit-calc(100% - 185px - (30px));
+    width: calc(100% - 185px - (30px)); }
+
+  .footer-col-2 {
+    width: 185px; } }
 @media screen and (max-width: 600px) {
   .footer-col {
     float: none;
     width: -webkit-calc(100% - (30px / 2));
-    width: calc(100% - (30px / 2)); } }
-.profile-picture {
-  width: 100px;
-  height: 100px;
-  float: left;
-  margin-right: 30px !important;
-  border-radius: 50% !important;
-  box-shadow: none; }
+    width: calc(100% - (30px / 2)); }
 
+  .social-media-list {
+    margin-left: 65px; } }
 /* =============================================================
 
     Tables v1.0

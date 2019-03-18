@@ -25,23 +25,8 @@ Only the stories' content, and embedded code extracts are under [MIT License][mi
 The website code, design and logo may not be reused.
 
 
-### The author
-
-![dean]{: class="profile-picture"}
-
-#### Thomas Durand (a.k.a. Dean)
-
-Software architect, code owner and security engineer at [DiliTrust][dilitrust] in Paris.\\
-Co-creator of an amateur audiodrama, [Café & Lembas][cafelembas].\\
-iOS and web developer, keen photographer, currently in love with [Swift][swift] and [Jekyll][jekyll].
-
-
 [jekyll]: https://jekyllrb.com/
 [jekyll-minima]: https://github.com/jekyll/minima
 [font-awesome]: https://fontawesome.com/v4.7.0/
 [matomo]: https://matomo.org/
 [mit]: https://opensource.org/licenses/MIT
-[dean]: /assets/pictures/dean.jpg
-[dilitrust]: https://www.dilitrust.com/
-[cafelembas]: https://www.cafelembas.com/
-[swift]: https://swift.org/
