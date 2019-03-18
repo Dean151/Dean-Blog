@@ -9,17 +9,17 @@ ref: renewing-blog
 
 **Updated on Mar 16, 2019**
 
-For the people who knew the blog before this update, it's completely gone.
+For the people who knew the blog from before 2016, it's completely gone.
 
 ## Why ?
 
-Because I used Dotclear, and it didn't really fit my needs. There were no multilingual possibility, and it was too complex compared with my real needs.
-There were also an issue with the Dotclear's comment system, polluted with bots.
+Because I previously used Dotclear, and it didn't really fit my needs: it was too complex compared with my real needs.
+Plus, there were an issue with the Dotclear's comment system, it was polluted by bots.
 So I decided to retire it.
 
-Now I use [Jekyll][jekyll], and it's really great. It allow to generate a completely static website !
+Now I use [Jekyll][jekyll], and it's really great. It allows to generate a completely static website !
 
-If you're interested by getting started with Jekyll, you can check [this blog][sylvain-blog] that have plenty of Jekyll related posts. A must see !
+If you're interested by getting started with Jekyll, you can check out [this blog][sylvain-blog] that have plenty of Jekyll related posts. A must see !
 
 ## *Mais où est le Français ?*
 
