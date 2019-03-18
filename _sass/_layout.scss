@@ -71,6 +71,19 @@ body {
     font-size: $title-font-size;
 }
 
+.page-heading a {
+    color: $grey-color;
+    font-size: $large-font-size;
+
+    &:hover {
+        color: $main-green-color;
+    }
+
+    &.rss-feed:hover {
+        color: #ee802f;
+    }
+}
+
 .post-list {
     margin-left: 0;
     list-style: none;

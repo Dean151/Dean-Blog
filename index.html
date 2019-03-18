@@ -7,7 +7,9 @@ index: 1
 
 <div class="home">
 
-  <h1 class="page-heading">Stories</h1>
+  <h1 class="page-heading">Stories
+    <a href="{{ '/feed.xml' | prepend: site.baseurl }}" class="rss-feed" title="RSS Feed" target="_blank"><span class="fa fa-rss"></span></a>
+  </h1>
 
   <ul class="post-list">
     {% for post in site.posts %}{% assign this_year = post.date | date: "%Y" %}{% assign next_year = post.previous.date | date: "%Y" %}
