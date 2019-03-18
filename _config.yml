@@ -17,18 +17,3 @@ linkedin_username: thomasdurandverjat
 
 # Build settings
 markdown: kramdown
-
-# Translations
-t:
-  en:
-    baseurl: "/"
-    title:  "Dean's blog"
-    description: "Dean's blog is a blog about computer science and development"
-    rss: "rss flux"
-    share: "Share on:"
-  fr:
-    baseurl: "/articles.html"
-    title:  "Le blog de Dean"
-    description: "Le blog de Dean est un blog d'informatique et de développement"
-    rss: "flux rss"
-    share: "Partager sur :"
