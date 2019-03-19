@@ -1,3 +1,6 @@
+{% assign url = page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url %}{% assign image = '' %}
+{% capture title %}{% if page.title %}{{ page.title | append: ' — ' | escape }}{% endif %}{{ site.title | escape }}{% endcapture %}
+{% capture description %}{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}{% endcapture %}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -5,11 +8,26 @@
 
   <link rel="icon" type="image/png" href="/assets/design/favicon.png" />
 
-  <title>{{ site.title | escape }}{% if page.title %}{{ page.title | prepend: ' — ' | escape }}{% endif %}</title>
-  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <title>{{title}}</title>
+  <meta name="description" content="{{description}}">
+
+  <meta itemprop="name" content="{{ title }}">
+  <meta itemprop="description" content="{{ description  }}">
+  <meta itemprop="image" content="{{ image }}">
+
+  <meta property="og:url" content="{{ url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{  description  }}">
+  <meta property="og:image" content="{{ image }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:description" content="{{  description  }}">
+  <meta name="twitter:image" content="{{ image }}">
 
   <link rel="stylesheet" href="{{ '/css/main.css' | prepend: site.baseurl }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
   <link rel="stylesheet" href="{{ '/dist/font-awesome-4.7.0/css/font-awesome.min.css' | prepend: site.baseurl }}">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="canonical" href="{{ url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | prepend: site.baseurl | prepend: site.url }}">
 </head>
