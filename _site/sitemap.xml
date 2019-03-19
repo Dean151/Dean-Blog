@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://www.thomasdurand.fr/blog/2016/08/06/renewing-the-blog.html</loc>
+<lastmod>2016-08-06T07:55:44+02:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/swift3/ios/2016/08/07/ios-basics-tableview-setup.html</loc>
+<lastmod>2016-08-07T12:46:07+02:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html</loc>
+<lastmod>2016-08-12T21:18:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html</loc>
+<lastmod>2017-07-12T21:30:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html</loc>
+<lastmod>2018-01-31T12:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html</loc>
+<lastmod>2018-10-20T17:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/about/</loc>
+</url>
+<url>
+<loc>https://www.thomasdurand.fr/</loc>
+</url>
+</urlset>

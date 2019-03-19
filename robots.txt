@@ -1,1 +1,5 @@
-Sitemap: http://www.example.org/sitemap.xml
+---
+layout:
+permalink: /robots.txt
+---
+Sitemap: {{ '/sitemap.xml' | prepend: site.url }}
