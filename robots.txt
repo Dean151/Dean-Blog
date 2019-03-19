@@ -2,4 +2,4 @@
 layout:
 permalink: /robots.txt
 ---
-Sitemap: {{ '/sitemap.xml' | prepend: site.url }}
+Sitemap: {{ '/sitemap.xml' | absolute_url }}

@@ -8,7 +8,7 @@ index: 1
 <div class="home">
 
   <h1 class="page-heading">Stories
-    <a href="{{ '/feed.xml' | prepend: site.baseurl }}" class="rss-feed" title="RSS Feed" target="_blank">
+    <a href="{{ '/feed.xml' | relative_url }}" class="rss-feed" title="RSS Feed" target="_blank">
       <span class="fa fa-rss"></span>&nbsp;<span class="hidden-text">Feed</span>
     </a>
   </h1>
@@ -20,7 +20,7 @@ index: 1
         <p class="post-date">{{ post.date | date: "%Y" }}</p>
       {% endif %}
         <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
           <span class="post-meta">{{ post.date | date: "%b %-d" }}</span>
         </h2>
       {% if forloop.last %}

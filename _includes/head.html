@@ -1,4 +1,4 @@
-{%- assign url = page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url -%}
+{%- assign url = page.url | replace:'index.html','' | absolute_url -%}
 {%- assign image = '/assets/design/favicon192.png' -%}
 {%- capture title -%}{%- if page.title -%}{{ page.title | append: ' — ' | escape }}{%- endif -%}{{ site.title | escape }}{%- endcapture -%}
 {%- capture description -%}{%- if page.excerpt -%}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{%- else -%}{{ site.description }}{%- endif -%}{%- endcapture -%}
@@ -27,17 +27,19 @@
   <meta name="twitter:description" content="{{  description  }}">
   <meta name="twitter:image" content="{{ image }}">
 
+  <meta name="apple-mobile-web-app-title" content="{{ site.title | escape }}">
   <link rel="apple-touch-icon" sizes="57x57" href="/assets/design/favicon57.png">
   <link rel="apple-touch-icon" sizes="76x76" href="/assets/design/favicon76.png">
   <link rel="apple-touch-icon" sizes="120x120" href="/assets/design/favicon120.png">
   <link rel="apple-touch-icon" sizes="152x152" href="/assets/design/favicon152.png">
   <link rel="apple-touch-icon" sizes="167x167" href="/assets/design/favicon167.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/design/favicon180.png">
+  
   <link rel="icon" sizes="192x192" href="/assets/design/favicon192.png">
   <link rel="icon" sizes="128x128" href="/assets/design/favicon128.png">
 
-  <link rel="stylesheet" href="{{ '/css/main.css' | prepend: site.baseurl }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
-  <link rel="stylesheet" href="{{ '/dist/font-awesome-4.7.0/css/font-awesome.min.css' | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
+  <link rel="stylesheet" href="{{ '/dist/font-awesome-4.7.0/css/font-awesome.min.css' | relative_url }}">
   <link rel="canonical" href="{{ url }}">
   {% feed_meta %}
 </head>
