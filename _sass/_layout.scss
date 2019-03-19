@@ -226,6 +226,10 @@ body {
     justify-content: center;
     align-items: center;
 
+    @include media-query($on-palm) {
+        flex-flow: column;
+    }
+
     h3 {
         font-size: $base-font-size * 1.5;
     }
@@ -234,6 +238,10 @@ body {
         display: inline-block;
         list-style: none;
         margin-left: 15px;
+
+        @include media-query($on-palm) {
+            margin-left: 0;
+        }
     }
 
     ul li.share-button {
