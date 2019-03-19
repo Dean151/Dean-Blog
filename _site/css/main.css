@@ -243,9 +243,17 @@ body {
   font-size: 36px; }
   .page-heading a {
     color: #828282;
-    font-size: 22px; }
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center; }
     .page-heading a:hover {
-      color: #378B2E; }
+      color: #378B2E;
+      text-decoration: none; }
+    .page-heading a span.hidden-text {
+      font-size: 0;
+      transition: font-size .3s; }
+    .page-heading a:hover span.hidden-text {
+      font-size: 16px; }
     .page-heading a.rss-feed:hover {
       color: #ee802f; }
 
@@ -356,7 +364,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    transition: background-color color; }
+    transition: background-color; }
   .share-section ul li.share-button:hover a {
     color: white;
     text-decoration: none;

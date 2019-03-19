@@ -73,9 +73,22 @@ body {
     a {
         color: $grey-color;
         font-size: $large-font-size;
+
+        display: inline-flex;
+        align-items: center;
     
         &:hover {
             color: $main-green-color;
+            text-decoration: none;
+        }
+
+        & span.hidden-text {
+            font-size: 0;
+            transition: font-size .3s;
+        }
+
+        &:hover span.hidden-text {
+            font-size: $base-font-size;
         }
     
         &.rss-feed:hover {
@@ -239,7 +252,7 @@ body {
         align-items: center;
 
         background-color: transparent;
-        transition: background-color color;
+        transition: background-color;
     }
 
     ul li.share-button:hover a {
