@@ -28,15 +28,15 @@
   <meta name="twitter:image" content="{{ image }}">
 
   <meta name="apple-mobile-web-app-title" content="{{ site.title | escape }}">
-  <link rel="apple-touch-icon" sizes="57x57" href="{{ '/assets/design/favicon57.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="76x76" href="{{ '/assets/design/favicon76.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="120x120" href="{{ '/assets/design/favicon120.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="152x152" href="{{ '/assets/design/favicon152.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="167x167" href="{{ '/assets/design/favicon167.png' | relative_url }}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/design/favicon180.png' | relative_url }}">
+  {%- assign iossizes = "57,76,120,152,167,180" | split: "," -%}
+  {% for size in iossizes %}
+  <link rel="apple-touch-icon" sizes="{{size}}x{{size}}" href="{{ size | prepend: '/assets/design/favicon' | append: '.png' | relative_url }}">
+  {%- endfor %}
 
-  <link rel="icon" sizes="192x192" href="/assets/design/favicon192.png">
-  <link rel="icon" sizes="128x128" href="/assets/design/favicon128.png">
+  {%- assign androidsizes = "192,128" | split: "," -%}
+  {% for size in androidsizes %}
+  <link rel="icon" sizes="{{size}}x{{size}}" href="{{ size | prepend: '/assets/design/favicon' | append: '.png' | relative_url }}">
+  {%- endfor %}
 
   <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
   <link rel="stylesheet" href="{{ '/dist/font-awesome-4.7.0/css/font-awesome.min.css' | relative_url }}">
