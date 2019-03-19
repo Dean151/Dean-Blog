@@ -246,15 +246,15 @@ body {
     font-size: 22px;
     display: inline-flex;
     align-items: center; }
-    .page-heading a:hover {
+    .page-heading a:hover, .page-heading a:focus {
       color: #378B2E;
       text-decoration: none; }
-    .page-heading a span.hidden-text {
+      .page-heading a:hover .hidden-text, .page-heading a:focus .hidden-text {
+        font-size: 16px; }
+    .page-heading a .hidden-text {
       font-size: 0;
       transition: font-size .3s; }
-    .page-heading a:hover span.hidden-text {
-      font-size: 16px; }
-    .page-heading a.rss-feed:hover {
+    .page-heading a.rss-feed:hover, .page-heading a.rss-feed:focus {
       color: #ee802f; }
 
 .post-list {
@@ -410,14 +410,12 @@ body {
   opacity: 0;
   line-height: 1em;
   font-size: 0.8em;
+  color: #828282;
   transition: opacity 0.3s; }
+  .post-link-anchor:hover, .post-link-anchor:focus {
+    color: #378B2E; }
 
-h1:hover .post-link-anchor,
-h2:hover .post-link-anchor,
-h3:hover .post-link-anchor,
-h4:hover .post-link-anchor,
-h5:hover .post-link-anchor,
-h6:hover .post-link-anchor {
+h1:hover .post-link-anchor, h2:hover .post-link-anchor, h3:hover .post-link-anchor, h4:hover .post-link-anchor, h5:hover .post-link-anchor, h6:hover .post-link-anchor {
   opacity: 1; }
 
 .post-link-anchor:hover, .post-link-anchor:focus {

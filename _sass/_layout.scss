@@ -77,21 +77,21 @@ body {
         display: inline-flex;
         align-items: center;
     
-        &:hover {
+        &:hover, &:focus {
             color: $main-green-color;
             text-decoration: none;
+
+            .hidden-text {
+                font-size: $base-font-size;
+            }
         }
 
-        & span.hidden-text {
+        .hidden-text {
             font-size: 0;
             transition: font-size .3s;
         }
 
-        &:hover span.hidden-text {
-            font-size: $base-font-size;
-        }
-    
-        &.rss-feed:hover {
+        &.rss-feed:hover, &.rss-feed:focus {
             color: #ee802f;
         }
     }
@@ -320,16 +320,18 @@ body {
     line-height: 1em;
     font-size: 0.8em;
 
+    color: $grey-color;
     transition: opacity 0.3s;
+
+    &:hover, &:focus {
+        color: $main-green-color;
+    }
 }
 
-h1:hover .post-link-anchor,
-h2:hover .post-link-anchor,
-h3:hover .post-link-anchor,
-h4:hover .post-link-anchor,
-h5:hover .post-link-anchor,
-h6:hover .post-link-anchor {
-    opacity: 1;
+h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
+    .post-link-anchor {
+        opacity: 1;
+    }
 }
 
 .post-link-anchor:hover, .post-link-anchor:focus {
