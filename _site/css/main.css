@@ -400,73 +400,59 @@ pre {
     border-radius: 4px; }
 
 /**
- * Share post
+ * Edit & Share post
  */
-.share-section {
+.edit-section {
   display: flex;
   justify-content: center;
   align-items: center; }
   @media screen and (max-width: 600px) {
-    .share-section {
+    .edit-section {
       flex-flow: column; } }
-  .share-section h3 {
+  .edit-section h3 {
     font-size: 24px; }
-  .share-section ul {
+  .edit-section ul {
     display: inline-block;
     list-style: none;
     margin-left: 15px; }
     @media screen and (max-width: 600px) {
-      .share-section ul {
+      .edit-section ul {
         margin-left: 0; } }
-  .share-section ul li.share-button {
+  .edit-section ul li {
     display: inline-block; }
-  .share-section ul li.share-button a {
-    border-radius: 4px;
-    font-size: 22px;
-    text-align: center;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    transition: background-color; }
-  .share-section ul li.share-button:hover a {
-    color: white;
-    text-decoration: none;
-    transition: 0.3s color; }
-  .share-section ul li.share-button a span.title {
-    font-size: 14px; }
-  .share-section .share-message a {
-    border-color: #4cd964;
-    color: #4cd964; }
-  .share-section .share-message a:hover {
-    background-color: #4cd964; }
-  .share-section .share-mail a {
-    border-color: #1d77ef;
-    color: #1d77ef; }
-  .share-section .share-mail a:hover {
-    background-color: #1d77ef; }
-  .share-section .share-twitter a {
-    border-color: #55acee;
-    color: #55acee; }
-  .share-section .share-twitter a:hover {
-    background-color: #55acee; }
-  .share-section .share-facebook a {
-    border-color: #3b5998;
-    color: #3b5998; }
-  .share-section .share-facebook a:hover {
-    background-color: #3b5998; }
-  .share-section .share-linkedin a {
-    border-color: #008cc9;
-    color: #008cc9; }
-  .share-section .share-linkedin a:hover {
-    background-color: #008cc9; }
-  .share-section .share-whatsapp a {
-    border-color: #25D366;
-    color: #25D366; }
-  .share-section .share-whatsapp a:hover {
-    background-color: #25D366; }
+    .edit-section ul li a {
+      border-radius: 4px;
+      font-size: 22px;
+      text-align: center;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      transition: background-color; }
+      @media (prefers-color-scheme: dark) {
+        .edit-section ul li a {
+          color: white !important; } }
+    .edit-section ul li.t a {
+      border-color: #55acee;
+      color: #55acee; }
+      .edit-section ul li.t a:hover {
+        background-color: #55acee; }
+    .edit-section ul li.f a {
+      border-color: #3b5998;
+      color: #3b5998; }
+      .edit-section ul li.f a:hover {
+        background-color: #3b5998; }
+    .edit-section ul li.l a {
+      border-color: #008cc9;
+      color: #008cc9; }
+      .edit-section ul li.l a:hover {
+        background-color: #008cc9; }
+    .edit-section ul li:hover a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s color; }
 
 /**
  * Link anchors

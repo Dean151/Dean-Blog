@@ -1,39 +1,20 @@
-<div class="share-section">
+<div class="edit-section">
     <h3><a href="https://github.com/Dean151/Dean-Blog/edit/master/{{ page.path }}" rel="nofollow" target="_blank" title="Edit on GitHub">Edit</a> or share this {% if page.layout == 'post' %}story{% else %}page{% endif %}:</h3>
     <ul>
-        {% comment %}
-        <li class="share-button share-message">
-            <a href="sms:?&amp;body={{ page.title | url_encode }}+{{ site.url | url_encode }}{{ page.url | url_encode }}" rel="nofollow" target="_blank" title="Share by text message">
-                <span class="fa fa-comment-o"></span>
-            </a>
-        </li>
-        <li class="share-button share-mail">
-            <a href="mailto:?subject={{ page.title | url_encode }}&body={{ page.title | url_encode }}+{{ site.url | url_encode }}{{ page.url | url_encode }}" rel="nofollow" target="_blank" title="Share by mail">
-                <span class="fa fa-envelope-o"></span>
-            </a>
-        </li>
-        {% endcomment %}
-        <li class="share-button share-twitter">
+        <li class="t">
             <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;via={{ site.twitter_username | url_encode }}&amp;related={{ site.twitter_username | url_encode }}" rel="nofollow" target="_blank" title="Share on Twitter">
                 <span class="fa fa-twitter"></span>
             </a>
         </li>
-        <li class="share-button share-facebook">
+        <li class="f">
             <a href="https://facebook.com/sharer.php?u={{ site.url | url_encode }}{{ page.url | url_encode }}" rel="nofollow" target="_blank" title="Share on Facebook">
                 <span class="fa fa-facebook-official"></span>
             </a>
         </li>
-        <li class="share-button share-linkedin">
+        <li class="l">
             <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;title={{ page.title | url_encode }}&amp;summary={% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | url_encode }}{% else %}{{ site.description | url_encode }}{% endif %}&amp;source={{ site.url | url_encode }}" rel="nofollow" target="_blank" title="Share on LinkedIn">
                 <span class="fa fa-linkedin-square"></span>
             </a>
         </li>
-        {% comment %}
-        <li class="share-button share-whatsapp">
-            <a href="https://wa.me/?text={{ page.title | url_encode }}+{{ site.url | url_encode }}{{ page.url | url_encode }}" rel="nofollow" target="_blank" title="Share on WhatsApp">
-                <span class="fa fa-whatsapp"></span>
-            </a>
-        </li>
-        {% endcomment %}
     </ul>
 </div>
