@@ -1,4 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.thomasdurand.fr/" rel="alternate" type="text/html" /><updated>2019-03-20T15:59:07+01:00</updated><id>https://www.thomasdurand.fr/feed.xml</id><title type="html">Dean’s blog</title><subtitle>Dean's blog is a blog about computer science and development</subtitle><entry><title type="html">Build a privacy-safe home network using Pi-hole</title><link href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" rel="alternate" type="text/html" title="Build a privacy-safe home network using Pi-hole" /><published>2018-10-20T17:00:00+02:00</published><updated>2018-10-20T17:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole</id><content type="html" xml:base="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.thomasdurand.fr/" rel="alternate" type="text/html" /><updated>2019-03-20T17:43:16+01:00</updated><id>https://www.thomasdurand.fr/feed.xml</id><title type="html">Dean’s blog</title><subtitle>Dean's blog is a blog about computer science and development</subtitle><entry><title type="html">Keep PHP secure on Debian 9</title><link href="https://www.thomasdurand.fr/security/servers/2019/03/20/keep-php-secure-on-debian-9.html" rel="alternate" type="text/html" title="Keep PHP secure on Debian 9" /><published>2019-03-20T17:40:00+01:00</published><updated>2019-03-20T17:40:00+01:00</updated><id>https://www.thomasdurand.fr/security/servers/2019/03/20/keep-php-secure-on-debian-9</id><content type="html" xml:base="https://www.thomasdurand.fr/security/servers/2019/03/20/keep-php-secure-on-debian-9.html">&lt;p&gt;When installing PHP on Debian 9, the default version is &lt;strong&gt;PHP 7.0&lt;/strong&gt;.&lt;br /&gt;
+This version have been declared &lt;em&gt;End-of-life&lt;/em&gt; &lt;a href=&quot;https://secure.php.net/supported-versions.php&quot;&gt;since January 10, 2019&lt;/a&gt;. &lt;br /&gt;
+PHP 7.0 will not go further version &lt;em&gt;7.0.33&lt;/em&gt; on Debian 9.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-a-new-repository-for-newer-versions-of-php&quot;&gt;Adding a new repository for newer versions of PHP&lt;/h2&gt;
+
+&lt;p&gt;First, this repository uses &lt;em&gt;APT Transport over HTTPS&lt;/em&gt;. This is basicly getting packages over a TLS connexion.&lt;br /&gt;
+Let’s install the necesary packages, if you do not have them already:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;ca-certificates apt-transport-https &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then, we add &lt;code class=&quot;highlighter-rouge&quot;&gt;https://packages.sury.org/php&lt;/code&gt; that will be our new source for installing and updating PHP:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; https://packages.sury.org/php/apt.gpg &lt;span class=&quot;nt&quot;&gt;-O-&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-key add -
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deb https://packages.sury.org/php/ stretch main&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/apt/sources.list.d/php.list&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;upgrading-php-70-with-patches&quot;&gt;Upgrading PHP 7.0 with patches&lt;/h2&gt;
+
+&lt;p&gt;If you have already &lt;code class=&quot;highlighter-rouge&quot;&gt;php7.0&lt;/code&gt; packages installed on your system, you can get patches right away:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get upgrade&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now the installed version of PHP is (at the time of writing) &lt;code class=&quot;highlighter-rouge&quot;&gt;v7.0.33-5+0~20190309015553.9&lt;/code&gt;.&lt;br /&gt;
+It contains some patchs from higher version of PHP, added by the community.&lt;/p&gt;
+
+&lt;p&gt;This gives you extra time to update your code and support higher version of PHP before upgrading.&lt;/p&gt;
+
+&lt;h2 id=&quot;upgrade-php&quot;&gt;Upgrade PHP&lt;/h2&gt;
+
+&lt;p&gt;You may want to update PHP to a later release, after you’ve made sure your code can support it!&lt;/p&gt;
+
+&lt;p&gt;You have 2 options: installing the lastest release (7.3 when this was written), or installing a specific version (7.1 or 7.2).
+You can also perform both, if you need more than one version installed.&lt;/p&gt;
+
+&lt;p&gt;Those operations will not uninstall other version of PHP, and will not change Apache and/or Nginx configuration, so your websites will still use 7.0 by default.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-install-phps-latest-version&quot;&gt;a) Install PHP’s latest version&lt;/h3&gt;
+
+&lt;p&gt;You can now install the &lt;strong&gt;current version&lt;/strong&gt; of PHP (as of today, the 7.3) using:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php php-cli php-fpm php-mysql&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the package is already installed, you may need to run instead:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get dist-upgrade&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;b-install-php-7x&quot;&gt;b) Install PHP 7.x&lt;/h3&gt;
+
+&lt;p&gt;You may want to install any version of PHP using any of the following commands:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# PHP 7.1&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php7.1 php7.1-cli php7.1-fpm php7.1-mysql
+
+&lt;span class=&quot;c&quot;&gt;# PHP 7.2&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php7.2 php7.2-cli php7.2-fpm php7.2-mysql&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You’re free to install any additional extensions that fit your needs.&lt;/p&gt;
+
+&lt;h2 id=&quot;update-your-http-server&quot;&gt;Update your HTTP server&lt;/h2&gt;
+
+&lt;p&gt;In order to your server to use the new version of PHP, you have to update its configuration.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-apache2&quot;&gt;a) Apache2&lt;/h3&gt;
+
+&lt;p&gt;On Apache, you need to disable the old PHP handler before using the new.&lt;br /&gt;
+More advanced configurations will allow you to use different versions of PHP on differents websites if needed.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;a2dismod php7.0
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;a2enmod php7.3 &lt;span class=&quot;c&quot;&gt;# Adapt the version of PHP with the version you want to use&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service apache2 restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;b-nginx&quot;&gt;b) Nginx&lt;/h3&gt;
+
+&lt;p&gt;With Nginx, you just need to edit your fastcgi configuration to make usage of the fpm version you need:&lt;/p&gt;
+
+&lt;p&gt;By default, those settings are in nginx.conf, but they may be inside a &lt;code class=&quot;highlighter-rouge&quot;&gt;sites-availables/&lt;/code&gt; subfolder, or in a included custom configuration file.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/nginx/nginx.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Update the &lt;code class=&quot;highlighter-rouge&quot;&gt;fastcgi_pass&lt;/code&gt; value according to the PHP version you’d like to use.&lt;/p&gt;
+
+&lt;p&gt;Then, simply restart nginx:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service nginx restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;optional-uninstall-php-70&quot;&gt;Optional: uninstall PHP 7.0&lt;/h2&gt;
+
+&lt;p&gt;If you don’t need it anymore, it can be nice to perform some cleanup operations and remove PHP 7.0 from your server.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Be carefull not to delete package that you still need by reviewing them before confirming!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get purge &lt;span class=&quot;s2&quot;&gt;&quot;php7.0*&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the list seems okay, you may confirm the deletion, and now PHP 7.0 is completely gone!&lt;/p&gt;</content><author><name>Dean</name></author><summary type="html">When installing PHP on Debian 9, the default version is PHP 7.0. This version have been declared End-of-life since January 10, 2019. PHP 7.0 will not go further version 7.0.33 on Debian 9. Adding a new repository for newer versions of PHP First, this repository uses APT Transport over HTTPS. This is basicly getting packages over a TLS connexion. Let’s install the necesary packages, if you do not have them already: sudo apt-get install ca-certificates apt-transport-https Then, we add https://packages.sury.org/php that will be our new source for installing and updating PHP: wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add - echo &quot;deb https://packages.sury.org/php/ stretch main&quot; | sudo tee /etc/apt/sources.list.d/php.list Upgrading PHP 7.0 with patches If you have already php7.0 packages installed on your system, you can get patches right away: sudo apt-get update sudo apt-get upgrade Now the installed version of PHP is (at the time of writing) v7.0.33-5+0~20190309015553.9. It contains some patchs from higher version of PHP, added by the community. This gives you extra time to update your code and support higher version of PHP before upgrading. Upgrade PHP You may want to update PHP to a later release, after you’ve made sure your code can support it! You have 2 options: installing the lastest release (7.3 when this was written), or installing a specific version (7.1 or 7.2). You can also perform both, if you need more than one version installed. Those operations will not uninstall other version of PHP, and will not change Apache and/or Nginx configuration, so your websites will still use 7.0 by default. a) Install PHP’s latest version You can now install the current version of PHP (as of today, the 7.3) using: sudo apt-get install php php-cli php-fpm php-mysql If the package is already installed, you may need to run instead: sudo apt-get dist-upgrade b) Install PHP 7.x You may want to install any version of PHP using any of the following commands: # PHP 7.1 sudo apt-get install php7.1 php7.1-cli php7.1-fpm php7.1-mysql # PHP 7.2 sudo apt-get install php7.2 php7.2-cli php7.2-fpm php7.2-mysql You’re free to install any additional extensions that fit your needs. Update your HTTP server In order to your server to use the new version of PHP, you have to update its configuration. a) Apache2 On Apache, you need to disable the old PHP handler before using the new. More advanced configurations will allow you to use different versions of PHP on differents websites if needed. sudo a2dismod php7.0 sudo a2enmod php7.3 # Adapt the version of PHP with the version you want to use sudo service apache2 restart b) Nginx With Nginx, you just need to edit your fastcgi configuration to make usage of the fpm version you need: By default, those settings are in nginx.conf, but they may be inside a sites-availables/ subfolder, or in a included custom configuration file. sudo nano /etc/nginx/nginx.conf Update the fastcgi_pass value according to the PHP version you’d like to use. Then, simply restart nginx: sudo service nginx restart Optional: uninstall PHP 7.0 If you don’t need it anymore, it can be nice to perform some cleanup operations and remove PHP 7.0 from your server. Be carefull not to delete package that you still need by reviewing them before confirming! sudo apt-get purge &quot;php7.0*&quot; If the list seems okay, you may confirm the deletion, and now PHP 7.0 is completely gone!</summary></entry><entry><title type="html">Build a privacy-safe home network using Pi-hole</title><link href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" rel="alternate" type="text/html" title="Build a privacy-safe home network using Pi-hole" /><published>2018-10-20T17:00:00+02:00</published><updated>2018-10-20T17:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole</id><content type="html" xml:base="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
 
 &lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
 
