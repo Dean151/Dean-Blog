@@ -2,13 +2,8 @@
  * Syntax highlighting styles
  */
 .highlight {
-    background: #fff;
     @extend %vertical-rhythm;
-
-    .highlighter-rouge & {
-      background: #fafafa;
-    }
-
+    
     .c     { color: #007400 } // Comment
     .err   { color: #a61717; background-color: #e3d2d2 } // Error
     .k     { color: #AA0D91; } // Keyword

@@ -23,6 +23,11 @@ body {
     -o-font-feature-settings: "kern" 1;
     font-feature-settings: "kern" 1;
     font-kerning: normal;
+
+    @media (prefers-color-scheme: dark) { 
+        color: $dark-text-color; 
+        background-color: $dark-background-color;
+    }
 }
 
 
@@ -96,8 +101,13 @@ hr {
     text-align: center;
 
     height: 1px;
-    color: rgba(0, 0, 0, 0.75);
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    color: rgba($text-color, 0.75);
+    background-image: linear-gradient(to right, rgba($text-color, 0), rgba($text-color, 0.75), rgba($text-color, 0));
+
+    @media (prefers-color-scheme: dark) {
+        color: rgba($dark-text-color, 0.75);
+        background-image: linear-gradient(to right, rgba($dark-text-color, 0), rgba($dark-text-color, 0.75), rgba($dark-text-color, 0));
+    }
 
     &::after {
         content: "⨳";
@@ -108,6 +118,10 @@ hr {
         font-size: 1.5em;
         padding: 0 0.25em;
         background: $content-back-color;
+
+        @media (prefers-color-scheme: dark) {
+            background: $dark-content-back-color;
+        }
     }
 }
 
@@ -130,8 +144,24 @@ a {
     &:hover:visited {
       color: darken(lighten($brand-color, 10%), 15%);
     }
-}
 
+    @media (prefers-color-scheme: dark) {
+        color: lighten($brand-color, 15%);
+
+        &:visited {
+            color: lighten($brand-color, 10%);
+        }
+    
+        &:hover {
+            color: lighten($brand-color, 5%);
+            text-decoration: underline;
+        }
+    
+        &:hover:visited {
+          color: lighten(lighten($brand-color, 10%), 5%);
+        }
+    }
+}
 
 
 /**
@@ -147,6 +177,11 @@ blockquote {
 
     > :last-child {
         margin-bottom: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-grey-color;
+        border-left-color: $dark-grey-color-light;
     }
 }
 
@@ -179,18 +214,27 @@ code {
     font-size: 15px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: #fafafa;
+    background-color: $code-block-color;
+
+    @media (prefers-color-scheme: dark) {
+        background-color: $dark-code-block-color;
+        border-color: $dark-grey-color-dark;
+    }
 }
 
 code {
     padding: 1px 5px;
-    color: #C41A16;
+    color: $simple-code-color;
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-simple-code-color;
+    }
 }
 
 pre {
     padding: 8px 12px;
     overflow-x: auto;
-    background: #fafafa;
+    background: $code-block-color;
 
     > code {
         border: 0;
@@ -198,6 +242,10 @@ pre {
         padding-left: 0;
         background: none;
         color: inherit;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        background: $dark-code-block-color;
     }
 }
 
