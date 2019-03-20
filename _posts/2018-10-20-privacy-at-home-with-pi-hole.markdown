@@ -39,23 +39,23 @@ Then, we need to copy it on your SD card, properly.
 On macOS, It can be done with the following commands.
 
 {% highlight bash %}
-$ diskutil list # Note the number associated with your SD card. (ie disk2 for instance)
-$ diskutil unmountDisk /dev/disk2
-$ sudo dd bs=1m if=raspbian-stretch-lite.img of=/dev/rdisk2 conv=sync
+diskutil list # Note the number associated with your SD card. (ie disk2 for instance)
+diskutil unmountDisk /dev/disk2
+sudo dd bs=1m if=raspbian-stretch-lite.img of=/dev/rdisk2 conv=sync
 {% endhighlight %}
 
 We then need to enable SSH before plugging the SD card in the Raspberry for the first boot:
 
 {% highlight bash %}
-$ cd /Volumes/boot/
-$ touch ssh
+cd /Volumes/boot/
+touch ssh
 {% endhighlight %}
 
 And we unmount the disk
 
 {% highlight bash %}
-$ cd ~
-$ diskutil unmountDisk /dev/disk2
+cd ~
+diskutil unmountDisk /dev/disk2
 {% endhighlight %}
 
 Now, you can plug your SD card in your Raspberry and wait it to boot.
@@ -63,7 +63,7 @@ Now, you can plug your SD card in your Raspberry and wait it to boot.
 You may now connect to it using SSH:
 
 {% highlight bash %}
-$ ssh pi@192.168.1.x
+ssh pi@192.168.1.x
 {% endhighlight %}
 
 Default password is `raspberry`
@@ -73,7 +73,7 @@ Default password is `raspberry`
 The bare minimum to do when the Raspberry first start is to **change the password for the pi user**.
 
 {% highlight bash %}
-$ passwd
+passwd
 {% endhighlight %}
 
 You may also want to:
@@ -90,8 +90,8 @@ It is advised that your Raspberry Pi should have a static IP on your network.
 From your Raspberry, you can run the installer by executing:
 
 {% highlight bash %}
-$ wget -O basic-install.sh https://install.pi-hole.net
-$ sudo bash basic-install.sh
+wget -O basic-install.sh https://install.pi-hole.net
+sudo bash basic-install.sh
 {% endhighlight %}
 
 The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
@@ -117,7 +117,7 @@ For instance, using `box.lan` instead of `192.168.1.1` or `pi.lan` instead of `1
 To do so, you need to create an alias file:
 
 {% highlight bash %}
-$ sudo nano /etc/pihole/lan.conf
+sudo nano /etc/pihole/lan.conf
 {% endhighlight %}
 
 Containing, for instance:
@@ -194,7 +194,7 @@ Finally, if you want to make your pi-hole admin interface available from the out
 [pi-hole-admin-blocked]: /assets/screenshots/pi-hole-blocked.png
 [pi-hole-privacy-level]: http://pi.hole/admin/settings.php?tab=privacy
 [pi-hole-admin-android]: /assets/screenshots/pi-hole-android.png
-[feed-my-cat]: /security/iot/2018/01/31/how-anyone-could-feed-my-cat.html
+[feed-my-cat]: {{ site.baseurl }}{% post_url 2018-01-31-how-anyone-could-feed-my-cat %}
 [aln-nodejs]: https://github.com/Dean151/Aln-NodeJs
 [unbound]: https://docs.pi-hole.net/guides/unbound/
 [dns-over-https]: https://docs.pi-hole.net/guides/dns-over-https/

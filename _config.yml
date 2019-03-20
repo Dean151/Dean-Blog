@@ -19,6 +19,7 @@ description: "Dean's blog is a blog about computer science and development"
 excerpt_separator: <!--more-->
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.thomasdurand.fr" # the base hostname & protocol for your site
+
 twitter_username: deanatoire
 github_username: dean151
 linkedin_username: thomasdurandverjat

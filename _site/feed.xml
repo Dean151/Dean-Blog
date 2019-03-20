@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.thomasdurand.fr/" rel="alternate" type="text/html" /><updated>2019-03-19T16:00:03+01:00</updated><id>https://www.thomasdurand.fr/feed.xml</id><title type="html">Dean’s blog</title><subtitle>Dean's blog is a blog about computer science and development</subtitle><entry><title type="html">Build a privacy-safe home network using Pi-hole</title><link href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" rel="alternate" type="text/html" title="Build a privacy-safe home network using Pi-hole" /><published>2018-10-20T17:00:00+02:00</published><updated>2018-10-20T17:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole</id><content type="html" xml:base="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.thomasdurand.fr/" rel="alternate" type="text/html" /><updated>2019-03-20T15:59:07+01:00</updated><id>https://www.thomasdurand.fr/feed.xml</id><title type="html">Dean’s blog</title><subtitle>Dean's blog is a blog about computer science and development</subtitle><entry><title type="html">Build a privacy-safe home network using Pi-hole</title><link href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" rel="alternate" type="text/html" title="Build a privacy-safe home network using Pi-hole" /><published>2018-10-20T17:00:00+02:00</published><updated>2018-10-20T17:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole</id><content type="html" xml:base="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
 
 &lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
 
@@ -29,25 +29,25 @@ Then, we need to copy it on your SD card, properly.&lt;/p&gt;
 
 &lt;p&gt;On macOS, It can be done with the following commands.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil list &lt;span class=&quot;c&quot;&gt;# Note the number associated with your SD card. (ie disk2 for instance)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil unmountDisk /dev/disk2
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo dd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1m &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raspbian-stretch-lite.img &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/rdisk2 &lt;span class=&quot;nv&quot;&gt;conv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;diskutil list &lt;span class=&quot;c&quot;&gt;# Note the number associated with your SD card. (ie disk2 for instance)&lt;/span&gt;
+diskutil unmountDisk /dev/disk2
+&lt;span class=&quot;nb&quot;&gt;sudo dd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1m &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raspbian-stretch-lite.img &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/rdisk2 &lt;span class=&quot;nv&quot;&gt;conv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;We then need to enable SSH before plugging the SD card in the Raspberry for the first boot:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /Volumes/boot/
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;ssh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /Volumes/boot/
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;ssh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;And we unmount the disk&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;diskutil unmountDisk /dev/disk2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+diskutil unmountDisk /dev/disk2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Now, you can plug your SD card in your Raspberry and wait it to boot.&lt;/p&gt;
 
 &lt;p&gt;You may now connect to it using SSH:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh pi@192.168.1.x&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ssh pi@192.168.1.x&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Default password is &lt;code class=&quot;highlighter-rouge&quot;&gt;raspberry&lt;/code&gt;&lt;/p&gt;
 
@@ -55,7 +55,7 @@ Then, we need to copy it on your SD card, properly.&lt;/p&gt;
 
 &lt;p&gt;The bare minimum to do when the Raspberry first start is to &lt;strong&gt;change the password for the pi user&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;passwd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;passwd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;You may also want to:&lt;/p&gt;
 &lt;ul&gt;
@@ -72,8 +72,8 @@ Then, we need to copy it on your SD card, properly.&lt;/p&gt;
 
 &lt;p&gt;From your Raspberry, you can run the installer by executing:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; basic-install.sh https://install.pi-hole.net
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;bash basic-install.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; basic-install.sh https://install.pi-hole.net
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;bash basic-install.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
 and always make sure that the IP is effectively static in order to work.&lt;/p&gt;
@@ -97,7 +97,7 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 
 &lt;p&gt;To do so, you need to create an alias file:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/pihole/lan.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/pihole/lan.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Containing, for instance:&lt;/p&gt;
 

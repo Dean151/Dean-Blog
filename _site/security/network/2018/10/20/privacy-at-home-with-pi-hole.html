@@ -36,7 +36,7 @@
   <link rel="icon" sizes="192x192" href="/assets/design/favicon192.png">
   <link rel="icon" sizes="128x128" href="/assets/design/favicon128.png">
 
-  <link rel="stylesheet" href="/css/main.css?v=201903191600">
+  <link rel="stylesheet" href="/css/main.css?v=201903201559">
   <link rel="stylesheet" href="/dist/font-awesome-4.7.0/css/font-awesome.min.css">
   <link rel="canonical" href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">
   <link type="application/atom+xml" rel="alternate" href="https://www.thomasdurand.fr/feed.xml" title="Dean's blog" />
@@ -121,25 +121,25 @@ Then, we need to copy it on your SD card, properly.</p>
 
 <p>On macOS, It can be done with the following commands.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>diskutil list <span class="c"># Note the number associated with your SD card. (ie disk2 for instance)</span>
-<span class="nv">$ </span>diskutil unmountDisk /dev/disk2
-<span class="nv">$ </span><span class="nb">sudo dd </span><span class="nv">bs</span><span class="o">=</span>1m <span class="k">if</span><span class="o">=</span>raspbian-stretch-lite.img <span class="nv">of</span><span class="o">=</span>/dev/rdisk2 <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">diskutil list <span class="c"># Note the number associated with your SD card. (ie disk2 for instance)</span>
+diskutil unmountDisk /dev/disk2
+<span class="nb">sudo dd </span><span class="nv">bs</span><span class="o">=</span>1m <span class="k">if</span><span class="o">=</span>raspbian-stretch-lite.img <span class="nv">of</span><span class="o">=</span>/dev/rdisk2 <span class="nv">conv</span><span class="o">=</span><span class="nb">sync</span></code></pre></figure>
 
 <p>We then need to enable SSH before plugging the SD card in the Raspberry for the first boot:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd</span> /Volumes/boot/
-<span class="nv">$ </span><span class="nb">touch </span>ssh</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /Volumes/boot/
+<span class="nb">touch </span>ssh</code></pre></figure>
 
 <p>And we unmount the disk</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">cd</span> ~
-<span class="nv">$ </span>diskutil unmountDisk /dev/disk2</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> ~
+diskutil unmountDisk /dev/disk2</code></pre></figure>
 
 <p>Now, you can plug your SD card in your Raspberry and wait it to boot.</p>
 
 <p>You may now connect to it using SSH:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh pi@192.168.1.x</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">ssh pi@192.168.1.x</code></pre></figure>
 
 <p>Default password is <code class="highlighter-rouge">raspberry</code></p>
     
@@ -153,7 +153,7 @@ Then, we need to copy it on your SD card, properly.</p>
 
 <p>The bare minimum to do when the Raspberry first start is to <strong>change the password for the pi user</strong>.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>passwd</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">passwd</code></pre></figure>
 
 <p>You may also want to:</p>
 <ul>
@@ -176,8 +176,8 @@ Then, we need to copy it on your SD card, properly.</p>
 
 <p>From your Raspberry, you can run the installer by executing:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>wget <span class="nt">-O</span> basic-install.sh https://install.pi-hole.net
-<span class="nv">$ </span><span class="nb">sudo </span>bash basic-install.sh</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">wget <span class="nt">-O</span> basic-install.sh https://install.pi-hole.net
+<span class="nb">sudo </span>bash basic-install.sh</code></pre></figure>
 
 <p>The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
 and always make sure that the IP is effectively static in order to work.</p>
@@ -207,7 +207,7 @@ If you can’t, it’s still possible to use the Raspberry as your main DHCP ser
 
 <p>To do so, you need to create an alias file:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/pihole/lan.conf</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>nano /etc/pihole/lan.conf</code></pre></figure>
 
 <p>Containing, for instance:</p>
 
