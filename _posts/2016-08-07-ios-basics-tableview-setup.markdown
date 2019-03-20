@@ -2,7 +2,7 @@
 layout: post
 title:  "iOS basics: UITableView setup with Swift 3"
 author: Dean
-date:   2016-08-07 12:46:07 +0200
+date:   2016-08-07 20:00:00 +0200
 categories: Swift3 iOS
 ref: ios-tut-1
 ---

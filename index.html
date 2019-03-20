@@ -14,22 +14,22 @@ index: 1
   </h1>
 
   <ul class="post-list">
-    {% for post in site.posts %}{% assign this_year = post.date | date: "%Y" %}{% assign next_year = post.previous.date | date: "%Y" %}
-      {% if forloop.first %}
+    {% for post in site.posts %}{% assign this_year = post.date | date: "%Y" %}{% assign next_year = post.previous.date | date: "%Y" -%}
+      {%- if forloop.first -%}
       <li>
         <p class="post-date">{{ post.date | date: "%Y" }}</p>
-      {% endif %}
+      {%- endif %}
         <h2>
           <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
           <span class="post-meta">{{ post.date | date: "%b %-d" }}</span>
         </h2>
-      {% if forloop.last %}
+      {%- if forloop.last %}
       </li>
-      {% elsif this_year != next_year %}
+      {%- elsif this_year != next_year %}
       </li>
       <li>
         <p class="post-date">{{ next_year }}</p>
-      {% endif %}
+      {%- endif %}
     {% endfor %}
   </ul>
   
