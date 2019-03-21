@@ -444,11 +444,11 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         margin-left: 50px + ($spacing-unit / 2);
     }
     .footer-col-1 {
-        width: -webkit-calc(100% - 185px - (#{$spacing-unit}));
-        width:         calc(100% - 185px - (#{$spacing-unit}));
+        width: -webkit-calc(100% - 195px - (#{$spacing-unit}));
+        width:         calc(100% - 195px - (#{$spacing-unit}));
     }
     .footer-col-2 {
-        width: 185px;
+        width: 195px;
     }
 }
 
