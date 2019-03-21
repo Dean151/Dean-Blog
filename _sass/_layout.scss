@@ -391,18 +391,18 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     box-shadow: none;
 }
 
-.contact-list,
-.social-media-list {
+.description-list,
+.contact-list {
     list-style: none;
 }
-.contact-list {
+.description-list {
     margin-left: 100 + ($spacing-unit / 2);
 }
-.social-media-list {
+.contact-list {
     margin-left: 0;
 }
 
-.social-media-list li a span.icon {
+.contact-list li a span.icon {
     display: block;
     float: left;
     width: 21px;
@@ -440,7 +440,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         width: 50px;
         height: 50px;
     }
-    .contact-list {
+    .description-list {
         margin-left: 50px + ($spacing-unit / 2);
     }
     .footer-col-1 {
@@ -458,7 +458,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         width: -webkit-calc(100% - (#{$spacing-unit} / 2));
         width:         calc(100% - (#{$spacing-unit} / 2));
     }
-    .social-media-list {
+    .contact-list {
         margin-left: 50px + ($spacing-unit / 2);
     }
 }
