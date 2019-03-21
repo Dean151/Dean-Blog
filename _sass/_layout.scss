@@ -103,6 +103,8 @@
         .svg-icon {
             width: 18px;
             height: 18px;
+            padding: 2px;
+            margin-right: 3px;
         }
 
         .hidden-text {
@@ -424,12 +426,6 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
 }
 .contact-list {
     margin-left: 0;
-}
-
-.contact-list li a span.icon {
-    display: block;
-    float: left;
-    width: 21px;
 }
 
 .footer-col-wrapper {

@@ -17,22 +17,22 @@
         <ul class="contact-list">
           {%- if site.twitter %}
           <li>
-              <a href="https://twitter.com/{{ site.twitter | site.twitter | escape }}" title="{{ site.twitter | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg> <span class="username">@{{ site.twitter }}</span></a>
+              <a href="https://twitter.com/{{ site.twitter | site.twitter | escape }}" title="{{ site.twitter | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg>@{{ site.twitter }}</a>
           </li>
           {%- endif -%}
           {%- if site.github %}
           <li>
-              <a href="https://github.com/{{ site.github | cgi_escape | escape }}" title="{{ site.github | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg> <span class="username">{{ site.github }}</span></a>
+              <a href="https://github.com/{{ site.github | cgi_escape | escape }}" title="{{ site.github | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg>{{ site.github }}</a>
           </li>
           {%- endif -%}
           {%- if site.stackoverflow %}
           <li>
-              <a href="https://stackoverflow.com/users/{{ site.stackoverflow | cgi_escape | escape }}" title="{{ site.stackoverflow_name }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#s' | relative_url }}"></use></svg> <span class="username">{{ site.stackoverflow_name }}</span></a>
+              <a href="https://stackoverflow.com/users/{{ site.stackoverflow | cgi_escape | escape }}" title="{{ site.stackoverflow_name }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#s' | relative_url }}"></use></svg>{{ site.stackoverflow_name }}</a>
           </li>
           {%- endif -%}
           {%- if site.linkedin %}
           <li>
-              <a href="https://www.linkedin.com/in/{{ site.linkedin | cgi_escape | escape }}" title="{{ site.linkedin | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg> <span class="username">{{ site.linkedin }}</span></a>
+              <a href="https://www.linkedin.com/in/{{ site.linkedin | cgi_escape | escape }}" title="{{ site.linkedin | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg>{{ site.linkedin }}</a>
           </li>
           {%- endif -%}
         </ul>
