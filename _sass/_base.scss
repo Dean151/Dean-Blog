@@ -203,6 +203,10 @@ table {
 
 table thead {
     background: #f0f0f0;
+
+    @media (prefers-color-scheme: dark) {
+        background: #515151;
+    }
 }
 
 table td, table th {
@@ -213,6 +217,10 @@ table td code {
     background: none;
     border: none;
     color: #666;
+
+    @media (prefers-color-scheme: dark) {
+        color: #ddd;
+    }
 }
 
 /**

@@ -361,6 +361,19 @@
 
     @media (prefers-color-scheme: dark) {
         color: $dark-grey-color;
+
+        &:visited {
+            color: lighten($brand-color, 10%);
+        }
+    
+        &:hover {
+            color: lighten($brand-color, 5%);
+            text-decoration: underline;
+        }
+    
+        &:hover:visited {
+          color: lighten(lighten($brand-color, 10%), 5%);
+        }
     }
 }
 
