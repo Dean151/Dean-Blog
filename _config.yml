@@ -21,9 +21,10 @@ excerpt_separator: <!--more-->
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.thomasdurand.fr" # the base hostname & protocol for your site
 
-twitter_username: deanatoire
-github_username: dean151
-linkedin_username: thomasdurandverjat
+github: dean151
+stackoverflow: "2199197"
+twitter: deanatoire
+linkedin: thomasdurandverjat
 
 # Build settings
 markdown: kramdown

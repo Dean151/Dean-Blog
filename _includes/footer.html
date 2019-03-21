@@ -15,19 +15,24 @@
       
       <div class="footer-col footer-col-2">
         <ul class="contact-list">
-          {%- if site.github_username %}
+          {%- if site.twitter %}
           <li>
-              <a href="https://github.com/{{ site.github_username | cgi_escape | escape }}" title="{{ site.github_username | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg> <span class="username">{{ site.github_username }}</span></a>
+              <a href="https://twitter.com/{{ site.twitter | site.twitter | escape }}" title="{{ site.twitter | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg> <span class="username">@{{ site.twitter }}</span></a>
           </li>
           {%- endif -%}
-          {%- if site.twitter_username %}
+          {%- if site.github %}
           <li>
-              <a href="https://twitter.com/{{ site.twitter_username | site.twitter_username | escape }}" title="{{ site.twitter_username | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg> <span class="username">{{ site.twitter_username }}</span></a>
+              <a href="https://github.com/{{ site.github | cgi_escape | escape }}" title="{{ site.github | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg> <span class="username">{{ site.github }}</span></a>
           </li>
           {%- endif -%}
-          {%- if site.linkedin_username %}
+          {%- if site.stackoverflow %}
           <li>
-              <a href="https://www.linkedin.com/in/{{ site.linkedin_username | cgi_escape | escape }}" title="{{ site.linkedin_username | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg> <span class="username">{{ site.linkedin_username }}</span></a>
+              <a href="https://stackoverflow.com/users/{{ site.stackoverflow | cgi_escape | escape }}" title="dean"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#s' | relative_url }}"></use></svg> <span class="username">dean</span></a>
+          </li>
+          {%- endif -%}
+          {%- if site.linkedin %}
+          <li>
+              <a href="https://www.linkedin.com/in/{{ site.linkedin | cgi_escape | escape }}" title="{{ site.linkedin | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg> <span class="username">{{ site.linkedin }}</span></a>
           </li>
           {%- endif -%}
           {%- if site.email %}
