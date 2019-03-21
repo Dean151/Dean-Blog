@@ -11,7 +11,7 @@ index: 99
 This website is powered by [Jekyll][jekyll], and uses a customized version of [Jekyll Minima][jekyll-minima] as theme. \\
 The social media icons are powered by [Font Awesome 4][font-awesome].
 <!--more-->
-This website is *free of any social media tracker*: No javascript is included from outsider.\\
+This website is *free of any social media tracker*: No javascript is included from outsiders.\\
 Only a self-hosted [Matomo][matomo] is used for global audience of articles. No personal data is ever recorded.\\
 Social media share links are just links. They have *no idea* you're reading one of my stories you click one of them!
 
