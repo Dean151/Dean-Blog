@@ -1,10 +1,8 @@
 ---
 layout: post
 title:  "Avoid 5 common mistakes with AES encryption"
-author: Dean
 date:   2017-07-12 20:00:00 +0200
 categories: Security Encryption
-ref: aes-good-practice-for-ios-app
 ---
 
 **Written for Swift 3 with Xcode 8.1**

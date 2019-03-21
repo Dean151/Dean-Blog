@@ -32,6 +32,12 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
 
+# Default author
+defaults:
+  -
+    values:
+      author: "Thomas Durand"
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.

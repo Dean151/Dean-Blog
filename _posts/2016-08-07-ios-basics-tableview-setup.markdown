@@ -1,10 +1,8 @@
 ---
 layout: post
 title:  "iOS basics: UITableView setup with Swift 3"
-author: Dean
 date:   2016-08-07 20:00:00 +0200
 categories: Swift3 iOS
-ref: ios-tut-1
 ---
 
 **Updated for Swift 3 with Xcode 8.1**

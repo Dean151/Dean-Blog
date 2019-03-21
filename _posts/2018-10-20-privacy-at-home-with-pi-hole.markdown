@@ -1,10 +1,8 @@
 ---
 layout: post
 title:  "Build a privacy-safe home network using Pi-hole"
-author: Dean
 date:   2018-10-20 20:00:00 +0200
 categories: Security network
-ref: raspberry-pi-hole
 ---
 
 Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.
