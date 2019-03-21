@@ -3,17 +3,17 @@
     <ul>
         <li class="t">
             <a href="https://twitter.com/intent/tweet?text={{ page.title | url_encode }}&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;via={{ site.twitter_username | url_encode }}&amp;related={{ site.twitter_username | url_encode }}" rel="nofollow" target="_blank" title="Share on Twitter">
-                <svg class="svg-icon"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg>
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg>
             </a>
         </li>
         <li class="f">
             <a href="https://facebook.com/sharer.php?u={{ site.url | url_encode }}{{ page.url | url_encode }}" rel="nofollow" target="_blank" title="Share on Facebook">
-                <svg class="svg-icon"><use xlink:href="{{ '/assets/design/icons.svg#f' | relative_url }}"></use></svg>
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#f' | relative_url }}"></use></svg>
             </a>
         </li>
         <li class="l">
             <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ site.url | url_encode }}{{ page.url | url_encode }}&amp;title={{ page.title | url_encode }}&amp;summary={% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | url_encode }}{% else %}{{ site.description | url_encode }}{% endif %}&amp;source={{ site.url | url_encode }}" rel="nofollow" target="_blank" title="Share on LinkedIn">
-                <svg class="svg-icon"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg>
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg>
             </a>
         </li>
     </ul>

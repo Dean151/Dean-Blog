@@ -96,12 +96,17 @@
 
             .hidden-text {
                 font-size: $base-font-size;
+                transition: font-size .3s;
             }
+        }
+
+        .svg-icon {
+            width: 18px;
+            height: 18px;
         }
 
         .hidden-text {
             font-size: 0;
-            transition: font-size .3s;
         }
 
         &.rss-feed:hover, &.rss-feed:focus {
@@ -291,6 +296,12 @@
     
             background-color: transparent;
             transition: background-color;
+
+            .svg-icon {
+                width: 20px;
+                height: 20px;
+                padding: 4px;
+            }
 
             @media (prefers-color-scheme: dark) {
                 color: white !important;
