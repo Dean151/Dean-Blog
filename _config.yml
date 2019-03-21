@@ -14,15 +14,16 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Dean's blog
-email: contact@thomasdurand.fr
 description: "Dean's blog is a blog about computer science and development"
+author: "Thomas Durand (a.k.a. Dean)"
 excerpt_separator: <!--more-->
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.thomasdurand.fr" # the base hostname & protocol for your site
 
-twitter_username: deanatoire
-github_username: dean151
-linkedin_username: thomasdurandverjat
+github: dean151
+stackoverflow: "2199197"
+twitter: deanatoire
+linkedin: thomasdurandverjat
 
 # Build settings
 markdown: kramdown

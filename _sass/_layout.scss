@@ -1,6 +1,3 @@
-body {
-    background-color: $background-color;
-}
 
 /**
  * Site header
@@ -26,6 +23,10 @@ body {
     margin-bottom: 0;
     float: left;
     opacity: 0.8;
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-title-color;
+    }
 }
 
 .site-title:hover {
@@ -45,11 +46,19 @@ body {
         &:not(:last-child) {
             margin-right: 20px;
         }
+
+        @media (prefers-color-scheme: dark) {
+            color: $dark-title-color;
+        }
     }
 
     .page-link:hover {
         color: $title-color;
         opacity: 1;
+
+        @media (prefers-color-scheme: dark) {
+            color: $dark-title-color;
+        }
     }
 }
 
@@ -62,8 +71,12 @@ body {
     .wrapper {
         padding: $spacing-unit;
         background-color: $content-back-color;
-        border-color: $border-color;
         box-shadow: 0 1px 5px 1px rgba(150, 150, 150, 0.1);
+
+        @media (prefers-color-scheme: dark) { 
+            background-color: $dark-content-back-color;
+            box-shadow: none;
+        }
     }
 }
 
@@ -83,16 +96,25 @@ body {
 
             .hidden-text {
                 font-size: $base-font-size;
+                transition: font-size .3s;
             }
+        }
+
+        .svg-icon {
+            width: 18px;
+            height: 18px;
         }
 
         .hidden-text {
             font-size: 0;
-            transition: font-size .3s;
         }
 
         &.rss-feed:hover, &.rss-feed:focus {
             color: #ee802f;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            color: $dark-grey-color;
         }
     }
 }
@@ -114,21 +136,33 @@ body {
         display: inline-block;
         font-size: $small-font-size;
         color: $grey-color;
-    }
 
-    .post-link::before {
-        content: '● ';
-        display: inline-block;
-        color: $brand-color;
-    }
-    
-    .post-link:visited::before {
-        color: $content-back-color;
+        @media (prefers-color-scheme: dark) {
+            color: $dark-grey-color;
+        }
     }
 
     .post-link {
         display: inline;
         font-size: 24px;
+
+        &::before {
+            content: '● ';
+            display: inline-block;
+            color: $brand-color;
+    
+            @media (prefers-color-scheme: dark) {
+                color: lighten($brand-color, 15%);
+            }
+        }
+        
+        &:visited::before {
+            color: $content-back-color;
+    
+            @media (prefers-color-scheme: dark) {
+                color: $dark-content-back-color;
+            }
+        }
     }
 }
 
@@ -154,7 +188,7 @@ body {
     display: inline-block;
 
     background: $main-green-color-light;
-    color: white;
+    color: rgba($title-color, .95);
     font-size: $small-font-size;
     text-align: right;
 
@@ -164,6 +198,10 @@ body {
 
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-title-color;
+    }
 }
 
 .post-date:after {
@@ -217,11 +255,9 @@ body {
 }
 
 /**
- * Share post
+ * Edit & Share post
  */
-
-.share-section {
-
+.edit-section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -244,77 +280,65 @@ body {
         }
     }
 
-    ul li.share-button {
-        display: inline-block
-    }
+    ul li {
+        display: inline-block;
 
-    ul li.share-button a {
-        border-radius: 4px;
-        font-size: $large-font-size;
-        text-align: center;
+        a {
+            border-radius: 4px;
+            font-size: $large-font-size;
+            text-align: center;
+    
+            width: 34px;
+            height: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            background-color: transparent;
+            transition: background-color;
 
-        width: 34px;
-        height: 34px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+            .svg-icon {
+                width: 20px;
+                height: 20px;
+                padding: 4px;
+            }
 
-        background-color: transparent;
-        transition: background-color;
-    }
+            @media (prefers-color-scheme: dark) {
+                color: white !important;
+            }
+        }
 
-    ul li.share-button:hover a {
-        color: white;
-        text-decoration: none;
+        &.t a {
+            border-color: $twitter-brand-color;
+            color: $twitter-brand-color;
 
-        transition: 0.3s color;
-    }
+            &:hover {
+                background-color: $twitter-brand-color;
+            }
+        }
+        &.f a {
+            border-color: $facebook-brand-color;
+            color: $facebook-brand-color;
 
-    ul li.share-button a span.title {
-        font-size: 14px;
-    }
+            &:hover {
+                background-color: $facebook-brand-color;
+            }
+        }
+        &.l a {
+            border-color: $linkedin-brand-color;
+            color: $linkedin-brand-color;
 
-    .share-message a {
-        border-color: #4cd964;
-        color: #4cd964;
-    }
-    .share-message a:hover {
-        background-color: #4cd964;
-    }
-    .share-mail a {
-        border-color: #1d77ef;
-        color: #1d77ef;
-    }
-    .share-mail a:hover {
-        background-color: #1d77ef;
-    }
-    .share-twitter a {
-        border-color: #55acee;
-        color: #55acee;
-    }
-    .share-twitter a:hover {
-        background-color: #55acee;
-    }
-    .share-facebook a {
-        border-color: #3b5998;
-        color: #3b5998;
-    }
-    .share-facebook a:hover {
-        background-color: #3b5998;
-    }
-    .share-linkedin a {
-        border-color: #008cc9;
-        color: #008cc9;
-    }
-    .share-linkedin a:hover {
-        background-color: #008cc9;
-    }
-    .share-whatsapp a {
-        border-color: #25D366;
-        color: #25D366;
-    }
-    .share-whatsapp a:hover {
-        background-color: #25D366;
+            &:hover {
+                background-color: $linkedin-brand-color;
+            }
+        }
+
+        &:hover a {
+            color: white;
+            text-decoration: none;
+    
+            transition: 0.3s color;
+        }
     }
 }
 
@@ -333,6 +357,23 @@ body {
 
     &:hover, &:focus {
         color: $main-green-color;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-grey-color;
+
+        &:visited {
+            color: lighten($brand-color, 10%);
+        }
+    
+        &:hover {
+            color: lighten($brand-color, 5%);
+            text-decoration: underline;
+        }
+    
+        &:hover:visited {
+          color: lighten(lighten($brand-color, 10%), 5%);
+        }
     }
 }
 
@@ -353,6 +394,10 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
  .site-footer {
     border-top: 1px solid $grey-color-light;
     padding: $spacing-unit 0;
+
+    @media (prefers-color-scheme: dark) {
+        border-top-color: $dark-grey-color-dark;
+    }
 }
 
 .footer-heading {
@@ -370,18 +415,18 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     box-shadow: none;
 }
 
-.contact-list,
-.social-media-list {
+.description-list,
+.contact-list {
     list-style: none;
 }
-.contact-list {
+.description-list {
     margin-left: 100 + ($spacing-unit / 2);
 }
-.social-media-list {
+.contact-list {
     margin-left: 0;
 }
 
-.social-media-list li a span.icon {
+.contact-list li a span.icon {
     display: block;
     float: left;
     width: 21px;
@@ -392,6 +437,10 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     color: $grey-color;
     margin-left: -$spacing-unit / 2;
     @extend %clearfix;
+
+    @media (prefers-color-scheme: dark) {
+        color: $dark-grey-color;
+    }
 }
 
 .footer-col {
@@ -415,15 +464,15 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         width: 50px;
         height: 50px;
     }
-    .contact-list {
+    .description-list {
         margin-left: 50px + ($spacing-unit / 2);
     }
     .footer-col-1 {
-        width: -webkit-calc(100% - 185px - (#{$spacing-unit}));
-        width:         calc(100% - 185px - (#{$spacing-unit}));
+        width: -webkit-calc(100% - 195px - (#{$spacing-unit}));
+        width:         calc(100% - 195px - (#{$spacing-unit}));
     }
     .footer-col-2 {
-        width: 185px;
+        width: 195px;
     }
 }
 
@@ -433,7 +482,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         width: -webkit-calc(100% - (#{$spacing-unit} / 2));
         width:         calc(100% - (#{$spacing-unit} / 2));
     }
-    .social-media-list {
+    .contact-list {
         margin-left: 50px + ($spacing-unit / 2);
     }
 }

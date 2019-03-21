@@ -11,6 +11,8 @@
 
   <title>{{title}}</title>
   <meta name="description" content="{{description}}">
+  <meta name="author" content="{{ site.author }}">
+  <meta name="generator" content="Jekyll v{{ jekyll.version }}">
 
   <meta itemprop="name" content="{{ title }}">
   <meta itemprop="description" content="{{ description  }}">
@@ -38,8 +40,7 @@
   <link rel="icon" sizes="{{size}}x{{size}}" href="{{ size | prepend: '/assets/design/favicon' | append: '.png' | relative_url }}">
   {%- endfor %}
 
-  <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
-  <link rel="stylesheet" href="{{ '/dist/font-awesome-4.7.0/css/font-awesome.min.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ 'now' | date: "%Y%m%d%H%M" }}">
   <link rel="canonical" href="{{ url }}">
   {% feed_meta %}
 </head>

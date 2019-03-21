@@ -1,6 +1,4 @@
----
-# Only the main Sass file needs front matter (the dashes are enough)
----
+
 @charset "utf-8";
 
 
@@ -16,34 +14,49 @@ $base-line-height: 1.5;
 
 $spacing-unit:     30px;
 
-$background-color: #f6f6f6;
-$border-color: #e5e5e5;
+$background-color: #f8f8f8;
 $content-back-color:  #fff;
 
-$main-green-color: #378B2E;
-$main-green-color-light: #5EAE56;
-$main-green-color-dark: #196811;
+$dark-background-color: #444;
+$dark-content-back-color:  #333;
 
-$sec-green-color-light:  #91D08A;
-$sec-green-color-dark:  #074500;
+$title-color: #fff;
+$dark-title-color: #efefef;
 
-
-$brand-color:      $main-green-color;
-$visited-brand-color: #98ca9a;
-$title-color:      #efefef;
-$text-color:       #111;
-$background-color: #f8f8f8;
+$text-color: #111;
+$dark-text-color: #eee;
 
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
+
+$dark-grey-color: #aeaeae;
+$dark-grey-color-light: lighten($dark-grey-color, 25%);
+$dark-grey-color-dark:  darken($dark-grey-color, 25%);
+
+$code-block-color: #fafafa;
+$dark-code-block-color: #555;
+$simple-code-color: #C41A16;
+$dark-simple-code-color: #f90d5d;
+
+$main-green-color: #378B2E;
+$main-green-color-light: #5EAE56;
+$main-green-color-dark: #196811;
+$sec-green-color-light:  #91D08A;
+$sec-green-color-dark:  #074500;
+
+$brand-color: $main-green-color;
+$visited-brand-color: #98ca9a;
+
+$twitter-brand-color: #55acee;
+$facebook-brand-color: #3b5998;
+$linkedin-brand-color: #008cc9;
 
 // Width of the content area
 $content-width:    900px;
 
 $on-palm:          600px;
 $on-laptop:        1000px;
-
 
 
 // Use media queries like this:
@@ -59,6 +72,9 @@ $on-laptop:        1000px;
     }
 }
 
+@mixin relative-font-size($ratio) {
+    font-size: $base-font-size * $ratio;
+}
 
 
 // Import partials from `sass_dir` (defaults to `_sass`)

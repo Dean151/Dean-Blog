@@ -9,7 +9,7 @@ index: 99
 ### The website
 
 This website is powered by [Jekyll][jekyll], and uses a customized version of [Jekyll Minima][jekyll-minima] as theme.
-The social media icons are powered by [Font Awesome 4][font-awesome].
+
 <!--more-->
 
 All pages are *free of any social media tracker*: No other javascript than my self-hosted [Matomo][matomo]'s are ever included.\\
