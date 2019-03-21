@@ -27,7 +27,7 @@
           {%- endif -%}
           {%- if site.stackoverflow %}
           <li>
-              <a href="https://stackoverflow.com/users/{{ site.stackoverflow | cgi_escape | escape }}" title="dean" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#s' | relative_url }}"></use></svg> <span class="username">dean</span></a>
+              <a href="https://stackoverflow.com/users/{{ site.stackoverflow | cgi_escape | escape }}" title="{{ site.stackoverflow_name }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#s' | relative_url }}"></use></svg> <span class="username">{{ site.stackoverflow_name }}</span></a>
           </li>
           {%- endif -%}
           {%- if site.linkedin %}
