@@ -52,6 +52,15 @@ img {
     vertical-align: middle;
 }
 
+.svg-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    fill: currentColor;
+    padding: 5px 5px 2px;
+    vertical-align: text-bottom;            
+}
+
 
 
 /**
@@ -185,15 +194,6 @@ blockquote {
     }
 }
 
-.svg-icon {
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    fill: currentColor;
-    padding: 5px 5px 2px;
-    vertical-align: text-bottom;            
-}
-
 /**
  * Tables
  */
@@ -299,24 +299,5 @@ pre {
         content: "";
         display: table;
         clear: both;
-    }
-}
-
-
-
-/**
- * Icons
- */
-.icon {
-
-    > svg {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        vertical-align: middle;
-
-        path {
-            fill: $grey-color;
-        }
     }
 }
