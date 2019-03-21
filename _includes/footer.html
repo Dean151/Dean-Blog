@@ -35,11 +35,6 @@
               <a href="https://www.linkedin.com/in/{{ site.linkedin | cgi_escape | escape }}" title="{{ site.linkedin | escape }}" target="_blank"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#l' | relative_url }}"></use></svg> <span class="username">{{ site.linkedin }}</span></a>
           </li>
           {%- endif -%}
-          {%- if site.email %}
-          <li>
-            <a href="mailto:{{ site.email | cgi_escape | escape }}"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#m' | relative_url }}"></use></svg> <span class="username">{{ site.email }}</span></a>
-          </li>
-          {%- endif %}
         </ul>
       </div>
     </div>
