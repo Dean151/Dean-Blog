@@ -17,7 +17,7 @@
         <ul class="contact-list">
           {%- if site.twitter %}
           <li>
-              <a href="https://twitter.com/{{ site.twitter | site.twitter | escape }}" title="{{ site.twitter | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg>@{{ site.twitter }}</a>
+              <a href="https://twitter.com/{{ site.twitter | site.twitter | escape }}" title="{{ site.twitter | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#t' | relative_url }}"></use></svg>{{ site.twitter }}</a>
           </li>
           {%- endif -%}
           {%- if site.github %}
