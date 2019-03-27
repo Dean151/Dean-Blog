@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Keep PHP up to date on Debian 9"
-date:   2019-03-20 20:00:00 +0100
+date:   2019-03-20 12:00:00 +0000
 categories: Security servers
 ---
 

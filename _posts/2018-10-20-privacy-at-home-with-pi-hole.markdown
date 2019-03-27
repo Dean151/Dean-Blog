@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Build a privacy-safe home network using Pi-hole"
-date:   2018-10-20 20:00:00 +0200
+date:   2018-10-20 12:00:00 +0000
 categories: Security network
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Embrace macOS's dark mode with Safari"
-date:   2019-03-27 20:00:00 +0100
+date:   2019-03-27 12:00:00 +0000
 categories: web design
 ---
 

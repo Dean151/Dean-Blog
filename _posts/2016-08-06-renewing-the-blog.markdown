@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Renewing the blog"
-date:   2016-08-06 20:00:00 +0200
+date:   2016-08-06 12:00:00 +0000
 categories: blog
 ---
 

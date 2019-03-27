@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "iOS disclosure indicators done right"
-date:   2016-08-12 20:00:00 +0200
+date:   2016-08-12 12:00:00 +0000
 categories: Swift3 iOS
 ---
 

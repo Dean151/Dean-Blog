@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Avoid 5 common mistakes with AES encryption"
-date:   2017-07-12 20:00:00 +0200
+date:   2017-07-12 12:00:00 +0000
 categories: Security Encryption
 ---
 
