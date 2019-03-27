@@ -90,7 +90,11 @@
     .mi, // Literal.Number.Integer
     .mo // Literal.Number.Oct
     {
-        color: #1C00CF 
+        color: #1C00CF;
+
+        @media (prefers-color-scheme: dark) {
+            color: #07acff;
+        }
     }
     .s, // Literal.String
     .sb, // Literal.String.Backtick

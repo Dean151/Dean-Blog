@@ -1,0 +1,36 @@
+{% capture comparable_images %}{% increment comparable_images %}{% endcapture %}
+<div id="comparable-images-{{comparable_images}}" class="comparable-images">
+    <img src="{{ include.before | relative_url }}" class="before" alt="before">
+    <img src="{{ include.after | relative_url }}" class="after" alt="after">
+</div>
+<script>
+var images_container_{{comparable_images}} = document.getElementById('comparable-images-{{comparable_images}}');
+images_container_{{comparable_images}}.ondragstart = function() { return false; };
+
+/* Helper function */
+var clipImage = function(images_container, amount) {
+    var image = images_container.children[1];
+    var width = image.clientWidth; var height = image.clientHeight;
+    image.style.clip = 'rect(0px ' + width + 'px ' + height + 'px ' + amount + 'px)';
+};
+
+/* Events */
+window.addEventListener("load", function() {
+    var width = images_container_{{comparable_images}}.children[1].clientWidth;
+    clipImage(images_container_{{comparable_images}}, width/2);
+});
+var shouldClip_{{comparable_images}} = false;
+images_container_{{comparable_images}}.onmousedown = function (event) {
+    shouldClip_{{comparable_images}} = true;
+    clipImage(images_container_{{comparable_images}}, event.layerX);
+}
+images_container_{{comparable_images}}.onmousemove = function (event) {
+    if (!shouldClip_{{comparable_images}}) {
+        return;
+    }
+    clipImage(images_container_{{comparable_images}}, event.layerX);
+};
+document.onmouseup = function () {
+    shouldClip_{{comparable_images}} = false;
+}
+</script>

@@ -61,7 +61,22 @@ img {
     vertical-align: text-bottom;            
 }
 
+.comparable-images {
+    position: relative;
+    overflow: hidden;
+    cursor: col-resize;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 
+    img {
+        max-width: 100% !important;
+    }
+    .after {
+        position: absolute;
+        top: 0;
+        transition: clip 0.1s;
+    }
+}
 
 /**
  * Figures

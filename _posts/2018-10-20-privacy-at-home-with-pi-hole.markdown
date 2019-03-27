@@ -110,7 +110,7 @@ You may now use the internet with no ads or trackers!
 
 You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.
 
-For instance, using `box.lan` instead of `192.168.1.1` or `pi.lan` instead of `192.168.1.x`.
+Let's say you want to use `box.lan` instead of `192.168.1.1` or `pi.lan` instead of `192.168.1.x`.
 
 To do so, you need to create an alias file:
 
@@ -118,7 +118,7 @@ To do so, you need to create an alias file:
 sudo nano /etc/pihole/lan.conf
 {% endhighlight %}
 
-Containing, for instance:
+Containing, for our example:
 
 ```
 192.168.1.1 box.lan
