@@ -70,10 +70,11 @@ To help you with colors and legibility, you may want to read this cool article: 
 ## Cross-compatibility
 
 For now, this feature is only implemented for Safari 12.1\\
-No other browser supports-it yet, but Firefox will introduce it starting with version 67.
+No other browser supports-it yet, but Firefox will introduce it starting with [version 67][firefox-nightly].
 
 As of today, this CSS media query is currently [a W3C draft][w3c-draft], and we can hope it'll be more supported by browsers in the future.
 Until then, you'll have a working dark-mode for true Apple addicts that still use Safari as their main browser.
 
 [color-contrast]: https://www.viget.com/articles/color-contrast/
+[firefox-nightly]: https://www.mozilla.org/en-US/firefox/67.0a1/releasenotes/
 [w3c-draft]: https://drafts.csswg.org/mediaqueries-5/#descdef-media-prefers-color-scheme
