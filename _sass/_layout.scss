@@ -424,57 +424,56 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     .contact-list {
         margin-left: 0;
     }
-}
 
-.footer-col-wrapper {
-    font-size: $small-font-size;
-    color: $grey-color;
-    margin-left: -$spacing-unit / 2;
-    @extend %clearfix;
+    .footer-col-wrapper {
+        font-size: $small-font-size;
+        color: $grey-color;
+        margin-left: -$spacing-unit / 2;
+        @extend %clearfix;
 
-    @media (prefers-color-scheme: dark) {
-        color: $dark-grey-color;
+        @media (prefers-color-scheme: dark) {
+            color: $dark-grey-color;
+        }
+
+        .footer-col {
+            float: left;
+            margin-bottom: $spacing-unit / 2;
+            padding-left: $spacing-unit / 2;
+        }
+        .footer-col-1 {
+            width: calc(75% - (#{$spacing-unit} / 2));
+        }
+        .footer-col-2 {
+            width: calc(25% - (#{$spacing-unit} / 2));
+        }
     }
 
-    .footer-col {
-        float: left;
-        margin-bottom: $spacing-unit / 2;
-        padding-left: $spacing-unit / 2;
+    @include media-query($on-laptop) {
+        .footer-col-wrapper  {
+            .footer-col-1 {
+                width: calc(100% - 195px - (#{$spacing-unit}));
+            }
+            .footer-col-2 {
+                width: 195px;
+            }
+        }
+        .profile-picture {
+            width: 50px;
+            height: 50px;
+        }
+        .description-list {
+            margin-left: 50px + ($spacing-unit / 2);
+        }
     }
-    .footer-col-1 {
-        width: -webkit-calc(75% - (#{$spacing-unit} / 2));
-        width:         calc(75% - (#{$spacing-unit} / 2));
-    }
-    .footer-col-2 {
-        width: -webkit-calc(25% - (#{$spacing-unit} / 2));
-        width:         calc(25% - (#{$spacing-unit} / 2));
-    }
-}
 
-@include media-query($on-laptop) {
-    .footer-col-1 {
-        width: -webkit-calc(100% - 195px - (#{$spacing-unit}));
-        width:         calc(100% - 195px - (#{$spacing-unit}));
+    @include media-query($on-palm) {
+        .footer-col-wrapper .footer-col {
+            float: none;
+            width: calc(100% - (#{$spacing-unit} / 2));
+        }
+        .contact-list {
+            margin-left: 50px + ($spacing-unit / 2);
+        }
     }
-    .footer-col-2 {
-        width: 195px;
-    }
-    .profile-picture {
-        width: 50px;
-        height: 50px;
-    }
-    .description-list {
-        margin-left: 50px + ($spacing-unit / 2);
-    }
-}
 
-@include media-query($on-palm) {
-    .footer-col {
-        float: none;
-        width: -webkit-calc(100% - (#{$spacing-unit} / 2));
-        width:         calc(100% - (#{$spacing-unit} / 2));
-    }
-    .contact-list {
-        margin-left: 50px + ($spacing-unit / 2);
-    }
 }
