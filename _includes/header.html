@@ -8,9 +8,9 @@
 
     <nav class="site-nav">
     {%- assign pages=site.pages | sort: 'index' -%}
-    {%- for my_page in pages -%}
-    {%- if my_page.title %}
-      <a class="page-link" href="{{ my_page.url | relative_url }}">{{ my_page.title }}</a>
+    {%- for page in pages -%}
+    {%- if page.title %}
+      <a class="page-link" href="{{ my_page.url | relative_url }}">{{ page.title }}</a>
     {%- endif -%}
     {%- endfor %}
     </nav>
