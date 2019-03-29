@@ -17,20 +17,30 @@ var clipImage = function(images_container, amount) {
 /* Events */
 window.addEventListener("load", function() {
     var width = images_container_{{comparable_images}}.children[1].clientWidth;
-    clipImage(images_container_{{comparable_images}}, width/2);
+    clipImage(images_container_{{comparable_images}}, width);
+    setTimeout(function () {
+        images_container_{{comparable_images}}.children[1].style.transition = 'clip 1s';
+        clipImage(images_container_{{comparable_images}}, width/2);
+        setTimeout(function () {
+            images_container_{{comparable_images}}.children[1].style.removeProperty('transition');
+        }, 1000);
+    }, 500);
 });
 var shouldClip_{{comparable_images}} = false;
 images_container_{{comparable_images}}.onmousedown = function (event) {
     shouldClip_{{comparable_images}} = true;
+    images_container_{{comparable_images}}.children[1].style.removeProperty('transition');
     clipImage(images_container_{{comparable_images}}, event.layerX);
 }
 images_container_{{comparable_images}}.onmousemove = function (event) {
     if (!shouldClip_{{comparable_images}}) {
         return;
     }
+    images_container_{{comparable_images}}.children[1].style.transition = 'none';
     clipImage(images_container_{{comparable_images}}, event.layerX);
 };
 document.onmouseup = function () {
+    images_container_{{comparable_images}}.children[1].style.removeProperty('transition');
     shouldClip_{{comparable_images}} = false;
 }
 </script>
