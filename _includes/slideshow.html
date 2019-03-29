@@ -1,0 +1,31 @@
+{% assign images = include.images | split: ", " %}
+{% capture slideshow %}{% increment slideshow %}{% endcapture %}
+<div id="slideshow-{{slideshow}}" class="slideshow" data-current="0">
+    <img src="{{ images.first | relative_url }}" class="presented" alt="image">
+</div>
+<script>
+var images_{{slideshow}} = ['{{ images | join: "', '" }}'];
+var slideshow_{{slideshow}} = document.getElementById('slideshow-{{slideshow}}');
+var set_interval_{{slideshow}} = function() {
+    clearInterval(slideshow_{{slideshow}}.getAttribute('data-interval'));
+    var interval = setInterval(function () {
+        next_{{slideshow}}();
+    }, 5000);
+    slideshow_{{slideshow}}.setAttribute('data-interval', interval);
+};
+var next_{{slideshow}} = function() {
+    var current = slideshow_{{slideshow}}.getAttribute('data-current');
+    var current = parseInt(current);
+    current += 1;
+    current %= images_{{slideshow}}.length;
+    slideshow_{{slideshow}}.children[0].setAttribute('src', images_{{slideshow}}[current]);// TODO: animate change
+    slideshow_{{slideshow}}.setAttribute('data-current', current);
+};
+window.addEventListener("load", function() {
+    set_interval_{{slideshow}}();
+});
+slideshow_{{slideshow}}.children[0].onclick = function () {
+    set_interval_{{slideshow}}();
+    next_{{slideshow}}();
+};
+</script>
