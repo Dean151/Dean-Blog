@@ -79,9 +79,16 @@ img {
 }
 
 .slideshow {
+    position: relative;
 
     img {
         cursor: pointer;
+        max-width: 100% !important;
+    }
+    .foregone {
+        position: absolute;
+        top: 0;
+        transition: opacity 0.5s;
     }
 }
 

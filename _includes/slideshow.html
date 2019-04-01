@@ -2,6 +2,7 @@
 {% capture slideshow %}{% increment slideshow %}{% endcapture %}
 <div id="slideshow-{{slideshow}}" class="slideshow" data-current="0">
     <img src="{{ images.first | relative_url }}" class="presented" alt="image">
+    <img src="{{ images.first | relative_url }}" class="foregone">
 </div>
 <script>
 var images_{{slideshow}} = ['{{ images | join: "', '" }}'];
@@ -15,16 +16,27 @@ var set_interval_{{slideshow}} = function() {
 };
 var next_{{slideshow}} = function() {
     var current = slideshow_{{slideshow}}.getAttribute('data-current');
-    var current = parseInt(current);
-    current += 1;
-    current %= images_{{slideshow}}.length;
-    slideshow_{{slideshow}}.children[0].setAttribute('src', images_{{slideshow}}[current]);// TODO: animate change
-    slideshow_{{slideshow}}.setAttribute('data-current', current);
+    current = parseInt(current);
+    next = (current + 1) % images_{{slideshow}}.length;
+
+    slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[current]);
+    slideshow_{{slideshow}}.children[0].setAttribute('src', images_{{slideshow}}[next]);
+    
+    slideshow_{{slideshow}}.setAttribute('data-current', next);
+
+    // We animate to the next image
+    slideshow_{{slideshow}}.children[1].style.opacity = 0;
+    setTimeout(function () {
+        slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[next]);
+        setTimeout(function () {
+            slideshow_{{slideshow}}.children[1].style.opacity = 1;
+        }, 50);
+    }, 500);
 };
 window.addEventListener("load", function() {
     set_interval_{{slideshow}}();
 });
-slideshow_{{slideshow}}.children[0].onclick = function () {
+slideshow_{{slideshow}}.onclick = function () {
     set_interval_{{slideshow}}();
     next_{{slideshow}}();
 };
