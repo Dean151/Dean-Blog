@@ -18,7 +18,7 @@ Of course we expect the annoucements of iOS 13, macOS 10.15, watchOS 6, tv
 
 ### Marzipan: from iOS to macOS
 
-Announced at last year WWDC, the Marzipan project will allow UIKit apps to run on macOS. We can expect that the API should open this year to developers with macOS 10.15.
+Announced at last year WWDC, the [Marzipan project][marzipan] will allow UIKit apps to run on macOS. We can expect that the API should open this year to developers with macOS 10.15.
 
 I can't wait for my first tests, trying to build [DiliTrust Exec][dilitrust-exec] for macOS will be one of the first things I'll attempt during the WWDC 19. 
 
@@ -42,6 +42,7 @@ Don't hesitate to get in touch with me, using any of the available social networ
 I see you there!
 
 [wwdc]: https://developer.apple.com/wwdc19/
+[marzipan]: https://9to5mac.com/guides/marzipan/
 [dilitrust-exec]: https://www.dilitrust.com/solution/exec/
 [dark-mode]: https://9to5mac.com/2019/02/01/ios-13-dark-mode-rumor/
 [ipad-features]: https://9to5mac.com/2019/03/31/ios-13-on-ipad/
