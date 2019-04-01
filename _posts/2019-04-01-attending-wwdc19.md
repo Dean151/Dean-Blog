@@ -7,7 +7,7 @@ categories: conference apple
 
 (This is not an April fool!)
 
-It's with great pleasure that I will attend this year  WWDC.\\
+It's with great pleasure that I will attend this year [ WWDC][wwdc].\\
 It'll be my first WWDC from the inside, and I'm super excited about it already!
 
 {% include slideshow.html images="/assets/ios/wwdc/wwdc19-robot.jpg, /assets/ios/wwdc/wwdc19-alien.jpg, /assets/ios/wwdc/wwdc19-monkey.jpg, /assets/ios/wwdc/wwdc19-skull.jpg" %}
@@ -33,7 +33,7 @@ Having multi-account abilities, more USB devices support (like USB drives), bett
 
 ## Will you write articles about the announcements?
 
-I'll try to write few WWDC articles on the blog, but I'll do that with care. The WWDC policy is clear that I should not share screenshots nor write "public reviews". It's possible that I will not release anything before the end of the WWDC, and none of those post will contains samplecode from Apple, or screenshot whatsoever. 
+I'll try to write few WWDC articles on the blog, but I'll do that with care. The [WWDC policy][wwdc-policy] is clear that I should not share screenshots nor write "public reviews". It's possible that I will not release anything before the end of the WWDC, and none of those post will contains samplecode from Apple, or screenshot whatsoever. 
 
 ## Attending too?
 
@@ -41,6 +41,8 @@ Don't hesitate to get in touch with me, using any of the available social networ
 
 I see you there!
 
+[wwdc]: https://developer.apple.com/wwdc19/
 [dilitrust-exec]: https://www.dilitrust.com/solution/exec/
 [dark-mode]: https://9to5mac.com/2019/02/01/ios-13-dark-mode-rumor/
 [ipad-features]: https://9to5mac.com/2019/03/31/ios-13-on-ipad/
+[wwdc-policy]: https://developer.apple.com/wwdc19/policy/
