@@ -80,10 +80,13 @@ img {
 
 .slideshow {
     position: relative;
+    margin-left: - $spacing-unit;
 
     img {
         cursor: pointer;
-        max-width: 100% !important;
+        max-width: calc(100% + #{$spacing-unit}) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
     .foregone {
         position: absolute;
