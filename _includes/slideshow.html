@@ -14,7 +14,14 @@ var set_interval_{{slideshow}} = function() {
     }, 5000);
     slideshow_{{slideshow}}.setAttribute('data-interval', interval);
 };
+var shouldTransition_{{slideshow}} = true;
 var next_{{slideshow}} = function() {
+
+    if (!shouldTransition_{{slideshow}}) {
+        return;
+    }
+    shouldTransition_{{slideshow}} = false;
+
     var current = slideshow_{{slideshow}}.getAttribute('data-current');
     current = parseInt(current);
     next = (current + 1) % images_{{slideshow}}.length;
@@ -30,6 +37,7 @@ var next_{{slideshow}} = function() {
         slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[next]);
         setTimeout(function () {
             slideshow_{{slideshow}}.children[1].style.opacity = 1;
+            shouldTransition_{{slideshow}} = true;
         }, 50);
     }, 500);
 };
