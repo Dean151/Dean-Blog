@@ -37,9 +37,11 @@ var next_{{slideshow}} = function() {
         slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[next]);
         setTimeout(function () {
             slideshow_{{slideshow}}.children[1].style.opacity = 1;
-            shouldTransition_{{slideshow}} = true;
-        }, 50);
-    }, 500);
+            setTimeout(function () {
+                shouldTransition_{{slideshow}} = true;
+            }, 300);
+        }, 10);
+    }, 300);
 };
 window.addEventListener("load", function() {
     set_interval_{{slideshow}}();
