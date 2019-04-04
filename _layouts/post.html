@@ -9,7 +9,8 @@ layout: default
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    {% include anchor_headings.html html=content h_max=3 anchorBody='&para;' anchorClass='post-link-anchor' %}
+    {% capture anchor %}<svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#u' | relative_url }}"></use></svg>{% endcapture %}
+    {% include anchor_headings.html html=content h_max=3 anchorBody=anchor beforeHeading=true anchorClass='post-link-anchor' %}
   </div>
 
 </article>

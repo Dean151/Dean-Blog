@@ -222,6 +222,10 @@
 .post-content {
     margin-bottom: $spacing-unit;
 
+    h1, h2, h3, h4, h5, h6 {
+        display: flex;
+    }
+
     h2 {
         margin-top: $spacing-unit;
         font-size: 30px;
@@ -350,13 +354,21 @@
  */
 
 .post-link-anchor {
-    display: inline-block;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
     opacity: 0;
-    line-height: 1em;
-    font-size: 0.8em;
 
     color: $grey-color;
     transition: opacity 0.3s;
+
+    margin-left: -$spacing-unit;
+    width: $spacing-unit;
+
+    &:visited {
+        color: $grey-color;
+    }
 
     &:hover, &:focus {
         color: $main-green-color;
@@ -373,10 +385,6 @@
         &:hover {
             color: lighten($brand-color, 5%);
             text-decoration: underline;
-        }
-    
-        &:hover:visited {
-          color: lighten(lighten($brand-color, 10%), 5%);
         }
     }
 }
