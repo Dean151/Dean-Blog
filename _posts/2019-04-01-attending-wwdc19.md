@@ -10,6 +10,8 @@ categories: conference apple
 It's with great pleasure that I will attend this year [ WWDC][wwdc].\\
 It'll be my first WWDC from the inside, and I'm super excited about it already!
 
+<!--more-->
+
 {% include slideshow.html images="/assets/ios/wwdc/wwdc19-robot.jpg, /assets/ios/wwdc/wwdc19-alien.jpg, /assets/ios/wwdc/wwdc19-monkey.jpg, /assets/ios/wwdc/wwdc19-skull.jpg" %}
 
 ## What to expect this year?

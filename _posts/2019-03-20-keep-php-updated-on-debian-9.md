@@ -2,7 +2,7 @@
 layout: post
 title:  "Keep PHP up to date on Debian 9"
 date:   2019-03-20 12:00:00 +0000
-categories: Security servers
+categories: server configuration
 ---
 
 When installing PHP on Debian 9, the default version is **PHP 7.0**.\\

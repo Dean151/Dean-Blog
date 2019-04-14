@@ -8,6 +8,8 @@ categories: web design
 This last monday (March 25, 2019), Apple released the last version of macOS 10.14.4, along with Safari 12.1.
 This last version of Safari expose a CSS api using the `@media` tag allowing you to support a **Dark theme** for your site, working along with macOS's dark mode.
 
+<!--more-->
+
 If you're using Safari 12.1 right now, enable the Dark Mode on your Mac, and you'll find that this very blog post is now in "Dark Mode", using the very same css method I'm going to provide you.
 
 You may also want to play with this interactive comparative screenshot of the blog:
