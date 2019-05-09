@@ -1,53 +1,5 @@
 {% assign images = include.images | split: ", " %}
-{% capture slideshow %}{% increment slideshow %}{% endcapture %}
-<div id="slideshow-{{slideshow}}" class="slideshow" data-current="0">
+<div class="slideshow" data-current="0" data-images="{{ include.images }}">
     <img src="{{ images.first | relative_url }}" class="presented" alt="image">
     <img src="{{ images.first | relative_url }}" class="foregone">
 </div>
-<script>
-var images_{{slideshow}} = ['{{ images | join: "', '" }}'];
-var slideshow_{{slideshow}} = document.getElementById('slideshow-{{slideshow}}');
-var set_interval_{{slideshow}} = function() {
-    clearInterval(slideshow_{{slideshow}}.getAttribute('data-interval'));
-    var interval = setInterval(function () {
-        next_{{slideshow}}();
-    }, 5000);
-    slideshow_{{slideshow}}.setAttribute('data-interval', interval);
-};
-var shouldTransition_{{slideshow}} = true;
-var next_{{slideshow}} = function() {
-
-    if (!shouldTransition_{{slideshow}}) {
-        return;
-    }
-    shouldTransition_{{slideshow}} = false;
-
-    var current = slideshow_{{slideshow}}.getAttribute('data-current');
-    current = parseInt(current);
-    next = (current + 1) % images_{{slideshow}}.length;
-
-    slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[current]);
-    slideshow_{{slideshow}}.children[0].setAttribute('src', images_{{slideshow}}[next]);
-    
-    slideshow_{{slideshow}}.setAttribute('data-current', next);
-
-    // We animate to the next image
-    slideshow_{{slideshow}}.children[1].style.opacity = 0;
-    setTimeout(function () {
-        slideshow_{{slideshow}}.children[1].setAttribute('src', images_{{slideshow}}[next]);
-        setTimeout(function () {
-            slideshow_{{slideshow}}.children[1].style.opacity = 1;
-            setTimeout(function () {
-                shouldTransition_{{slideshow}} = true;
-            }, 300);
-        }, 10);
-    }, 300);
-};
-window.addEventListener("load", function() {
-    set_interval_{{slideshow}}();
-});
-slideshow_{{slideshow}}.onclick = function () {
-    set_interval_{{slideshow}}();
-    next_{{slideshow}}();
-};
-</script>
