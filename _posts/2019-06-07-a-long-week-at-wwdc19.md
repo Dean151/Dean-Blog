@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "A (long) week at  WWDC19"
-date:   2019-06-07 16:29:00 -0700
+date:   2019-06-07 17:30:00 -0700
 categories: conference apple
 ---
 
