@@ -38,7 +38,7 @@ body {
 @media (prefers-color-scheme: dark) {
     body {
         color: #eee;
-        background: #444;
+        background: #111;
     }
 }
 {% endhighlight %}
@@ -50,7 +50,7 @@ For website that are dark by default, you may provide a "light" alternative to y
 {% highlight css %}
 body {
     color: #eee;
-    background: #444;
+    background: #111;
 }
 
 @media (prefers-color-scheme: light) {

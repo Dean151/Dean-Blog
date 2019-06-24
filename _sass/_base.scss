@@ -187,19 +187,19 @@ a {
     }
 
     @media (prefers-color-scheme: dark) {
-        color: lighten($brand-color, 15%);
+        color: lighten($brand-color, 10%);
 
         &:visited {
-            color: lighten($brand-color, 10%);
+            color: lighten($brand-color, 15%);
         }
     
         &:hover {
-            color: lighten($brand-color, 5%);
+            color: lighten($brand-color, 20%);
             text-decoration: underline;
         }
     
         &:hover:visited {
-          color: lighten(lighten($brand-color, 10%), 5%);
+          color: lighten($brand-color, 30%);
         }
     }
 }
