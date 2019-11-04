@@ -80,4 +80,4 @@ It was an exhausting week, but still, I hope thatâ€¯WWDC19 will not be the lastâ
 [uiviewcontrollertransitioningdelegate]: https://developer.apple.com/documentation/uikit/uiviewcontrollertransitioningdelegate
 [announcement-list]: https://patrickbalestra.com/blog/2019/06/07/wwdc-2019-the-things-you-may-have-missed.html
 [dilitrust-exec]: https://www.dilitrust.com/solution/exec/
-[crypto-ios]: {{ site.baseurl }}{% post_url 2017-07-12-aes-encryption-good-practice-with-swift %}
+[crypto-ios]: {% post_url 2017-07-12-aes-encryption-good-practice-with-swift %}

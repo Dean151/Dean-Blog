@@ -192,7 +192,7 @@ Finally, if you want to make your pi-hole admin interface available from the out
 [pi-hole-admin-blocked]: /assets/screenshots/pi-hole-blocked.png
 [pi-hole-privacy-level]: http://pi.hole/admin/settings.php?tab=privacy
 [pi-hole-admin-android]: /assets/screenshots/pi-hole-android.png
-[feed-my-cat]: {{ site.baseurl }}{% post_url 2018-01-31-how-anyone-could-feed-my-cat %}
+[feed-my-cat]: {% post_url 2018-01-31-how-anyone-could-feed-my-cat %}
 [aln-nodejs]: https://github.com/Dean151/Aln-NodeJs
 [unbound]: https://docs.pi-hole.net/guides/unbound/
 [dns-over-https]: https://docs.pi-hole.net/guides/dns-over-https/
