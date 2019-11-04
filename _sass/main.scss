@@ -17,8 +17,8 @@ $spacing-unit:     30px;
 $background-color: #f8f8f8;
 $content-back-color:  #fff;
 
-$dark-background-color: #333;
-$dark-content-back-color:  #111;
+$dark-background-color: #010101;
+$dark-content-back-color:  #151515;
 
 $title-color: #fff;
 $dark-title-color: #efefef;
@@ -30,12 +30,12 @@ $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
-$dark-grey-color: #aeaeae;
+$dark-grey-color: #dbd9d9;
 $dark-grey-color-light: lighten($dark-grey-color, 25%);
 $dark-grey-color-dark:  darken($dark-grey-color, 25%);
 
 $code-block-color: #fafafa;
-$dark-code-block-color: #555;
+$dark-code-block-color: #333;
 $simple-code-color: #C41A16;
 $dark-simple-code-color: #f90d5d;
 
