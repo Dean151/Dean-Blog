@@ -1,0 +1,1239 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="https://www.thomasdurand.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.thomasdurand.fr/" rel="alternate" type="text/html" /><updated>2019-11-04T15:52:09+01:00</updated><id>https://www.thomasdurand.fr/feed.xml</id><title type="html">Dean’s blog</title><subtitle>Dean's blog is a blog about computer science and development</subtitle><author><name>Thomas Durand (a.k.a. Dean)</name></author><entry><title type="html">Generating lottery numbers using CryptoKit</title><link href="https://www.thomasdurand.fr/swift/cryptokit/2019/06/25/generating-lottery-numbers-with-cryptokit.html" rel="alternate" type="text/html" title="Generating lottery numbers using CryptoKit" /><published>2019-06-25T18:30:00+02:00</published><updated>2019-06-25T18:30:00+02:00</updated><id>https://www.thomasdurand.fr/swift/cryptokit/2019/06/25/generating-lottery-numbers-with-cryptokit</id><content type="html" xml:base="https://www.thomasdurand.fr/swift/cryptokit/2019/06/25/generating-lottery-numbers-with-cryptokit.html">&lt;p&gt;&lt;strong&gt;Why?&lt;/strong&gt; Because we can!&lt;/p&gt;
+
+&lt;p&gt;WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Today, I want to show how to use CryptoKit to generate numbers. 
+It’ll a better generator than &lt;code class=&quot;highlighter-rouge&quot;&gt;arc4random&lt;/code&gt; used by default on iOS since it generate cryptographic keys, keys that are supposed to be the most random and entropic possible!&lt;/p&gt;
+
+&lt;h2 id=&quot;a-model-to-generate-lottery-numbers&quot;&gt;A model to generate lottery numbers&lt;/h2&gt;
+
+&lt;p&gt;First, what are lottery draws?&lt;/p&gt;
+
+&lt;p&gt;It’s one or more &lt;em&gt;k among n&lt;/em&gt; draws!&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Represent one `k among n` operation&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;/// The number of number to draw (ie k)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UInt&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;/// The range of numbers to draw within (ie n)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;ClosedRange&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;/// Generate `draw` numbers within `among` &lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// TODO!&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;We can then define a lottery as an array of Draws:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;/// The draws for that lottery&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;/// Example draw 5 numbers within 1 and 49 &amp;amp; 1 number within 1 and 10.&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;draws&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;/// Generate a lottery draw randomly&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;draws&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The most popular french lotteries can then be defined easily within the application:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;frenchLoto&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draws&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;49&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;euromillion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draws&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;Draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Once the &lt;code class=&quot;highlighter-rouge&quot;&gt;Draw.random()&lt;/code&gt; method gets implemented, we will be able to generate lottery numbers very easily:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Output for now: [Set([]), Set([])]&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;euromillion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;randomness-using-default-implementation&quot;&gt;Randomness using default implementation&lt;/h2&gt;
+
+&lt;p&gt;Generating k number among a range is quite straightforward:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Generate `draw` numbers within `among`&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;drawable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;drawn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randomElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// If somehow we do not find any element, it means we want to draw more elements than available&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// Let just break the loop and return all elements.&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Make the number undrawable for that draw&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// And add the number to the draw&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;In this example, the random is handled by &lt;code class=&quot;highlighter-rouge&quot;&gt;randomElement()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;That uses by default the &lt;code class=&quot;highlighter-rouge&quot;&gt;SystemRandomNumberGenerator&lt;/code&gt; that will be either:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;arc4random_buf&lt;/code&gt; on Apple platforms&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;getrandom&lt;/code&gt; if available or &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/urandom&lt;/code&gt; on unix platforms.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;using-cryptoswifts-randomness&quot;&gt;Using CryptoSwift’s randomness&lt;/h2&gt;
+
+&lt;p&gt;Okay, here it becomes a little &lt;em&gt;hacky&lt;/em&gt; ; why not using the random bytes securely generated for a key as random source for the lottery numbers?&lt;/p&gt;
+
+&lt;p&gt;Doing so is quite easy, since we can use &lt;code class=&quot;highlighter-rouge&quot;&gt;randomElement(using generator: inout RandomNumberGenerator)&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CryptoKit&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;/// RandomNumberGenerator using CryptoKit&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CryptoKitRandomNumberGenerator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;RandomNumberGenerator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mutating&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;FixedWidthInteger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsignedInteger&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Let generate a symmetric key using CryptoKit. It'll be generated using best cryptographic practices to have strong randomness.&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// T will be 8 bytes at most (For UInt64) so generating a bits128 key (ie 16 bytes) is more than overkill already&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;SymmetricKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bits128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// Then we use the generated key to extract a random Unsigned Fixed Width Integer.&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withUnsafeBytes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// We have a pointer on random bytes generated by our class&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// Let convert those bytes to T ; in order to get our number.&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;bindMemory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;baseAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pointee&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And now we can pick numbers using our new generator:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;generator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CryptoKitRandomNumberGenerator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;drawn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randomElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;using&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And, in our previous &lt;code class=&quot;highlighter-rouge&quot;&gt;Draw.random()&lt;/code&gt; implementation, it’ll give us this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Generate `draw` numbers within `among`&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;drawable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;among&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Set&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;generator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CryptoKitRandomNumberGenerator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;guard&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;drawn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randomElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;using&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;drawnNumbers&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And this is it, you can now generate draws for all sort of Lotteries you may define using &lt;a href=&quot;https://gist.github.com/Dean151/a11444d0be6c8fde094661dbba38c3be&quot;&gt;this snippet of code&lt;/a&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Output: [Set([27, 13, 21, 29, 4]), Set([1, 3])]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// If you win with those, I claim a 5% tax :D&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Lottery&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;euromillion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;what-now&quot;&gt;What now?&lt;/h2&gt;
+
+&lt;p&gt;Okay, let’s face it, I really think that using CryptoKit here is a bit &lt;strong&gt;overkill&lt;/strong&gt;; but why not? It’s so easy to do!&lt;/p&gt;
+
+&lt;p&gt;CryptoKit make things like generating secure keys, encrypting, and many more cryptographic operation fairly easy! If you’re into cryptography, you should definitely give it a try in a Playground right away!&lt;/p&gt;
+
+&lt;p&gt;And if you have questions about CryptoKit: contact-me via GitHub or Twitter ;)&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">Why? Because we can! WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.</summary></entry><entry><title type="html">A (long) week at  WWDC19</title><link href="https://www.thomasdurand.fr/conference/apple/2019/06/08/a-long-week-at-wwdc19.html" rel="alternate" type="text/html" title="A (long) week at  WWDC19" /><published>2019-06-08T02:30:00+02:00</published><updated>2019-06-08T02:30:00+02:00</updated><id>https://www.thomasdurand.fr/conference/apple/2019/06/08/a-long-week-at-wwdc19</id><content type="html" xml:base="https://www.thomasdurand.fr/conference/apple/2019/06/08/a-long-week-at-wwdc19.html">&lt;p&gt;What a long week it’s been!&lt;/p&gt;
+
+&lt;p&gt;My first &lt;a href=&quot;https://developer.apple.com/wwdc19/&quot;&gt; WWDC&lt;/a&gt; is now over, and there’s a lot to say. I’ve learnt a lot, met incredible people, and corrected a lot of bugs with the help of fellows Apple engineers.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;div class=&quot;slideshow&quot; data-current=&quot;0&quot; data-images=&quot;/assets/ios/wwdc/wwdc19-robot.jpg, /assets/ios/wwdc/wwdc19-alien.jpg, /assets/ios/wwdc/wwdc19-monkey.jpg, /assets/ios/wwdc/wwdc19-skull.jpg&quot;&gt;
+    &lt;img src=&quot;/assets/ios/wwdc/wwdc19-robot.jpg&quot; class=&quot;presented&quot; alt=&quot;image&quot; /&gt;
+    &lt;img src=&quot;/assets/ios/wwdc/wwdc19-robot.jpg&quot; class=&quot;foregone&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;the-experience&quot;&gt;The experience&lt;/h2&gt;
+
+&lt;p&gt;First thing I want to dig into is the amazing experience it is to attend  WWDC.&lt;/p&gt;
+
+&lt;h4 id=&quot;people&quot;&gt;People&lt;/h4&gt;
+&lt;p&gt;You meet people, a lot and a lot of people. App developers, designers, product owners, Apple engineers, … etc.&lt;/p&gt;
+
+&lt;p&gt;All of those people shares different experiences, way of living, apps concepts. Discussing with all of them is thrilling and allow you to take a step back on a lot of point of view you may had on development.&lt;/p&gt;
+
+&lt;h4 id=&quot;labs&quot;&gt;Labs&lt;/h4&gt;
+&lt;p&gt;Labs are an opportunity of a lifetime: being able to speak with the guys who make the API alive allows you to congratulate them on their hard work (Thanks guys from the PDFKit I met earlier today, it was a nice time with you!)&lt;/p&gt;
+
+&lt;p&gt;Also this is the opportunity to dig into bugs and weird behaviors will the engineers that designed the frameworks. They’re the most willing to know what’s going on on a specific bug, or when an API is wrongly used (this can happen a lot with some advanced UIKit API like &lt;a href=&quot;https://developer.apple.com/documentation/uikit/uiviewcontrollertransitioningdelegate&quot;&gt;UIViewControllerTransitioningDelegate&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h4 id=&quot;keynote&quot;&gt;Keynote&lt;/h4&gt;
+&lt;p&gt;If you’re an Apple-enthusiast like I am, you’ve already seen at least one Keynote streamed live over the Internet. Those are a quite a fine tuned show, and living one by being in the audience is amazing. Plus, this year was very rich in announcements! Catalyst, SwiftUI, iPadOS with multi-window for apps, USB drive support, download manager over Safari. Dark-mode for iOS, iPadOS &amp;amp; tvOS … etc. And for all of those, you get the audience reactions, that you don’t really have over the live streaming. Finally, the videos shown during the presentation are really stunning when projected on a screen that is about 50m large.&lt;/p&gt;
+
+&lt;h4 id=&quot;sessions&quot;&gt;Sessions&lt;/h4&gt;
+&lt;p&gt;There are a lot of sessions, which are all streamable live ; and can be watched for later reference since they are made available later over on-demand stream. Those are always interesting, and it was really a nice feeling to follow the SwiftUI sessions live this year.&lt;/p&gt;
+
+&lt;p&gt;But since there are a lot of sessions at the same time, and also the labs, you cannot attend them all. That also why I now have a big list of sessions to watch later. But still way less sessions to stream in comparison of years I didn’t attend!&lt;/p&gt;
+
+&lt;h2 id=&quot;announcements&quot;&gt;Announcements&lt;/h2&gt;
+
+&lt;p&gt;I’m not going to attempt listing all the announcements made by Apple for the developers. Some other &lt;a href=&quot;https://patrickbalestra.com/blog/2019/06/07/wwdc-2019-the-things-you-may-have-missed.html&quot;&gt;blogs already made that&lt;/a&gt; better than I would ever do!
+I’m just going to go back on a few improvements made, that I’m thrilled about.&lt;/p&gt;
+
+&lt;h4 id=&quot;swiftui&quot;&gt;SwiftUI&lt;/h4&gt;
+&lt;p&gt;SwiftUI came out of nowhere, and it’s stunning already! Sure, it’s not going to replace UIKit or AppKit anytime soon (or maybe never?) since it heavily rely on them to work properly.&lt;/p&gt;
+
+&lt;p&gt;Plus for now it’s missing a lot of core components. There are no ActivityIndicator for example. But to fulfill those miss, the compatibility with old UI framework is complete! You may use a SwiftUI view in a UIView or a NSView. And you may use a UIView in a SwiftUI view. That’s allow to use the old UIKit views that may not have their own SwiftUI implementations before years (like MKMapView or WKWebView).&lt;/p&gt;
+
+&lt;p&gt;SwiftUI suppress the MVC design pattern and replace it with real MVVM. And all the solutions proposed by Apple to make that easy for developer is breathtaking. I’m thrilled to see what the future of SwiftUI will be made of. And a lot of components will appears in the future betas. (Form for instance is not yet available in Beta 1)&lt;/p&gt;
+
+&lt;h4 id=&quot;catalyst&quot;&gt;Catalyst&lt;/h4&gt;
+&lt;p&gt;Catalyst is the marketing name for the Marzipan project. It allow you to build and run UIKit application, basically iPad application natively on the Mac.&lt;/p&gt;
+
+&lt;p&gt;It didn’t take me that long time to make that work for &lt;a href=&quot;https://www.dilitrust.com/solution/exec/&quot;&gt;DiliTrust Exec&lt;/a&gt; app. And most of the bug I was encountering were wrong usage of the UIKit API. And the Labs were awesome to get the guidance for correcting all those bugs. The Mac AppStore may became a brand new place to find great apps in the very near future.&lt;/p&gt;
+
+&lt;h4 id=&quot;ipadoss-multiple-windows-for-a-same-app&quot;&gt;iPadOS’s multiple windows for a same app&lt;/h4&gt;
+&lt;p&gt;This add a whole new dimension to the iPad capabilities. You may now have as much document editor opened from the same app at a time, making a lot of new workflows available on iPadOS. And what makes this feature really powerful is that it’s an open API for third-parties applications.&lt;/p&gt;
+
+&lt;p&gt;To provide a great user experience though, it’s not that easy to opt-in for application. Two windows showing the same data should stay in sync, and idle windows may be dismissed by the system at any moment, making mandatory to have a powerful state restoration mechanism within the app. Plus, you have to make the whole application available as a stand-alone, since the opt-in allow the user creating as windows as he wan’t.&lt;/p&gt;
+
+&lt;p&gt;We definitely want to include those features in our DiliTrust Exec application, but those will require a bit more work to make it right.&lt;/p&gt;
+
+&lt;h4 id=&quot;pencilkit&quot;&gt;PencilKit&lt;/h4&gt;
+&lt;p&gt;Always felt weird about Apple providing a great user experience since they introduced the Apple Pencil, witch is an amazing tool. But all the underneath APIs, driven by Metal, were private. Not anymore!&lt;/p&gt;
+
+&lt;p&gt;Making this API available open a range of all new apps ; that will provide the best user experience for drawing out of the box!&lt;/p&gt;
+
+&lt;p&gt;It will, of course, be part of the APIs will dig into at DiliTrust Exec.&lt;/p&gt;
+
+&lt;h4 id=&quot;others&quot;&gt;Others&lt;/h4&gt;
+&lt;p&gt;New Foundation formatters, NFC opened to Read/Write NDEF tags, and more, Taptic engine now opened with CoreHaptics framework. And finally, CryptoSwift is now a thing! A great new way of dealing with cryptography when using Swift. It’s hard to use it wrong, and it makes most of my &lt;a href=&quot;/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html&quot;&gt;cryptography blog post&lt;/a&gt; out of date.&lt;/p&gt;
+
+&lt;h2 id=&quot;to-sum-it-up&quot;&gt;To sum it up&lt;/h2&gt;
+
+&lt;p&gt;Attending the WWDC is a unique opportunity, and I strongly recommend this experience to any Apple related developer.
+Sure it’s not cheap. For students, the Scholarship program gives you a chance to get you ticket. And if you’re working for a company, ask them to attend. Most of countries provide credits for formations. And your company will also win by sending you!&lt;/p&gt;
+
+&lt;p&gt;It was an exhausting week, but still, I hope that WWDC19 will not be the last WWDC I attend to.&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">What a long week it’s been! My first  WWDC is now over, and there’s a lot to say. I’ve learnt a lot, met incredible people, and corrected a lot of bugs with the help of fellows Apple engineers.</summary></entry><entry><title type="html">IPv6 setup on a Debian 9 VPS</title><link href="https://www.thomasdurand.fr/server/configuration/2019/04/14/ipv6-setup-on-ovh-vps.html" rel="alternate" type="text/html" title="IPv6 setup on a Debian 9 VPS" /><published>2019-04-14T14:00:00+02:00</published><updated>2019-04-14T14:00:00+02:00</updated><id>https://www.thomasdurand.fr/server/configuration/2019/04/14/ipv6-setup-on-ovh-vps</id><content type="html" xml:base="https://www.thomasdurand.fr/server/configuration/2019/04/14/ipv6-setup-on-ovh-vps.html">&lt;p&gt;IPv6 isn’t new at all, but it’s stunning to see how much the web isn’t ready for it at all!&lt;/p&gt;
+
+&lt;p&gt;But that can change, and making your webserver compatible with it is a great start!&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Today I discovered that my server had a IPv6 address assigned, but was not configured by default.&lt;/p&gt;
+
+&lt;h2 id=&quot;identify-your-ipv6-address-and-gateway&quot;&gt;Identify your IPv6 address and gateway&lt;/h2&gt;
+
+&lt;p&gt;At OVH, two IPv6 informations are given along the IPv4:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Type&lt;/th&gt;
+      &lt;th&gt;Full Address&lt;/th&gt;
+      &lt;th&gt;Shortened Address&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;IPv6&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2001:41d0:0305:2100:0000:0000:0000:10f2&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2001:41d0:305:2100::10f2&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Gateway&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2001:41d0:0305:2100:0000:0000:0000:0001&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2001:41d0:305:2100::1&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Since only one address is available, the network prefix, alias netmask is &lt;code class=&quot;highlighter-rouge&quot;&gt;128&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up-the-network&quot;&gt;Setting up the network&lt;/h2&gt;
+
+&lt;p&gt;Using root access, you should edit &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/network/interfaces&lt;/code&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/network/interfaces&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;By default, this file contains only the IPv4 settings:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# This file describes the network interfaces available on your system&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# and how to activate them. For more information, see interfaces(5).&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /etc/network/interfaces.d/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# The loopback network interface&lt;/span&gt;
+auto lo
+iface lo inet loopback
+
+&lt;span class=&quot;c&quot;&gt;# The primary network interface&lt;/span&gt;
+allow-hotplug ens3
+iface ens3 inet dhcp&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You want to edit this file to add the IPv6 loopback and settings.&lt;br /&gt;
+You can try &lt;code class=&quot;highlighter-rouge&quot;&gt;auto&lt;/code&gt; settings ; but in my case, I had to use the static network settings:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;iface lo inet6 loopback
+
+iface ens3 inet6 static
+    address 2001:41d0:305:2100::10f2
+    netmask 128
+
+    post-up /sbin/ip &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; inet6 route add 2001:41d0:305:2100::1 dev ens3
+    post-up /sbin/ip &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; inet6 route add default via 2001:41d0:305:2100::1
+    pre-down /sbin/ip &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; inet6 route del 2001:41d0:305:2100::1 dev ens3
+    pre-down /sbin/ip &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; inet6 route del default via 2001:41d0:305:2100::1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;testing-the-networking-configuration&quot;&gt;Testing the Networking configuration&lt;/h2&gt;
+
+&lt;p&gt;First, you want to test the configuration to make sure your server is correctly setted up, and will not end up unaccessible from the outside world at the first reboot.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ifup &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-act&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;status: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Expected output:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/bin/run-parts --exit-on-error /etc/network/if-pre-up.d
+/bin/run-parts --exit-on-error /etc/network/if-up.d
+status: 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If the status is not at 0, the configuration file have error, and you might wanna correct it before going further.&lt;/p&gt;
+
+&lt;h2 id=&quot;testing-ipv6&quot;&gt;Testing IPv6&lt;/h2&gt;
+
+&lt;p&gt;Now that the configuration is correct, you can restart the networking service:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service networking restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And now you can test IPv6 using &lt;code class=&quot;highlighter-rouge&quot;&gt;ping6&lt;/code&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ping6 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 4 google.com&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the ping resolves, your network is correctly setted up. Otherwise, your IPv6 settings are not okay.&lt;/p&gt;
+
+&lt;h2 id=&quot;declare-ipv6-support-in-your-dns-entries&quot;&gt;Declare IPv6 support in your DNS entries&lt;/h2&gt;
+
+&lt;p&gt;At your registar settings, you want to add a &lt;code class=&quot;highlighter-rouge&quot;&gt;AAAA&lt;/code&gt; entry, corresponding to the IPv6 DNS resolution.&lt;/p&gt;
+
+&lt;p&gt;Your entry should look like something like that:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;IN AAAA 2001:41d0:305:2100:0:0:0:10f2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;(here the example for thomasdurand.fr)&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;configure-your-http-server&quot;&gt;Configure your HTTP server&lt;/h2&gt;
+
+&lt;p&gt;Your HTTP server must listen to IPv6 address. You should make sure your HTTP server is correctly setted up.&lt;/p&gt;
+
+&lt;p&gt;For example, with Nginx, your &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/nginx/nginx.conf&lt;/code&gt; file should contains IPv6 declarations:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+  listen 80; # IPv4
+  listen [::]:80; # IPv6
+
+  # and/or (if you're using SSL/TLS)
+
+  listen 443 ssl; # IPv4
+  listen [::]:443 ssl; # IPv6
+
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;testing-your-full-configuration&quot;&gt;Testing your full configuration&lt;/h2&gt;
+
+&lt;p&gt;If you’re network is not IPv6 ready, there are online tools to test if your website supports IPv6. They’re great for troubleshooting.&lt;/p&gt;
+
+&lt;p&gt;I’ve used &lt;a href=&quot;http://ipv6-test.com/validate.php&quot;&gt;IPv6-test.com&lt;/a&gt;.&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">IPv6 isn’t new at all, but it’s stunning to see how much the web isn’t ready for it at all! But that can change, and making your webserver compatible with it is a great start!</summary></entry><entry><title type="html">Attending  WWDC19</title><link href="https://www.thomasdurand.fr/conference/apple/2019/04/01/attending-wwdc19.html" rel="alternate" type="text/html" title="Attending  WWDC19" /><published>2019-04-01T14:00:00+02:00</published><updated>2019-04-01T14:00:00+02:00</updated><id>https://www.thomasdurand.fr/conference/apple/2019/04/01/attending-wwdc19</id><content type="html" xml:base="https://www.thomasdurand.fr/conference/apple/2019/04/01/attending-wwdc19.html">&lt;p&gt;(This is not an April fool!)&lt;/p&gt;
+
+&lt;p&gt;It’s with great pleasure that I will attend this year &lt;a href=&quot;https://developer.apple.com/wwdc19/&quot;&gt; WWDC&lt;/a&gt;.&lt;br /&gt;
+It’ll be my first WWDC from the inside, and I’m super excited about it already!&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;div class=&quot;slideshow&quot; data-current=&quot;0&quot; data-images=&quot;/assets/ios/wwdc/wwdc19-robot.jpg, /assets/ios/wwdc/wwdc19-alien.jpg, /assets/ios/wwdc/wwdc19-monkey.jpg, /assets/ios/wwdc/wwdc19-skull.jpg&quot;&gt;
+    &lt;img src=&quot;/assets/ios/wwdc/wwdc19-robot.jpg&quot; class=&quot;presented&quot; alt=&quot;image&quot; /&gt;
+    &lt;img src=&quot;/assets/ios/wwdc/wwdc19-robot.jpg&quot; class=&quot;foregone&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;what-to-expect-this-year&quot;&gt;What to expect this year?&lt;/h2&gt;
+
+&lt;p&gt;Of course we expect the annoucements of iOS 13, macOS 10.15, watchOS 6, tvOS 13, but here’s a few features we can expects from those:&lt;/p&gt;
+
+&lt;h3 id=&quot;marzipan-from-ios-to-macos&quot;&gt;Marzipan: from iOS to macOS&lt;/h3&gt;
+
+&lt;p&gt;Announced at last year WWDC, the &lt;a href=&quot;https://9to5mac.com/guides/marzipan/&quot;&gt;Marzipan project&lt;/a&gt; will allow UIKit apps to run on macOS. We can expect that the API should open this year to developers with macOS 10.15.&lt;/p&gt;
+
+&lt;p&gt;I can’t wait for my first tests, trying to build &lt;a href=&quot;https://www.dilitrust.com/solution/exec/&quot;&gt;DiliTrust Exec&lt;/a&gt; for macOS will be one of the first things I’ll attempt during the WWDC 19.&lt;/p&gt;
+
+&lt;h3 id=&quot;ios13-dark-mode&quot;&gt;iOS 13 Dark Mode&lt;/h3&gt;
+
+&lt;p&gt;A very &lt;a href=&quot;https://9to5mac.com/2019/02/01/ios-13-dark-mode-rumor/&quot;&gt;persistent rumor&lt;/a&gt; would make the dark mode real with iOS 13. This would be a battery saver for OLED screen devices, and despite I’m not found of dark mode in general, I can understand that much people are waiting for this!&lt;/p&gt;
+
+&lt;h3 id=&quot;advanced-ipad-features&quot;&gt;Advanced iPad features&lt;/h3&gt;
+
+&lt;p&gt;Bringing new iPads features and make it “MacBook” capable, this is one of &lt;a href=&quot;https://9to5mac.com/2019/03/31/ios-13-on-ipad/&quot;&gt;the rumors that I like the most&lt;/a&gt;.
+Having multi-account abilities, more USB devices support (like USB drives), better multitasking… That would make the iPad more mature in the tablet market.&lt;/p&gt;
+
+&lt;h2 id=&quot;will-you-write-articles-about-the-announcements&quot;&gt;Will you write articles about the announcements?&lt;/h2&gt;
+
+&lt;p&gt;I’ll try to write few WWDC articles on the blog, but I’ll do that with care. The &lt;a href=&quot;https://developer.apple.com/wwdc19/policy/&quot;&gt;WWDC policy&lt;/a&gt; is clear that I should not share screenshots nor write “public reviews”. It’s possible that I will not release anything before the end of the WWDC, and none of those post will contains samplecode from Apple, or screenshot whatsoever.&lt;/p&gt;
+
+&lt;h2 id=&quot;attending-too&quot;&gt;Attending too?&lt;/h2&gt;
+
+&lt;p&gt;Don’t hesitate to get in touch with me, using any of the available social networks in the page footer. It’ll be a great pleasure to meet other passionate developers, and eventually go out for a drink at some point!&lt;/p&gt;
+
+&lt;p&gt;I see you there!&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">(This is not an April fool!) It’s with great pleasure that I will attend this year  WWDC. It’ll be my first WWDC from the inside, and I’m super excited about it already!</summary></entry><entry><title type="html">Embrace macOS’s dark mode with Safari</title><link href="https://www.thomasdurand.fr/web/design/2019/03/27/embrase-macos-dark-mode-using-css.html" rel="alternate" type="text/html" title="Embrace macOS's dark mode with Safari" /><published>2019-03-27T13:00:00+01:00</published><updated>2019-03-27T13:00:00+01:00</updated><id>https://www.thomasdurand.fr/web/design/2019/03/27/embrase-macos-dark-mode-using-css</id><content type="html" xml:base="https://www.thomasdurand.fr/web/design/2019/03/27/embrase-macos-dark-mode-using-css.html">&lt;p&gt;This last monday (March 25, 2019), Apple released the last version of macOS 10.14.4, along with Safari 12.1.
+This last version of Safari expose a CSS api using the &lt;code class=&quot;highlighter-rouge&quot;&gt;@media&lt;/code&gt; tag allowing you to support a &lt;strong&gt;Dark theme&lt;/strong&gt; for your site, working along with macOS’s dark mode.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;If you’re using Safari 12.1 right now, enable the Dark Mode on your Mac, and you’ll find that this very blog post is now in “Dark Mode”, using the very same css method I’m going to provide you.&lt;/p&gt;
+
+&lt;p&gt;You may also want to play with this interactive comparative screenshot of the blog:&lt;/p&gt;
+
+&lt;div class=&quot;comparable-images&quot;&gt;
+    &lt;img src=&quot;/assets/screenshots/blog-light.png&quot; class=&quot;before&quot; alt=&quot;before&quot; /&gt;
+    &lt;img src=&quot;/assets/screenshots/blog-dark.png&quot; class=&quot;after&quot; alt=&quot;after&quot; /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;just-a-bit-of-css&quot;&gt;Just a bit of CSS&lt;/h2&gt;
+
+&lt;p&gt;Let’s say we’re starting with a very simple CSS website:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#333&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#f8f8f8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You’ll just have to provide extra declaration for the dark-mode alternative:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#333&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#f8f8f8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@media&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefers-color-scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#eee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#111&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;what-about-dark-websites&quot;&gt;What about dark websites?&lt;/h2&gt;
+
+&lt;p&gt;For website that are dark by default, you may provide a “light” alternative to your site, allowing user that prefers light content to use it!&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#eee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#111&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@media&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prefers-color-scheme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;light&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#333&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;background&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;#f8f8f8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;legibility--contrast&quot;&gt;Legibility &amp;amp; Contrast&lt;/h2&gt;
+
+&lt;p&gt;When designing your dark theme alternative, make sure to test every webpage for illegible content. Colored links, syntaxic coloring, tables… There are many places where you may find unadapted color schemes and illegible text.&lt;/p&gt;
+
+&lt;p&gt;All of them should have their own dark-mode alternative to keep your website legible whatever the user’s color-scheme preference is.&lt;/p&gt;
+
+&lt;p&gt;To help you with colors and legibility, you may want to read this cool article: &lt;a href=&quot;https://www.viget.com/articles/color-contrast/&quot;&gt;Color Contrast for Better Readability&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;cross-compatibility&quot;&gt;Cross-compatibility&lt;/h2&gt;
+
+&lt;p&gt;For now, this feature is only implemented for Safari 12.1&lt;br /&gt;
+No other browser supports-it yet, but Firefox will introduce it starting with &lt;a href=&quot;https://www.mozilla.org/en-US/firefox/67.0a1/releasenotes/&quot;&gt;version 67&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As of today, this CSS media query is currently &lt;a href=&quot;https://drafts.csswg.org/mediaqueries-5/#descdef-media-prefers-color-scheme&quot;&gt;a W3C draft&lt;/a&gt;, and we can hope it’ll be more supported by browsers in the future.
+Until then, you’ll have a working dark-mode for true Apple addicts that still use Safari as their main browser.&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">This last monday (March 25, 2019), Apple released the last version of macOS 10.14.4, along with Safari 12.1. This last version of Safari expose a CSS api using the @media tag allowing you to support a Dark theme for your site, working along with macOS’s dark mode.</summary></entry><entry><title type="html">Keep PHP up to date on Debian 9</title><link href="https://www.thomasdurand.fr/server/configuration/2019/03/20/keep-php-updated-on-debian-9.html" rel="alternate" type="text/html" title="Keep PHP up to date on Debian 9" /><published>2019-03-20T13:00:00+01:00</published><updated>2019-03-20T13:00:00+01:00</updated><id>https://www.thomasdurand.fr/server/configuration/2019/03/20/keep-php-updated-on-debian-9</id><content type="html" xml:base="https://www.thomasdurand.fr/server/configuration/2019/03/20/keep-php-updated-on-debian-9.html">&lt;p&gt;When installing PHP on Debian 9, the default version is &lt;strong&gt;PHP 7.0&lt;/strong&gt;.&lt;br /&gt;
+This version have been declared &lt;em&gt;End-of-life&lt;/em&gt; &lt;a href=&quot;https://secure.php.net/supported-versions.php&quot;&gt;since January 10, 2019&lt;/a&gt;. &lt;br /&gt;
+PHP 7.0 will not go further version &lt;em&gt;7.0.33&lt;/em&gt; on Debian 9.&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-a-new-repository-for-newer-versions-of-php&quot;&gt;Adding a new repository for newer versions of PHP&lt;/h2&gt;
+
+&lt;p&gt;First, this repository uses &lt;em&gt;APT Transport over HTTPS&lt;/em&gt;. This is basicly getting packages over a TLS connexion.&lt;br /&gt;
+Let’s install the necesary packages, if you do not have them already:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;ca-certificates apt-transport-https &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Then, we add &lt;code class=&quot;highlighter-rouge&quot;&gt;https://packages.sury.org/php&lt;/code&gt; that will be our new source for installing and updating PHP:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; https://packages.sury.org/php/apt.gpg &lt;span class=&quot;nt&quot;&gt;-O-&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-key add -
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deb https://packages.sury.org/php/ stretch main&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/apt/sources.list.d/php.list&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;upgrading-php-70-with-patches&quot;&gt;Upgrading PHP 7.0 with patches&lt;/h2&gt;
+
+&lt;p&gt;If you have already &lt;code class=&quot;highlighter-rouge&quot;&gt;php7.0&lt;/code&gt; packages installed on your system, you can get patches right away:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get upgrade&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now the installed version of PHP is (at the time of writing) &lt;code class=&quot;highlighter-rouge&quot;&gt;v7.0.33-5+0~20190309015553.9&lt;/code&gt;.&lt;br /&gt;
+It contains some patchs from higher version of PHP, added by the community.&lt;/p&gt;
+
+&lt;p&gt;This gives you extra time to update your code and support higher version of PHP before upgrading.&lt;/p&gt;
+
+&lt;h2 id=&quot;upgrade-php&quot;&gt;Upgrade PHP&lt;/h2&gt;
+
+&lt;p&gt;You may want to update PHP to a later release, after you’ve made sure your code can support it!&lt;/p&gt;
+
+&lt;p&gt;You have 2 options: installing the lastest release (7.3 when this was written), or installing a specific version (7.1 or 7.2).
+You can also perform both, if you need more than one version installed.&lt;/p&gt;
+
+&lt;p&gt;Those operations will not uninstall other version of PHP, and will not change Apache and/or Nginx configuration, so your websites will still use 7.0 by default.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-install-phps-latest-version&quot;&gt;a) Install PHP’s latest version&lt;/h3&gt;
+
+&lt;p&gt;You can now install the &lt;strong&gt;current version&lt;/strong&gt; of PHP (as of today, the 7.3) using:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php php-cli php-fpm php-mysql&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the package is already installed, you may need to run instead:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get dist-upgrade&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;b-install-php-7x&quot;&gt;b) Install PHP 7.x&lt;/h3&gt;
+
+&lt;p&gt;You may want to install any version of PHP using any of the following commands:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# PHP 7.1&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php7.1 php7.1-cli php7.1-fpm php7.1-mysql
+
+&lt;span class=&quot;c&quot;&gt;# PHP 7.2&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;php7.2 php7.2-cli php7.2-fpm php7.2-mysql&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You’re free to install any additional extensions that fit your needs.&lt;/p&gt;
+
+&lt;h2 id=&quot;update-your-http-server&quot;&gt;Update your HTTP server&lt;/h2&gt;
+
+&lt;p&gt;In order to your server to use the new version of PHP, you have to update its configuration.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-apache2&quot;&gt;a) Apache2&lt;/h3&gt;
+
+&lt;p&gt;On Apache, you need to disable the old PHP handler before using the new.&lt;br /&gt;
+More advanced configurations will allow you to use different versions of PHP on differents websites if needed.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;a2dismod php7.0
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;a2enmod php7.3 &lt;span class=&quot;c&quot;&gt;# Adapt the version of PHP with the version you want to use&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service apache2 restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;b-nginx&quot;&gt;b) Nginx&lt;/h3&gt;
+
+&lt;p&gt;With Nginx, you just need to edit your fastcgi configuration to make usage of the fpm version you need:&lt;/p&gt;
+
+&lt;p&gt;By default, those settings are in nginx.conf, but they may be inside a &lt;code class=&quot;highlighter-rouge&quot;&gt;sites-availables/&lt;/code&gt; subfolder, or in a included custom configuration file.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/nginx/nginx.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Update the &lt;code class=&quot;highlighter-rouge&quot;&gt;fastcgi_pass&lt;/code&gt; value according to the PHP version you’d like to use.&lt;/p&gt;
+
+&lt;p&gt;Then, simply restart nginx:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service nginx restart&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;optional-uninstall-php-70&quot;&gt;Optional: uninstall PHP 7.0&lt;/h2&gt;
+
+&lt;p&gt;If you don’t need it anymore, it can be nice to perform some cleanup operations and remove PHP 7.0 from your server.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Be carefull not to delete package that you still need by reviewing them before confirming!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get purge &lt;span class=&quot;s2&quot;&gt;&quot;php7.0*&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If the list seems okay, you may confirm the deletion, and now PHP 7.0 is completely gone!&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">When installing PHP on Debian 9, the default version is PHP 7.0. This version have been declared End-of-life since January 10, 2019. PHP 7.0 will not go further version 7.0.33 on Debian 9. Adding a new repository for newer versions of PHP First, this repository uses APT Transport over HTTPS. This is basicly getting packages over a TLS connexion. Let’s install the necesary packages, if you do not have them already: sudo apt-get install ca-certificates apt-transport-https Then, we add https://packages.sury.org/php that will be our new source for installing and updating PHP: wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add - echo &quot;deb https://packages.sury.org/php/ stretch main&quot; | sudo tee /etc/apt/sources.list.d/php.list Upgrading PHP 7.0 with patches If you have already php7.0 packages installed on your system, you can get patches right away: sudo apt-get update sudo apt-get upgrade Now the installed version of PHP is (at the time of writing) v7.0.33-5+0~20190309015553.9. It contains some patchs from higher version of PHP, added by the community. This gives you extra time to update your code and support higher version of PHP before upgrading. Upgrade PHP You may want to update PHP to a later release, after you’ve made sure your code can support it! You have 2 options: installing the lastest release (7.3 when this was written), or installing a specific version (7.1 or 7.2). You can also perform both, if you need more than one version installed. Those operations will not uninstall other version of PHP, and will not change Apache and/or Nginx configuration, so your websites will still use 7.0 by default. a) Install PHP’s latest version You can now install the current version of PHP (as of today, the 7.3) using: sudo apt-get install php php-cli php-fpm php-mysql If the package is already installed, you may need to run instead: sudo apt-get dist-upgrade b) Install PHP 7.x You may want to install any version of PHP using any of the following commands: # PHP 7.1 sudo apt-get install php7.1 php7.1-cli php7.1-fpm php7.1-mysql # PHP 7.2 sudo apt-get install php7.2 php7.2-cli php7.2-fpm php7.2-mysql You’re free to install any additional extensions that fit your needs. Update your HTTP server In order to your server to use the new version of PHP, you have to update its configuration. a) Apache2 On Apache, you need to disable the old PHP handler before using the new. More advanced configurations will allow you to use different versions of PHP on differents websites if needed. sudo a2dismod php7.0 sudo a2enmod php7.3 # Adapt the version of PHP with the version you want to use sudo service apache2 restart b) Nginx With Nginx, you just need to edit your fastcgi configuration to make usage of the fpm version you need: By default, those settings are in nginx.conf, but they may be inside a sites-availables/ subfolder, or in a included custom configuration file. sudo nano /etc/nginx/nginx.conf Update the fastcgi_pass value according to the PHP version you’d like to use. Then, simply restart nginx: sudo service nginx restart Optional: uninstall PHP 7.0 If you don’t need it anymore, it can be nice to perform some cleanup operations and remove PHP 7.0 from your server. Be carefull not to delete package that you still need by reviewing them before confirming! sudo apt-get purge &quot;php7.0*&quot; If the list seems okay, you may confirm the deletion, and now PHP 7.0 is completely gone!</summary></entry><entry><title type="html">Build a privacy-safe home network using Pi-hole</title><link href="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html" rel="alternate" type="text/html" title="Build a privacy-safe home network using Pi-hole" /><published>2018-10-20T14:00:00+02:00</published><updated>2018-10-20T14:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole</id><content type="html" xml:base="https://www.thomasdurand.fr/security/network/2018/10/20/privacy-at-home-with-pi-hole.html">&lt;p&gt;Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private.&lt;/p&gt;
+
+&lt;p&gt;In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;what-is-pi-hole&quot;&gt;What is Pi-hole?&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://pi-hole.net/&quot;&gt;Pi-hole&lt;/a&gt;, as they describe themselves, is an open-source &lt;a href=&quot;https://en.wikipedia.org/wiki/DNS_sinkhole&quot;&gt;DNS sinkhole&lt;/a&gt;.
+It is a custom DNS ; that will drop request during the DNS resolution step if it’s been blacklisted.&lt;/p&gt;
+
+&lt;p&gt;The main advantage of dropping request at DNS resolution step is that the request never leave your own network: 
+It is first sent to your Raspberry Pi, and then dropped immediately if it’s been blacklisted.&lt;/p&gt;
+
+&lt;p&gt;It means that blacklisted remote servers never have to know that you even exist!
+The ad are dropped before even loading, and not at rendering time, granting your network better performances.&lt;/p&gt;
+
+&lt;p&gt;Of course, some ad-based blacklist are provided, making Pi-hole a powerful and &lt;strong&gt;untraceable&lt;/strong&gt; ad-blocker.&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up-your-raspberry-pi&quot;&gt;Setting up your Raspberry Pi&lt;/h2&gt;
+
+&lt;p&gt;This step if &lt;strong&gt;optional&lt;/strong&gt;, but it’s always good to start with a &lt;em&gt;fresh install&lt;/em&gt;.
+You can, of course, skip immediately to &lt;a href=&quot;#installing-pi-hole&quot;&gt;Pi-hole installation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;raspbian-stretch-installation&quot;&gt;Raspbian Stretch installation&lt;/h3&gt;
+
+&lt;p&gt;Download the &lt;a href=&quot;https://downloads.raspberrypi.org/raspbian_lite_latest&quot;&gt;latest release of Raspbian Stretch&lt;/a&gt; on your disk.
+Then, we need to copy it on your SD card, properly.&lt;/p&gt;
+
+&lt;p&gt;On macOS, It can be done with the following commands.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;diskutil list &lt;span class=&quot;c&quot;&gt;# Note the number associated with your SD card. (ie disk2 for instance)&lt;/span&gt;
+diskutil unmountDisk /dev/disk2
+&lt;span class=&quot;nb&quot;&gt;sudo dd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1m &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;raspbian-stretch-lite.img &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/rdisk2 &lt;span class=&quot;nv&quot;&gt;conv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;We then need to enable SSH before plugging the SD card in the Raspberry for the first boot:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /Volumes/boot/
+&lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;ssh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And we unmount the disk&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+diskutil unmountDisk /dev/disk2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now, you can plug your SD card in your Raspberry and wait it to boot.&lt;/p&gt;
+
+&lt;p&gt;You may now connect to it using SSH:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ssh pi@192.168.1.x&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Default password is &lt;code class=&quot;highlighter-rouge&quot;&gt;raspberry&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;minimal-security-settings&quot;&gt;Minimal security settings&lt;/h3&gt;
+
+&lt;p&gt;The bare minimum to do when the Raspberry first start is to &lt;strong&gt;change the password for the pi user&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;passwd&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;You may also want to:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;create your own user with sudo auth, and then delete the pi user&lt;/li&gt;
+  &lt;li&gt;change the SSH port&lt;/li&gt;
+  &lt;li&gt;Authenticate using a private key&lt;/li&gt;
+  &lt;li&gt;Requiring a password when using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Update the repositories and packages&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;installing-pi-hole&quot;&gt;Installing Pi-hole&lt;/h2&gt;
+
+&lt;p&gt;It is advised that your Raspberry Pi should have a static IP on your network.&lt;/p&gt;
+
+&lt;p&gt;From your Raspberry, you can run the installer by executing:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; basic-install.sh https://install.pi-hole.net
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;bash basic-install.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
+and always make sure that the IP is effectively static in order to work.&lt;/p&gt;
+
+&lt;p&gt;At the end of the installation process, the administration password will be prompted to you if you choose to install the web administration interface, along with lighttp.&lt;/p&gt;
+
+&lt;p&gt;It’s, of course, recommended to change it using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole -a -p&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You then need to set up the static IP of your Raspberry as your primary DNS server on your router.
+If you can’t, it’s still possible to use the Raspberry as your main DHCP server. (Disable your old one if you choose this option).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/setting-dns.png&quot; alt=&quot;How to set primary DNS with DHCP&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You may now use the internet with no ads or trackers!&lt;/p&gt;
+
+&lt;h2 id=&quot;customize-your-network-with-aliases&quot;&gt;Customize your network with aliases&lt;/h2&gt;
+
+&lt;p&gt;You can, if you want, create aliases to communicate more easily with your devices associated with a static IP.&lt;/p&gt;
+
+&lt;p&gt;Let’s say you want to use &lt;code class=&quot;highlighter-rouge&quot;&gt;box.lan&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;192.168.1.1&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;pi.lan&lt;/code&gt; instead of &lt;code class=&quot;highlighter-rouge&quot;&gt;192.168.1.x&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;To do so, you need to create an alias file:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/pihole/lan.conf&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Containing, for our example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;192.168.1.1 box.lan
+192.168.1.2 router.lan
+192.168.1.3 pi.lan
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, add this configuration file to dnsmasq, and reload it&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;addn-hosts=/etc/pihole/lan.list&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/dnsmasq.d/02-lan.conf
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pihole restartdns&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;using-the-web-admin-to-check-your-traffic&quot;&gt;Using the web admin to check your traffic&lt;/h2&gt;
+
+&lt;p&gt;Once Pi-hole is enabled, you can access &lt;a href=&quot;http://pi.hole/&quot;&gt;http://pi.hole&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-home.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To have access to a lot of more informations, you may login with the password you have setted during installation.&lt;/p&gt;
+
+&lt;p&gt;If you forgot your password already, you can reset it easily using &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole -a -p&lt;/code&gt; (I know, I repeat myself!)&lt;/p&gt;
+
+&lt;p&gt;You’ll see the top blocked domains, and the most recents requests.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-blocked.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you don’t want to track your network that much, you may want to change &lt;a href=&quot;http://pi.hole/admin/settings.php?tab=privacy&quot;&gt;privacy level mode in the settings&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;By regulary check the requests that have been blocked, and the one that are allowed, you’ll be able to whitelist some request you don’t mind see go threw, and blacklist the one that looks shady.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Fun fact:&lt;/strong&gt; When I connected the Android phone of my girlfriend, this is what happened:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/screenshots/pi-hole-android.png&quot; alt=&quot;The home page of Pi Hole Admin&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bonus-redirecting-a-dns-resolution&quot;&gt;Bonus: redirecting a DNS resolution&lt;/h2&gt;
+
+&lt;p&gt;As described in my article &lt;a href=&quot;/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html&quot;&gt;How everyone could feed my cat&lt;/a&gt;, 
+I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.&lt;/p&gt;
+
+&lt;p&gt;I have built a &lt;a href=&quot;https://github.com/Dean151/Aln-NodeJs&quot;&gt;custom API&lt;/a&gt;, that is hosted on my server. And to make it work, I have to redirect my feeder requests to my server.&lt;/p&gt;
+
+&lt;p&gt;It’s doable, simply by editing the &lt;code class=&quot;highlighter-rouge&quot;&gt;etc/hosts&lt;/code&gt; file :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[...]
+51.38.185.236 dev.alnpet.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, by restarting the DNS with &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo pihole restartdns&lt;/code&gt; ; the feeder communicate with my server, and not with theirs.&lt;/p&gt;
+
+&lt;h2 id=&quot;going-way-further&quot;&gt;Going way further&lt;/h2&gt;
+
+&lt;p&gt;You now have a fully functional ad &amp;amp; tracker blocker from the network side.&lt;/p&gt;
+
+&lt;p&gt;If you’re really concerned about privacy, you should look forward of installing your &lt;a href=&quot;https://docs.pi-hole.net/guides/unbound/&quot;&gt;own DNS resolver using unbound&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Otherwise, for more security, you should &lt;a href=&quot;https://docs.pi-hole.net/guides/dns-over-https/&quot;&gt;configure DNS over HTTPS&lt;/a&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;cloudflared&lt;/code&gt;, 
+securing the DNS resolving using a TLS connexion, and preventing snooping, monitoring or other types of attacks.&lt;/p&gt;
+
+&lt;p&gt;Finally, if you want to make your pi-hole admin interface available from the outside world, you really should consider &lt;a href=&quot;https://discourse.pi-hole.net/t/enabling-https-for-your-pi-hole-web-interface/5771&quot;&gt;an HTTPS configuration&lt;/a&gt;.&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">Data privacy, and the usage of collected data have now became a controversial subject. People tends to aknowlegde more and more the importance of keeping private data ; and private life … well … private. In this tutorial, you’ll see what solution I came around keeping my own privacy at my home network.</summary></entry><entry><title type="html">How anyone could feed my cat</title><link href="https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html" rel="alternate" type="text/html" title="How anyone could feed my cat" /><published>2018-01-31T13:00:00+01:00</published><updated>2018-01-31T13:00:00+01:00</updated><id>https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat</id><content type="html" xml:base="https://www.thomasdurand.fr/security/iot/2018/01/31/how-anyone-could-feed-my-cat.html">&lt;p&gt;As a software engineer for &lt;a href=&quot;https://www.dilitrust.com/en/&quot;&gt;DiliTrust&lt;/a&gt;, I think software security as a primary feature for any kind of product or software.
+Every time we heard a story about any kind of security flaw, we take it seriously: how is that possible? Am we directly or indirectly impacted?&lt;/p&gt;
+
+&lt;p&gt;Well, I guess I wasn’t yet prepared for my last discovery.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;what-i-like-about-home-automation-solution&quot;&gt;What I like about home automation solution&lt;/h2&gt;
+
+&lt;p&gt;Since I got my first home automation device: a Philips Hue set, I really like the idea of handling devices remotely, or locally from my phone or even my voice. That’s why I also bought some sensor devices from Elgato, to track temperature, humidity and air quality all around my flat.&lt;/p&gt;
+
+&lt;p&gt;Every device I ever choose was HomeKit compatible, and I never intended to use any of my devices remotely. I do not have any concentrator to make HomeKit available from anywhere, and I feel confident that my devices are pretty much secure. I suppose, maybe wrongly, that Apple do impose some rules to make the device secure, and also make sure that their own implementation of HomeKit is quite secure.&lt;/p&gt;
+
+&lt;p&gt;I know that HomeKit already had some security flaw &lt;a href=&quot;https://9to5mac.com/2017/12/07/homekit-vulnerability/&quot;&gt;in the past&lt;/a&gt;, and may have some in the future, but I’m pretty sure Apple will always correct them.&lt;/p&gt;
+
+&lt;h2 id=&quot;where-my-cat-comes-in&quot;&gt;Where my cat comes in&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/pictures/newton.jpg&quot; alt=&quot;My cat, Newton&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I adopted Newton in June 2016, and he’s adorable… well… most of the time. But since we’ve got him neutralized, he became trapped in gluttony. Incapable of getting himself regulated with food, we had a pretty bad time trying him not to eat more food that he needs.&lt;/p&gt;
+
+&lt;p&gt;In that context, I got seduced by an automatic feeder like we can find on Amazon.
+The trademark &lt;em&gt;HoneyGuaridan&lt;/em&gt; was getting very good reception and comments from many users, and their last model, the &lt;strong&gt;HoneyGuaridan S25&lt;/strong&gt; was very seducing!&lt;/p&gt;
+
+&lt;p&gt;Indeed, it was one of the only models that allowed me to program 10 meals or more a day! Perfect to make my cat more regulated about food. Last tinkle in my ear: The device was getting setted and triggered with a smartphone, it was a complete IoT device!&lt;/p&gt;
+
+&lt;h2 id=&quot;when-it-got-complicated&quot;&gt;When it got complicated&lt;/h2&gt;
+
+&lt;p&gt;I received the device about three weeks ago, and my cat adopted it very quickly!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/pictures/honeyguaridan.jpg&quot; alt=&quot;My cat, and his feeding machine&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Despite a buggy application, the machine works very well, and my cat gets less obsessed about food.&lt;/p&gt;
+
+&lt;p&gt;Plus, the setup workflow made me fairly confident: I had to create an account, and then it seemed like we’re authenticated all the time within the app.&lt;/p&gt;
+
+&lt;p&gt;But still, with some very nasty bugs, the app gave a very bad user experience, and I decided to reverse-engineer their API to make my own application, with less features, but also less UI bugs!&lt;/p&gt;
+
+&lt;p&gt;I used &lt;a href=&quot;https://portswigger.net/burp&quot;&gt;Burp Community Edition&lt;/a&gt; as an HTTP proxy to catch every requests sent by the application ; and find out how they’re built.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-i-found&quot;&gt;What I found&lt;/h2&gt;
+
+&lt;p&gt;The application communicate with many differents servers: &lt;code class=&quot;highlighter-rouge&quot;&gt;us1.dev.alnpet.com&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;fr.dev.alnpet.com&lt;/code&gt;, but also &lt;code class=&quot;highlighter-rouge&quot;&gt;183.232.29.249&lt;/code&gt; to send some report data over a security layer.&lt;/p&gt;
+
+&lt;p&gt;Both &lt;code class=&quot;highlighter-rouge&quot;&gt;fr.dev.alnpet.com&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;us1.dev.alnpet.com&lt;/code&gt; does not have any security layer, and make data transmit without TLS or SSL. It means that it’s vulnerable to &lt;a href=&quot;https://en.wikipedia.org/wiki/Man-in-the-middle_attack&quot;&gt;man-in-the-middle attacks&lt;/a&gt;, and that the password used for signin and login is sent with no encryption at all, making any attacker able to intercept it, and read it!&lt;/p&gt;
+
+&lt;p&gt;But another intercepted request I got tinkled my mind: I was not able to see any authentication cookie, representing my current session, and declaring the permission to perform a feed request, or any modification on my device schedule.&lt;/p&gt;
+
+&lt;p&gt;I immediately tried it with &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;: Just using my machine unique ID and the url, BIM, my cat got a new meal, right from my command line interface, and without any session created.&lt;/p&gt;
+
+&lt;p&gt;This is crazy. At this moment, I realize that barely &lt;em&gt;anyone&lt;/em&gt; could empty my feeder from anywhere in the world and/or make my cat obese!&lt;/p&gt;
+
+&lt;h2 id=&quot;how-i-reacted&quot;&gt;How I reacted&lt;/h2&gt;
+
+&lt;p&gt;My first reaction to that discovery was to remove the Wi-Fi settings from the machine, making sure it’s not anymore Internet connected. Of course I tried the magic request to prove that my machine was offline, and therefore more secure.&lt;/p&gt;
+
+&lt;p&gt;But that solution made the machine unusable: impossible to change the schedule or trigger a meal from my phone anymore. So I decided to continue the reverse engineering of my machine in order to implement my own secure API to use it! (crazy right?)&lt;/p&gt;
+
+&lt;p&gt;I looked for my &lt;a href=&quot;https://www.raspberrypi.org/&quot;&gt;Raspberry Pi&lt;/a&gt;, that was getting some dust in a drawer, and setted up a &lt;a href=&quot;https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md&quot;&gt;Wi-Fi hotspot&lt;/a&gt; with it.&lt;/p&gt;
+
+&lt;p&gt;That allowed me to look the way my cat feeder was communicating with the outside world.
+I found out that the only address it was communicating with was &lt;code class=&quot;highlighter-rouge&quot;&gt;47.90.203.137&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;47.90.203.137&lt;/code&gt; corresponds to &lt;a href=&quot;http://alnpet.com&quot;&gt;alnpet.net&lt;/a&gt;. I do recognize the feeder on this website, but It’s a more advanced one, with a camera, and more advanced feature. Hum, weird. And the preorder link bring to KickStarter homepage. Oh boy, what am I getting myself into? I do not know what link there is between &lt;em&gt;HoneyGuaridan&lt;/em&gt; and &lt;em&gt;Alnpet&lt;/em&gt;. Are they even the same?&lt;/p&gt;
+
+&lt;p&gt;Well, let say that this IP has been banned from my Raspberry Pi&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables -A INPUT -s 47.90.203.137 -j DROP
+iptables -A FORWARD -s 47.90.203.137 -j DROP
+iptables -A OUTPUT -s 47.90.203.137 -j DROP
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That make sure my machine is still offline, while connected to my Raspberry. The next step would be to imitate this server to make my machine thinks it’s communicating with Alnpet API, despite it would be mine.&lt;/p&gt;
+
+&lt;p&gt;For now, I’m still at the reverse engineering phase in order to understand how I can communicate with my device. It’s not the easiest part; let hope I succeed.&lt;/p&gt;
+
+&lt;p&gt;And lesson learned: I will always challenge any new device that connect to my network from now on.&lt;/p&gt;
+
+&lt;p&gt;Am I getting a little bit paranoid? Yes I am!&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">As a software engineer for DiliTrust, I think software security as a primary feature for any kind of product or software. Every time we heard a story about any kind of security flaw, we take it seriously: how is that possible? Am we directly or indirectly impacted? Well, I guess I wasn’t yet prepared for my last discovery.</summary></entry><entry><title type="html">Avoid 5 common mistakes with AES encryption</title><link href="https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html" rel="alternate" type="text/html" title="Avoid 5 common mistakes with AES encryption" /><published>2017-07-12T14:00:00+02:00</published><updated>2017-07-12T14:00:00+02:00</updated><id>https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift</id><content type="html" xml:base="https://www.thomasdurand.fr/security/encryption/2017/07/12/aes-encryption-good-practice-with-swift.html">&lt;p&gt;&lt;strong&gt;Written for Swift 3 with Xcode 8.1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;With libraries like &lt;a href=&quot;https://github.com/krzyzanowskim/CryptoSwift&quot;&gt;CryptoSwift&lt;/a&gt;, it’s easier and easier to
+use encryption in your code. But there are also some common mistakes not to fall
+into when using cryptography!&lt;/p&gt;
+
+&lt;p&gt;The rest of this article will use CryptoSwift as an example.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;1-dont-hard-code-your-cryptographic-key&quot;&gt;1. Don’t hard code your cryptographic key&lt;/h2&gt;
+
+&lt;p&gt;Anything you put in the code is, in a way, readable by anyone. It’s always possible
+for an attacker to find something, even hidden in the compiled code of your application.&lt;/p&gt;
+
+&lt;p&gt;Plus, hardcoding a key means it’s the same encryption key for everyone, witch would
+make a very bad encryption system since the key is shipped with the app.&lt;/p&gt;
+
+&lt;p&gt;One last point is randomness. It’s primordial that a key reflect entropy.
+It need to be anything. The next byte of a key need to be able anything, and there
+is no less entropic than an UTF8 string used as a key.&lt;/p&gt;
+
+&lt;p&gt;Solution ?&lt;br /&gt;
+You need to &lt;strong&gt;generate&lt;/strong&gt; a key every time you need one, and store it locally in a safe place.&lt;/p&gt;
+
+&lt;p&gt;You can generate a AES256 key this way :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generateRandomData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Data&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;withUnsafeMutableBytes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;mutableBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UnsafeMutablePointer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;UInt8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int32&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;SecRandomCopyBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kSecRandomDefault&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mutableBytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errSecSuccess&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Errors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unableToGenerateData&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// The size of the key for AES256 is 256 ÷ 8 = 32&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;myAES256keyData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;generateRandomData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Store your key in a safe place&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;2-store-your-keys-in-the-keychain&quot;&gt;2. Store your keys in the Keychain&lt;/h2&gt;
+
+&lt;p&gt;Let make things clear right now, there are &lt;strong&gt;no better place&lt;/strong&gt; to store sensitive
+data like cryptographic keys or password than the &lt;a href=&quot;https://developer.apple.com/documentation/security/keychain_services&quot;&gt;Keychain&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s designed by Apple to be able to store securely password, certificates and keys.
+It’s also maintained by regular updates of Apple software, and finally, it uses hardware
+module like the &lt;a href=&quot;https://www.quora.com/What-is-Apple’s-new-Secure-Enclave-and-why-is-it-important&quot;&gt;Secure enclave&lt;/a&gt; to assure a high level of security.&lt;/p&gt;
+
+&lt;p&gt;TL;DR: Use the Keychain, it the most secure alternative you’ve got!&lt;/p&gt;
+
+&lt;p&gt;You can store and access the keychain very simply on your own when you use a wrapper like &lt;a href=&quot;https://github.com/evgenyneu/keychain-swift&quot;&gt;Keychain-Swift&lt;/a&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;KeychainSwift&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;keychain&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;KeychainSwift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Store the previously created key&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;keychain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dataObject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;forKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;my key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;withAccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accessibleWhenUnlockedThisDeviceOnly&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Receive from keychain our key&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keychain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;getData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;my key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;3-set-a-correct-keychain-item-access&quot;&gt;3. Set a correct Keychain Item Access&lt;/h2&gt;
+
+&lt;p&gt;You may have not noticed yet, but I used an access parameter to the keychain setter in point 2.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;accessibleWhenUnlockedThisDeviceOnly&lt;/code&gt; (&lt;a href=&quot;https://developer.apple.com/documentation/security/ksecattraccessiblewhenunlockedthisdeviceonly&quot;&gt;ref&lt;/a&gt;) is a bare minimum, that I use in my below example.&lt;br /&gt;
+Use &lt;code class=&quot;highlighter-rouge&quot;&gt;accessibleWhenPasscodeSetThisDeviceOnly&lt;/code&gt; (&lt;a href=&quot;https://developer.apple.com/documentation/security/ksecattraccessiblewhenpasscodesetthisdeviceonly&quot;&gt;ref&lt;/a&gt;) when available.&lt;/p&gt;
+
+&lt;p&gt;That is needed to provide a correct level of security for your stored key.
+It make sure the device is unlocked, prevent backups and keychain sharing between
+devices, and it can also make sure the device is secured by an unlock code.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-use-an-initialization-vector&quot;&gt;4. Use an Initialization Vector&lt;/h2&gt;
+
+&lt;p&gt;Encrypting data is a good practice to prevent anyone to read sensitive data.&lt;/p&gt;
+
+&lt;p&gt;But what if analytics allow an attacker to read your data without the key, just
+by looking at the encrypted data?&lt;/p&gt;
+
+&lt;p&gt;That’s what make Initialization Vector so important!&lt;/p&gt;
+
+&lt;p&gt;Let say you need to encrypt a boolean, because you don’t wan’t anyone to figure out
+who has opt-in and who haven’t.&lt;/p&gt;
+
+&lt;p&gt;Let check the storage table after encryption:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;value&lt;/th&gt;
+      &lt;th&gt;no IV (or shared IV)&lt;/th&gt;
+      &lt;th&gt;randomized IV&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HspSmVFeseu7kpt5ZJE13A==&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;6sM2RzgShVcu1OPM8sH0mw==&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HspSmVFeseu7kpt5ZJE13A==&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ylJjMWFq4MoqKvpn5WSYOQ==&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sdkaq/5TFZKjFjx35Cl0rw==&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;JZHeEoBfgQgk8/8eOQlQxQ==&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sdkaq/5TFZKjFjx35Cl0rw==&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;byfgDi+CD7pAo2NXYk8tVw==&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;HspSmVFeseu7kpt5ZJE13A==&lt;/code&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;XxWfqQXe3EwNuJ3AzvgOig==&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Any clue of what’s wrong ?
+Well, every same value, encrypted with the same key and iv result in the same cipher result.&lt;/p&gt;
+
+&lt;p&gt;And that’s bad for your data, because an attacker that would eventually see the data
+(and trust me, he will on an iOS device except if it’s in the Keychain), can perform
+some analytics process to deduct the decrypted data.&lt;/p&gt;
+
+&lt;p&gt;To prevent that, it’s important to generate a random IV for every encryption you
+may perform.&lt;/p&gt;
+
+&lt;p&gt;Of course this IV is needed to decrypt the data, along with the key.
+A good place to store the IV is alongside the data, yes, in the table, just like you would
+do with a &lt;a href=&quot;https://en.wikipedia.org/wiki/Salt_(cryptography)&quot;&gt;salt for a password hash&lt;/a&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// We generate a one time use IV:&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;iv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;randomIV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blockSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// We encrypt the data:&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;crypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;encrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// We then store the crypted data and the iv&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;myStorage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;securedData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;crypted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;5-do-not-use-ecb-block-mode&quot;&gt;5. Do not use ECB block mode&lt;/h2&gt;
+
+&lt;p&gt;The block mode you set in the AES algorithm correspond to the method used by the
+algorithm to perform the encryption.&lt;/p&gt;
+
+&lt;p&gt;The choice of a good block mode is primordial to make the encryption useful and
+secure.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// Some encryptions available&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encryptedWithCBC&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;blockMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;CBC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PKCS7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;encrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encryptedWithCTR&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;blockMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;CTR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PKCS7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;encrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// And the one you should never use...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encryptedWithECB&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;AES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;blockMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;ECB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;PKCS7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;encrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;But why is ECB a very poor choice?&lt;/p&gt;
+
+&lt;p&gt;ECB stand for Electronic Code Book, that encrypt every block of your input separately.
+The treat is that this method will encrypt the same way two same blocks, and just
+like the lack of Initialization Vector, makes the encryption predictable.&lt;/p&gt;
+
+&lt;p&gt;It can also lead to replay attacks and information leaks.&lt;/p&gt;
+
+&lt;p&gt;If you want to be confident about the ECB lack of security, check this example
+of encryption using an image, from &lt;a href=&quot;https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ios/crypto-practices/ECB.png&quot; alt=&quot;Illustration of ECB lack of security with a picture encryption&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Wow, with ECB block mode, we cannot say that the content of the picture became
+unpredictable and unreadable. That’s why it should &lt;strong&gt;never&lt;/strong&gt; be used as a cryptographic
+block mode.&lt;/p&gt;
+
+&lt;p&gt;To prevent that, use CBC (Cipher Block Chaining) that make the next block encryption
+dependent from the previous one, and make the result unpredictable and randomized.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Although it’s very easy to use encryption today as a developer, it’s also very easy
+to make a lot of mistakes when using AES, making the whole process unsecure and,
+sometime, useless.&lt;/p&gt;
+
+&lt;p&gt;The main reason is that when dealing with encryption, it’s important to know what you do,
+what you’re dealing with, and also the classic errors to avoid.&lt;/p&gt;
+
+&lt;p&gt;I hope that your app will become a little bit more secure with what you just read!&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">Written for Swift 3 with Xcode 8.1 With libraries like CryptoSwift, it’s easier and easier to use encryption in your code. But there are also some common mistakes not to fall into when using cryptography! The rest of this article will use CryptoSwift as an example.</summary></entry><entry><title type="html">iOS disclosure indicators done right</title><link href="https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html" rel="alternate" type="text/html" title="iOS disclosure indicators done right" /><published>2016-08-12T14:00:00+02:00</published><updated>2016-08-12T14:00:00+02:00</updated><id>https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right</id><content type="html" xml:base="https://www.thomasdurand.fr/swift3/ios/2016/08/12/ios-disclosure-indicator-done-right.html">&lt;p&gt;&lt;strong&gt;Updated for Swift 3 with Xcode 8.1&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Disclosure indicators are very common in an iOS application, and they allow the
+user to know that if they select a cell, they will be pushed somewhere else.
+You can also read &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/TableView_iPhone/TableViewStyles/TableViewCharacteristics.html&quot;&gt;Apple documentation&lt;/a&gt; about them.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ios/disclosure-indicator/cell-with-disclosure.png&quot; alt=&quot;a cell with disclosure indicator&quot; /&gt;
+A cell with disclosure indicator&lt;/p&gt;
+
+&lt;p&gt;Adding a disclosure indicator may seem easy at first, but when you want to make
+a universal app supporting iPhone and iPad, things become trickier, and we’ll
+see how to make it right !&lt;/p&gt;
+
+&lt;h2 id=&quot;beginning-the-project&quot;&gt;Beginning the project&lt;/h2&gt;
+
+&lt;p&gt;To begin the project, you can either create a &lt;em&gt;Master - Details&lt;/em&gt; template
+application with Xcode, or download/clone this &lt;a href=&quot;https://github.com/Dean151/disclosure-indicators-done-right/tree/start&quot;&gt;Github repo&lt;/a&gt; at the branch &lt;code class=&quot;highlighter-rouge&quot;&gt;start&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;If you build and run for iPhone, and use the app a little, you’ll see that apple
+hasn’t added a disclosure indicator to their project.
+But if you select a cell, a new view controller will be pushed. Not quite like
+described in the &lt;a href=&quot;https://developer.apple.com/ios/human-interface-guidelines/ui-views/tables/&quot;&gt;human interface guidelines&lt;/a&gt;.
+Maybe it’s the sign that it’s not that easy to do ? :)&lt;/p&gt;
+
+&lt;h2 id=&quot;adding-a-disclosure-indicator&quot;&gt;Adding a disclosure indicator&lt;/h2&gt;
+
+&lt;p&gt;In the function &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)&lt;/code&gt;,
+simply add right before returning the cell :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;nf&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cellForRowAt&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;indexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IndexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accessoryType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;disclosureIndicator&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now, build and run for iPhone. You have disclosure indicators for your cells !
+Easy as pie !&lt;/p&gt;
+
+&lt;p&gt;Now, let complicate things. We want to make a universal app, and this template
+use a &lt;code class=&quot;highlighter-rouge&quot;&gt;UISplitViewController&lt;/code&gt; for that purpose.&lt;/p&gt;
+
+&lt;h2 id=&quot;adapting-disclosure-indicators-for-split-view-presentation&quot;&gt;Adapting disclosure indicators for split view presentation&lt;/h2&gt;
+
+&lt;p&gt;Let register the app as Universal, because right now it’s just an iPhone app.&lt;/p&gt;
+
+&lt;p&gt;In the project settings (the most top element in the file list), change devices
+to become &lt;code class=&quot;highlighter-rouge&quot;&gt;Universal&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ios/disclosure-indicator/universal.png&quot; alt=&quot;the selector of devices in the target settings&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Build and run the app for iPad. You should see that every cell have a disclosure
+indicator, which is not what we expect in a Master-Detail split-view app on iPad.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ios/disclosure-indicator/comparative.png&quot; alt=&quot;comparative between a correct split view and our split view with disclosure indicators&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To make the magic happen, we need to detect when the view controller is currently
+presenting in a split view controller, and if it is, if we have two view controllers visible.&lt;/p&gt;
+
+&lt;p&gt;To do so, I would use this piece of code in the &lt;code class=&quot;highlighter-rouge&quot;&gt;MasterViewController&lt;/code&gt; :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Will return false if no split view or if split view is collapsed like on iPhone&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;isInSplitViewPresentation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;splitViewController&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isCollapsed&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;If there is no split view controller, the &lt;code class=&quot;highlighter-rouge&quot;&gt;??&lt;/code&gt; operator will make the parenthesis return &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;.
+And &lt;code class=&quot;highlighter-rouge&quot;&gt;isInSplitViewPresentation&lt;/code&gt; equals the inverted boolean, so it will be &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;When there is a split view controller, which is always the case in our example, this piece of code
+will look at the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;isCollapsed&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;isCollapsed&lt;/code&gt; will be true when the split view present only one view controller at a time, which is
+the case on iPhone (except iPhone 6 plus in landscape, but we’ll come to that later).&lt;/p&gt;
+
+&lt;p&gt;Then, with this piece of code, replace in &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)&lt;/code&gt;
+the code we wrote before for the accessoryType :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;nf&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cellForRowAt&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;indexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IndexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accessoryType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;disclosureIndicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;none&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now build and run for iPhone, or for iPad, and it works as expected … well, &lt;em&gt;almost&lt;/em&gt; as expected !&lt;/p&gt;
+
+&lt;h2 id=&quot;the-iphone-6s-plus-exception&quot;&gt;The iPhone 6(s) plus exception&lt;/h2&gt;
+
+&lt;p&gt;The iPhone 6 plus is a (very) big device and is the only iPhone that is able to show
+split views in non-collapsed mode.&lt;/p&gt;
+
+&lt;p&gt;Let give it a try. Build and run for iPhone 6 plus model, and create a few cells with the + button.
+You should have disclosure indicators in the cells.&lt;/p&gt;
+
+&lt;p&gt;Rotate the device with &lt;code class=&quot;highlighter-rouge&quot;&gt;cmd + -&amp;gt;&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;cmd + &amp;lt;-&lt;/code&gt;.
+The split view now shows the two view controllers, but the cells still have disclosure indicators.
+If you create more cell, or if you scroll, the cells that appear on screen won’t have them.&lt;/p&gt;
+
+&lt;p&gt;If you return the device in portrait ; the cells that had indicators still have, but the others don’t
+and they should.&lt;/p&gt;
+
+&lt;p&gt;The code we use works okay, it’s just that when the device change it’s state, we need to update
+the cells to reflect the changes.&lt;/p&gt;
+
+&lt;p&gt;First, let move the logic of the disclosure adding.&lt;/p&gt;
+
+&lt;p&gt;Let create an extension for the cell that handle the cell accessory type :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableViewCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;accessoryType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;visible&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;disclosureIndicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;none&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And in the &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;replace&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;accessoryType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;disclosureIndicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;none&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;with&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Looks a little bit better.&lt;/p&gt;
+
+&lt;p&gt;Now, add in the &lt;code class=&quot;highlighter-rouge&quot;&gt;MasterViewController&lt;/code&gt; this code that handle the change portrait/landscape :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Will be called each time the size of the view controller changes&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewWillTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CGSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UIViewControllerTransitionCoordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// We use the coordinator to keep track of the transition&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;animate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;alongsideTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// In the completion of the transition,&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// We loop on each cell&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visibleCells&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;// And we refresh the disclosure indicator of those cells&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;viewWillTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;This code is interesting because prior to iOS 8, we had the &lt;code class=&quot;highlighter-rouge&quot;&gt;viewWillRotate&lt;/code&gt; and the
+&lt;code class=&quot;highlighter-rouge&quot;&gt;viewDidRotate&lt;/code&gt; functions. But those two have been depreciated and replaced by
+&lt;code class=&quot;highlighter-rouge&quot;&gt;viewWillTransition&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The problem is that we do not have a &lt;code class=&quot;highlighter-rouge&quot;&gt;viewDidTransition&lt;/code&gt; method
+that would be called at the end. But we do have a transition coordinator in parameter.&lt;/p&gt;
+
+&lt;p&gt;The idea is to use this coordinator in order to call method at the end of the animations.&lt;/p&gt;
+
+&lt;p&gt;To do so, we animate alongside transition, but we do not give any animation, just a completion handler.
+So the refresh of the cells will be made at the end of the transition, so we are sure our code will
+remove, or add disclosure indicators only if needed.&lt;/p&gt;
+
+&lt;p&gt;Build and run the app for iPhone 6 plus and rotate as you like to see the disclosure indicators doing
+things just right.&lt;/p&gt;
+
+&lt;h2 id=&quot;bonus-ios9-split-view-mode-on-ipad&quot;&gt;Bonus: iOS9 Split view mode on iPad&lt;/h2&gt;
+
+&lt;p&gt;Since iOS9, some iPad models can became in Split view mode.
+It allow two apps to be displayed at the same time in the screen.&lt;/p&gt;
+
+&lt;p&gt;The thing about that is on iPad air 2 and iPad mini 4, when two apps are displayed
+side by side at 50/50, they are displayed in iPhone mode and the split view will
+be collapsed.&lt;/p&gt;
+
+&lt;p&gt;A good thing about our previous code is that is also works nice with this transition.
+It means that without any code side change, we can make our app works with Split View mode.&lt;/p&gt;
+
+&lt;p&gt;To try this out, go back in the target settings, like we did before and check the &lt;code class=&quot;highlighter-rouge&quot;&gt;upside down&lt;/code&gt; rotation.
+Indeed, to work, split view need all 4 orientations supported. Don’t ask me why, I don’t have a clue.&lt;/p&gt;
+
+&lt;p&gt;Build and run for iPad air 2 or iPad mini 4 (the two non-pro devices that support split view at this time)
+and trigger the split view with a pan gesture from the right border of the screen.&lt;/p&gt;
+
+&lt;p&gt;When the app become collapsed, the disclosure indicators appears as we could expect them to.&lt;/p&gt;
+
+&lt;h2 id=&quot;wrapping-this-as-a-protocol&quot;&gt;Wrapping this as a Protocol&lt;/h2&gt;
+
+&lt;p&gt;Our solution is not perfect yet : it assume that every cell is disclosable in our
+table view, which will not be always the case in all tableviews.&lt;/p&gt;
+
+&lt;p&gt;Then, the approach of a global extension is not a very “local” approach, and keeping
+your code local is the best way to make it simpler to maintain.&lt;/p&gt;
+
+&lt;p&gt;Let remove completely our extension of &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewCell&lt;/code&gt; and create our protocol :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Represent a cell that is disclosable&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;protocol&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DisclosableCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;canDisclose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;extension&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DisclosableCell&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableViewCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;accessoryType&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canDisclose&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;visible&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;disclosureIndicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;none&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Of course, we need a subclass of &lt;code class=&quot;highlighter-rouge&quot;&gt;UITableViewCell&lt;/code&gt; to make it work in our example from below :&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;MyCell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableViewCell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DisclosableCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;canDisclose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// All of our cells disclose&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;Make sure to change the class of the cell in the storyboard&lt;/strong&gt;:
+Select the prototype cell, and in the &lt;em&gt;Identity Inspector&lt;/em&gt;, set the class of the cell
+as &lt;code class=&quot;highlighter-rouge&quot;&gt;MyCell&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, replace the viewWillTransition implementation with:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;c1&quot;&gt;/// Will be called each time the size of the view controller changes&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;viewWillTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;CGSize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UIViewControllerTransitionCoordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// We use the coordinator to keep track of the transition&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;animate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;alongsideTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;completion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// In the completion of the transition,&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// We loop on each cell&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visibleCells&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;forEach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as?&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DisclosableCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// And we refresh the disclosure indicator of those cells&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;viewWillTransition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;coordinator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And inside &lt;code class=&quot;highlighter-rouge&quot;&gt;tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)&lt;/code&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-swift&quot; data-lang=&quot;swift&quot;&gt;&lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;func&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;tableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cellForRowAt&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;indexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;IndexPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;UITableViewCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;cell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as?&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DisclosableCell&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;setDisclosureIndicator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isInSplitViewPresentation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;And this is it!&lt;/strong&gt; You have a full and reusable implementation of our special disclosable
+cells, that is now a protocol that many cells implementation can conform. The good
+point with this is that a single UITableViewController that handle many different cells
+with some that are disclosable, other aren’t in a universal app ; with the &lt;strong&gt;correct and
+expected&lt;/strong&gt; behavior.&lt;/p&gt;
+
+&lt;p&gt;You can clone the repo with the full implementation of this protocol on &lt;a href=&quot;https://github.com/Dean151/disclosure-indicators-done-right&quot;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you have any idea of improvement we can achieve on this implementation, make
+sure to open an issue directly on Github, and we’ll discuss about it! :)&lt;/p&gt;</content><author><name>Thomas Durand</name></author><summary type="html">Updated for Swift 3 with Xcode 8.1 Disclosure indicators are very common in an iOS application, and they allow the user to know that if they select a cell, they will be pushed somewhere else. You can also read Apple documentation about them.</summary></entry></feed>

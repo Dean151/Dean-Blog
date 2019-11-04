@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="/assets/design/favicon.png" />
+
+  <title>Generating lottery numbers using CryptoKit — Dean&#39;s blog</title>
+  <meta name="description" content="Why? Because we can!WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.">
+  <meta name="author" content="Thomas Durand">
+  <meta name="generator" content="Jekyll v4.0.0">
+
+  <meta itemprop="name" content="Generating lottery numbers using CryptoKit — Dean&#39;s blog">
+  <meta itemprop="description" content="Why? Because we can!WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.">
+  <meta itemprop="image" content="/assets/design/favicon192.png">
+
+  <meta property="og:url" content="https://www.thomasdurand.fr/swift/cryptokit/2019/06/25/generating-lottery-numbers-with-cryptokit.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Generating lottery numbers using CryptoKit — Dean&#39;s blog">
+  <meta property="og:description" content="Why? Because we can!WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.">
+  <meta property="og:image" content="/assets/design/favicon192.png">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Generating lottery numbers using CryptoKit — Dean&#39;s blog">
+  <meta name="twitter:description" content="Why? Because we can!WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.">
+  <meta name="twitter:image" content="/assets/design/favicon192.png">
+
+  <meta name="apple-mobile-web-app-title" content="Dean&#39;s blog">
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/design/favicon57.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/design/favicon76.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/design/favicon120.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/design/favicon152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="/assets/design/favicon167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/design/favicon180.png">
+  <link rel="icon" sizes="192x192" href="/assets/design/favicon192.png">
+  <link rel="icon" sizes="128x128" href="/assets/design/favicon128.png">
+
+  <link rel="stylesheet" href="/assets/css/style.css?v=201911041552">
+  <link rel="canonical" href="https://www.thomasdurand.fr/swift/cryptokit/2019/06/25/generating-lottery-numbers-with-cryptokit.html">
+  <link type="application/atom+xml" rel="alternate" href="https://www.thomasdurand.fr/feed.xml" title="Dean's blog" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">
+      <img src="/assets/design/logo@2x.png" height="40" alt="Dean's blog"/>
+    </a>
+
+    <nav class="site-nav">
+      <a class="page-link" href="/">Stories</a>
+      <a class="page-link" href="/about/">About</a>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Generating lottery numbers using CryptoKit</h1>
+    <p class="post-date"><time datetime="2019-06-25T18:30:00+02:00" itemprop="datePublished">Jun 25, 2019</time> by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">Thomas Durand</span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    
+    <p><strong>Why?</strong> Because we can!</p>
+
+<p>WWDC19 announcements came with CryptoKit ; a new framework designed for making cryptography easy.</p>
+
+<!--more-->
+
+<p>Today, I want to show how to use CryptoKit to generate numbers. 
+It’ll a better generator than <code class="highlighter-rouge">arc4random</code> used by default on iOS since it generate cryptographic keys, keys that are supposed to be the most random and entropic possible!</p>
+      <h2 id="a-model-to-generate-lottery-numbers">
+        
+        
+          <a href="#a-model-to-generate-lottery-numbers" class="post-link-anchor"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#u"></use></svg></a> A model to generate lottery numbers
+        
+        
+      </h2>
+
+<p>First, what are lottery draws?</p>
+
+<p>It’s one or more <em>k among n</em> draws!</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Represent one `k among n` operation</span>
+<span class="kd">struct</span> <span class="kt">Draw</span> <span class="p">{</span>
+    <span class="c1">/// The number of number to draw (ie k)</span>
+    <span class="k">let</span> <span class="nv">draw</span><span class="p">:</span> <span class="kt">UInt</span>
+
+    <span class="c1">/// The range of numbers to draw within (ie n)</span>
+    <span class="k">let</span> <span class="nv">among</span><span class="p">:</span> <span class="kt">ClosedRange</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span>
+
+    <span class="c1">/// Generate `draw` numbers within `among` </span>
+    <span class="kd">func</span> <span class="nf">random</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span> <span class="p">{</span>
+        <span class="c1">// TODO!</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We can then define a lottery as an array of Draws:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">struct</span> <span class="kt">Lottery</span> <span class="p">{</span>
+    <span class="c1">/// The draws for that lottery</span>
+    <span class="c1">/// Example draw 5 numbers within 1 and 49 &amp; 1 number within 1 and 10.</span>
+    <span class="k">let</span> <span class="nv">draws</span><span class="p">:</span> <span class="p">[</span><span class="kt">Draw</span><span class="p">]</span>
+
+    <span class="c1">/// Generate a lottery draw randomly</span>
+    <span class="kd">func</span> <span class="nf">random</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">draws</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="nv">$0</span><span class="o">.</span><span class="nf">random</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The most popular french lotteries can then be defined easily within the application:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">extension</span> <span class="kt">Lottery</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">frenchLoto</span> <span class="o">=</span> <span class="kt">Lottery</span><span class="p">(</span><span class="nv">draws</span><span class="p">:</span> <span class="p">[</span>
+        <span class="kt">Draw</span><span class="p">(</span><span class="nv">draw</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">among</span><span class="p">:</span> <span class="mi">1</span><span class="o">...</span><span class="mi">49</span><span class="p">),</span>
+        <span class="kt">Draw</span><span class="p">(</span><span class="nv">draw</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">among</span><span class="p">:</span> <span class="mi">1</span><span class="o">...</span><span class="mi">10</span><span class="p">)</span>
+        <span class="p">])</span>
+
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">euromillion</span> <span class="o">=</span> <span class="kt">Lottery</span><span class="p">(</span><span class="nv">draws</span><span class="p">:</span> <span class="p">[</span>
+        <span class="kt">Draw</span><span class="p">(</span><span class="nv">draw</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">among</span><span class="p">:</span> <span class="mi">1</span><span class="o">...</span><span class="mi">50</span><span class="p">),</span>
+        <span class="kt">Draw</span><span class="p">(</span><span class="nv">draw</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">among</span><span class="p">:</span> <span class="mi">1</span><span class="o">...</span><span class="mi">12</span><span class="p">)</span>
+        <span class="p">])</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Once the <code class="highlighter-rouge">Draw.random()</code> method gets implemented, we will be able to generate lottery numbers very easily:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Output for now: [Set([]), Set([])]</span>
+<span class="nf">print</span><span class="p">(</span><span class="kt">Lottery</span><span class="o">.</span><span class="n">euromillion</span><span class="o">.</span><span class="nf">random</span><span class="p">())</span></code></pre></figure>
+    
+      <h2 id="randomness-using-default-implementation">
+        
+        
+          <a href="#randomness-using-default-implementation" class="post-link-anchor"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#u"></use></svg></a> Randomness using default implementation
+        
+        
+      </h2>
+
+<p>Generating k number among a range is quite straightforward:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Generate `draw` numbers within `among`</span>
+<span class="kd">func</span> <span class="nf">random</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">drawable</span> <span class="o">=</span> <span class="kt">Set</span><span class="p">(</span><span class="n">among</span><span class="p">),</span> <span class="n">drawnNumbers</span> <span class="o">=</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">drawnNumbers</span><span class="o">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="n">draw</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">drawn</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="nf">randomElement</span><span class="p">()</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// If somehow we do not find any element, it means we want to draw more elements than available</span>
+            <span class="c1">// Let just break the loop and return all elements.</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        <span class="c1">// Make the number undrawable for that draw</span>
+        <span class="n">drawable</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">drawn</span><span class="p">)</span>
+        <span class="c1">// And add the number to the draw</span>
+        <span class="n">drawnNumbers</span><span class="o">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">drawn</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">drawnNumbers</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>In this example, the random is handled by <code class="highlighter-rouge">randomElement()</code>.</p>
+
+<p>That uses by default the <code class="highlighter-rouge">SystemRandomNumberGenerator</code> that will be either:</p>
+<ul>
+  <li><code class="highlighter-rouge">arc4random_buf</code> on Apple platforms</li>
+  <li><code class="highlighter-rouge">getrandom</code> if available or <code class="highlighter-rouge">/dev/urandom</code> on unix platforms.</li>
+</ul>
+    
+      <h2 id="using-cryptoswifts-randomness">
+        
+        
+          <a href="#using-cryptoswifts-randomness" class="post-link-anchor"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#u"></use></svg></a> Using CryptoSwift’s randomness
+        
+        
+      </h2>
+
+<p>Okay, here it becomes a little <em>hacky</em> ; why not using the random bytes securely generated for a key as random source for the lottery numbers?</p>
+
+<p>Doing so is quite easy, since we can use <code class="highlighter-rouge">randomElement(using generator: inout RandomNumberGenerator)</code></p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="kd">import</span> <span class="kt">CryptoKit</span>
+
+<span class="c1">/// RandomNumberGenerator using CryptoKit</span>
+<span class="kd">struct</span> <span class="kt">CryptoKitRandomNumberGenerator</span><span class="p">:</span> <span class="kt">RandomNumberGenerator</span> <span class="p">{</span>
+    <span class="k">mutating</span> <span class="kd">func</span> <span class="n">next</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">FixedWidthInteger</span><span class="p">,</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">UnsignedInteger</span> <span class="p">{</span>
+        <span class="c1">// Let generate a symmetric key using CryptoKit. It'll be generated using best cryptographic practices to have strong randomness.</span>
+        <span class="c1">// T will be 8 bytes at most (For UInt64) so generating a bits128 key (ie 16 bytes) is more than overkill already</span>
+        <span class="k">let</span> <span class="nv">key</span> <span class="o">=</span> <span class="kt">SymmetricKey</span><span class="p">(</span><span class="nv">size</span><span class="p">:</span> <span class="o">.</span><span class="n">bits128</span><span class="p">)</span>
+        <span class="c1">// Then we use the generated key to extract a random Unsigned Fixed Width Integer.</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">withUnsafeBytes</span> <span class="p">{</span> <span class="p">(</span><span class="n">pointer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">in</span>
+            <span class="c1">// We have a pointer on random bytes generated by our class</span>
+            <span class="c1">// Let convert those bytes to T ; in order to get our number.</span>
+            <span class="k">return</span> <span class="n">pointer</span><span class="o">.</span><span class="nf">bindMemory</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">self</span><span class="p">)</span><span class="o">.</span><span class="n">baseAddress</span><span class="o">!.</span><span class="n">pointee</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>And now we can pick numbers using our new generator:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="k">var</span> <span class="nv">generator</span> <span class="o">=</span> <span class="kt">CryptoKitRandomNumberGenerator</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">drawn</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="nf">randomElement</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">generator</span><span class="p">)</span></code></pre></figure>
+
+<p>And, in our previous <code class="highlighter-rouge">Draw.random()</code> implementation, it’ll give us this:</p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">/// Generate `draw` numbers within `among`</span>
+<span class="kd">func</span> <span class="nf">random</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">drawable</span> <span class="o">=</span> <span class="kt">Set</span><span class="p">(</span><span class="n">among</span><span class="p">),</span> <span class="n">drawnNumbers</span> <span class="o">=</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="k">var</span> <span class="nv">generator</span> <span class="o">=</span> <span class="kt">CryptoKitRandomNumberGenerator</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">drawnNumbers</span><span class="o">.</span><span class="n">count</span> <span class="o">&lt;</span> <span class="n">draw</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">drawn</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="nf">randomElement</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">generator</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">break</span>
+        <span class="p">}</span>
+        <span class="n">drawable</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">drawn</span><span class="p">)</span>
+        <span class="n">drawnNumbers</span><span class="o">.</span><span class="nf">insert</span><span class="p">(</span><span class="n">drawn</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">drawnNumbers</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>And this is it, you can now generate draws for all sort of Lotteries you may define using <a href="https://gist.github.com/Dean151/a11444d0be6c8fde094661dbba38c3be">this snippet of code</a></p>
+
+<figure class="highlight"><pre><code class="language-swift" data-lang="swift"><span class="c1">// Output: [Set([27, 13, 21, 29, 4]), Set([1, 3])]</span>
+<span class="c1">// If you win with those, I claim a 5% tax :D</span>
+<span class="nf">print</span><span class="p">(</span><span class="kt">Lottery</span><span class="o">.</span><span class="n">euromillion</span><span class="o">.</span><span class="nf">random</span><span class="p">())</span></code></pre></figure>
+    
+      <h2 id="what-now">
+        
+        
+          <a href="#what-now" class="post-link-anchor"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#u"></use></svg></a> What now?
+        
+        
+      </h2>
+
+<p>Okay, let’s face it, I really think that using CryptoKit here is a bit <strong>overkill</strong>; but why not? It’s so easy to do!</p>
+
+<p>CryptoKit make things like generating secure keys, encrypting, and many more cryptographic operation fairly easy! If you’re into cryptography, you should definitely give it a try in a Playground right away!</p>
+
+<p>And if you have questions about CryptoKit: contact-me via GitHub or Twitter ;)</p>
+  </div>
+
+</article>
+
+<hr>
+
+<div class="edit-section">
+    <h3><a href="https://github.com/Dean151/Dean-Blog/edit/master/_posts/2019-06-25-generating-lottery-numbers-with-cryptokit.md" rel="nofollow" target="_blank" title="Edit on GitHub">Edit</a> or share this story:</h3>
+    <ul>
+        <li class="t">
+            <a rel="nofollow" target="_blank" title="Share this story" href="https://twitter.com/intent/tweet?text=Generating+lottery+numbers+using+CryptoKit&amp;url=https%3A%2F%2Fwww.thomasdurand.fr%2Fswift%2Fcryptokit%2F2019%2F06%2F25%2Fgenerating-lottery-numbers-with-cryptokit.html&amp;via=deanatoire&amp;related=deanatoire">
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#t"></use></svg>
+            </a>
+        </li>
+        <li class="f">
+            <a rel="nofollow" target="_blank" title="Share this story" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.thomasdurand.fr%2Fswift%2Fcryptokit%2F2019%2F06%2F25%2Fgenerating-lottery-numbers-with-cryptokit.html">
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#f"></use></svg>
+            </a>
+        </li>
+        <li class="l">
+            <a rel="nofollow" target="_blank" title="Share this story" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.thomasdurand.fr%2Fswift%2Fcryptokit%2F2019%2F06%2F25%2Fgenerating-lottery-numbers-with-cryptokit.html&amp;title=Generating+lottery+numbers+using+CryptoKit&amp;summary=Why%3F+Because+we+can%21WWDC19+announcements+came+with+CryptoKit+%3B+a+new+framework+designed+for+making+cryptography+easy.&amp;source=https%3A%2F%2Fwww.thomasdurand.fr">
+                <svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#l"></use></svg>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <img src="/assets/design/dean.jpg" class="profile-picture" alt="Profile picture">
+        <h2 class="footer-heading">Thomas Durand (a.k.a. Dean)</h2>
+        <ul class="description-list">
+            <li>Software architect, code owner and security engineer at <a href="https://www.dilitrust.com/" target="_blank">DiliTrust</a> in Paris.</li>
+            <li>Co-creator of a french amateur audiodrama, <a href="https://www.cafelembas.com/" target="_blank">Café & Lembas</a>.</li>
+            <li>iOS and web developer, keen photographer, currently in love with <a href="https://swift.org/">Swift</a>.</li>
+        </ul>
+      </div>
+      
+      <div class="footer-col footer-col-2">
+        <ul class="contact-list">
+          <li>
+              <a href="https://twitter.com/deanatoire" title="deanatoire" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#t"></use></svg>deanatoire</a>
+          </li>
+          <li>
+              <a href="https://github.com/dean151" title="dean151" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#g"></use></svg>dean151</a>
+          </li>
+          <li>
+              <a href="https://stackoverflow.com/users/2199197" title="dean" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#s"></use></svg>dean</a>
+          </li>
+          <li>
+              <a href="https://www.linkedin.com/in/thomasdurandverjat" title="thomasdurandverjat" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="/assets/design/icons.svg#l"></use></svg>thomasdurandverjat</a>
+          </li></ul>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="/assets/js/scripts.js?v=201911041552"></script>
+
+<script>
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    _paq.push(['setTrackerUrl', '/p/']);
+    _paq.push(['setSiteId', '14']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.defer=true; g.src='/p/'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="/p/?idsite=14&rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+
+  </body>
+
+</html>
