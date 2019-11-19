@@ -138,11 +138,11 @@ pre > code { border: 0; padding-right: 0; padding-left: 0; background: none; col
 
 .page-heading a:hover, .page-heading a:focus { color: #378B2E; text-decoration: none; }
 
-.page-heading a:hover .hidden-text, .page-heading a:focus .hidden-text { font-size: 16px; transition: font-size .3s; }
+.page-heading a:hover .hidden-text, .page-heading a:focus .hidden-text { font-size: 16px; }
 
 .page-heading a .svg-icon { width: 18px; height: 18px; padding: 2px; margin-right: 3px; }
 
-.page-heading a .hidden-text { font-size: 0; }
+.page-heading a .hidden-text { font-size: 0; transition: font-size .3s; }
 
 .page-heading a.rss-feed:hover, .page-heading a.rss-feed:focus { color: #ee802f; }
 

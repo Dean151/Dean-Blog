@@ -97,7 +97,6 @@
 
             .hidden-text {
                 font-size: $base-font-size;
-                transition: font-size .3s;
             }
         }
 
@@ -110,6 +109,7 @@
 
         .hidden-text {
             font-size: 0;
+            transition: font-size .3s;
         }
 
         &.rss-feed:hover, &.rss-feed:focus {
