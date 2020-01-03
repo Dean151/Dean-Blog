@@ -146,24 +146,30 @@
     }
 
     .post-link {
-        display: inline;
+        display: inline-flex;
+        align-items: center;
         font-size: 24px;
 
         &::before {
-            content: '● ';
-            display: inline-block;
-            color: $brand-color;
-    
+            content: '';
+            display: block;
+            background: $brand-color;
+
+            width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            margin-right: 8px;
+
             @media (prefers-color-scheme: dark) {
-                color: lighten($brand-color, 15%);
+                background: lighten($brand-color, 15%);
             }
         }
         
         &:visited::before {
-            color: $content-back-color;
-    
+            background: $content-back-color;
+
             @media (prefers-color-scheme: dark) {
-                color: $dark-content-back-color;
+                background: $dark-content-back-color;
             }
         }
     }
