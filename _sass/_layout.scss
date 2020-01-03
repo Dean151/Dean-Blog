@@ -365,7 +365,8 @@
     opacity: 0;
 
     color: $grey-color;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateX(10px);
 
     margin-left: -$spacing-unit;
     width: $spacing-unit;
@@ -396,6 +397,7 @@
 h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     .post-link-anchor {
         opacity: 1;
+        transform: translateX(0px);
     }
 }
 
