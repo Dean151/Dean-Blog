@@ -232,7 +232,7 @@ this.fetchApplePublicKey().then((key) => {
     if (token.exp < (Date.now() / 1000)) {
         throw new Error('id token has expired');
     }
-    
+
     // We check userId congruency with identityToken
     // You may only do it if you provide userId in the request.
     // Otherwise, use token.sub as userId.

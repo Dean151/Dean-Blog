@@ -63,9 +63,9 @@ body {
 
 ## Legibility & Contrast
 
-When designing your dark theme alternative, make sure to test every webpage for illegible content. Colored links, syntaxic coloring, tables... There are many places where you may find unadapted color schemes and illegible text. 
+When designing your dark theme alternative, make sure to test every webpage for illegible content. Colored links, syntaxic coloring, tables... There are many places where you may find unadapted color schemes and illegible text.
 
-All of them should have their own dark-mode alternative to keep your website legible whatever the user's color-scheme preference is. 
+All of them should have their own dark-mode alternative to keep your website legible whatever the user's color-scheme preference is.
 
 To help you with colors and legibility, you may want to read this cool article: [Color Contrast for Better Readability][color-contrast]
 

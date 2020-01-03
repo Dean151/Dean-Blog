@@ -16,7 +16,7 @@ In this tutorial, you'll see what solution I came around keeping my own privacy 
 [Pi-hole][pihole], as they describe themselves, is an open-source [DNS sinkhole][sinkhole].
 It is a custom DNS ; that will drop request during the DNS resolution step if it's been blacklisted.
 
-The main advantage of dropping request at DNS resolution step is that the request never leave your own network: 
+The main advantage of dropping request at DNS resolution step is that the request never leave your own network:
 It is first sent to your Raspberry Pi, and then dropped immediately if it's been blacklisted.
 
 It means that blacklisted remote servers never have to know that you even exist!
@@ -32,7 +32,7 @@ You can, of course, skip immediately to [Pi-hole installation][pi-hole-install].
 ### Raspbian Stretch installation
 
 Download the [latest release of Raspbian Stretch][raspbian-download] on your disk.
-Then, we need to copy it on your SD card, properly. 
+Then, we need to copy it on your SD card, properly.
 
 On macOS, It can be done with the following commands.
 
@@ -92,7 +92,7 @@ wget -O basic-install.sh https://install.pi-hole.net
 sudo bash basic-install.sh
 {% endhighlight %}
 
-The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ; 
+The installation should guide you through the process. When prompted to validate the IP as a static IP, say yes ;
 and always make sure that the IP is effectively static in order to work.
 
 At the end of the installation process, the administration password will be prompted to you if you choose to install the web administration interface, along with lighttp.
@@ -143,7 +143,7 @@ To have access to a lot of more informations, you may login with the password yo
 
 If you forgot your password already, you can reset it easily using `sudo pihole -a -p` (I know, I repeat myself!)
 
-You'll see the top blocked domains, and the most recents requests. 
+You'll see the top blocked domains, and the most recents requests.
 
 ![The home page of Pi Hole Admin][pi-hole-admin-blocked]
 
@@ -157,7 +157,7 @@ By regulary check the requests that have been blocked, and the one that are allo
 
 ## Bonus: redirecting a DNS resolution
 
-As described in my article [How everyone could feed my cat][feed-my-cat], 
+As described in my article [How everyone could feed my cat][feed-my-cat],
 I needed to redirect the resolution of my feeder to prevent it to communicate with the original server.
 
 I have built a [custom API][aln-nodejs], that is hosted on my server. And to make it work, I have to redirect my feeder requests to my server.
@@ -177,7 +177,7 @@ You now have a fully functional ad & tracker blocker from the network side.
 
 If you're really concerned about privacy, you should look forward of installing your [own DNS resolver using unbound][unbound]
 
-Otherwise, for more security, you should [configure DNS over HTTPS][dns-over-https] with `cloudflared`, 
+Otherwise, for more security, you should [configure DNS over HTTPS][dns-over-https] with `cloudflared`,
 securing the DNS resolving using a TLS connexion, and preventing snooping, monitoring or other types of attacks.
 
 Finally, if you want to make your pi-hole admin interface available from the outside world, you really should consider [an HTTPS configuration][pi-hole-over-https].

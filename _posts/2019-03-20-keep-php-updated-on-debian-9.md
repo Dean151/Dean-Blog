@@ -15,7 +15,7 @@ First, this repository uses *APT Transport over HTTPS*. This is basicly getting 
 Let's install the necesary packages, if you do not have them already:
 
 {% highlight bash %}
-sudo apt-get install ca-certificates apt-transport-https 
+sudo apt-get install ca-certificates apt-transport-https
 {% endhighlight %}
 
 Then, we add `https://packages.sury.org/php` that will be our new source for installing and updating PHP:

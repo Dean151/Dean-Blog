@@ -11,7 +11,7 @@ WWDC19 announcements came with CryptoKit ; a new framework designed for making c
 
 <!--more-->
 
-Today, I want to show how to use CryptoKit to generate numbers. 
+Today, I want to show how to use CryptoKit to generate numbers.
 It'll a better generator than `arc4random` used by default on iOS since it generate cryptographic keys, keys that are supposed to be the most random and entropic possible!
 
 ## A model to generate lottery numbers
@@ -29,7 +29,7 @@ struct Draw {
     /// The range of numbers to draw within (ie n)
     let among: ClosedRange<Int>
 
-    /// Generate `draw` numbers within `among` 
+    /// Generate `draw` numbers within `among`
     func random() -> Set<Int> {
         // TODO!
         return []

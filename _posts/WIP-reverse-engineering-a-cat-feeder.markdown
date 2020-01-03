@@ -118,7 +118,7 @@ Received: 9da106c30005
 Received: 9da106c30096
 ```
 
-So we can see a pattern here: 
+So we can see a pattern here:
   - `9da1`: a kind of prefix, that we can see everywhere (before the ID; and in every responses from the server.)
   - `06c300`: not yet known
   - `05 to 96`: the amount setted, in grams, from 5 (5 grams) to 96 (150 grams, in hexadecimal)
@@ -191,12 +191,12 @@ Let's send a request to give 5g right now (My cat was so thrilled when he got un
 ```
 Data sent: 9da106a20005
 Data received: 9da114414243303132333435363738a2d0a10000
-``` 
+```
 
 Here we have:
   - `9da114`: The prefix
   - `414243303132333435363738`: The code `ABC012345678` -> the identifier of the feeder (in hexadecimal)
-  - `a2`: The operation code 
+  - `a2`: The operation code
   - `d0a10000`: The suffix
 
 Somehow, I think it means "Feeder ABC012345678 have performed the feed order."
@@ -208,7 +208,7 @@ If I do the same with the default feeding amount, used by the physical button:
 ```
 Data sent: 9da106c30005
 Data received: 9da114414243303132333435363738c3d0a10000
-``` 
+```
 
 That decompose into:
   - `9da114`: The prefix
@@ -223,7 +223,7 @@ That decompose into:
 ```
 Data sent: 9da105c400
 Data received: 9da114414243303132333435363738c3d0a10000
-``` 
+```
 
 That decompose into:
   - `9da114`: The prefix

@@ -7,7 +7,7 @@ index: 99
 
 ### Me
 
-Born near Paris, I've been a keen developer since my 11's ; and I've always loved understanding a bit more computer sciences and the development world in general. 
+Born near Paris, I've been a keen developer since my 11's ; and I've always loved understanding a bit more computer sciences and the development world in general.
 <!--more-->
 But it's only when I started computing engineering in my school, [L'école Centrale de Nantes][ecn], that I understood my pro life should be about computing as well.
 Since then, I'm a security engineer, software architect, and code owner for [DiliTrust][dilitrust], and I work both for the web and iOS.

@@ -24,8 +24,8 @@ body {
     font-feature-settings: "kern" 1;
     font-kerning: normal;
 
-    @media (prefers-color-scheme: dark) { 
-        color: $dark-text-color; 
+    @media (prefers-color-scheme: dark) {
+        color: $dark-text-color;
         background-color: $dark-background-color;
     }
 }
@@ -58,7 +58,7 @@ img {
     display: inline-block;
     fill: currentColor;
     padding: 5px 5px 2px;
-    vertical-align: text-bottom;            
+    vertical-align: text-bottom;
 }
 
 .comparable-images {
@@ -138,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 hr {
     overflow: visible; /* For IE */
     margin: $spacing-unit*2 $spacing-unit;
-    border: 0; 
+    border: 0;
     text-align: center;
 
     height: 1px;
@@ -192,12 +192,12 @@ a {
         &:visited {
             color: lighten($brand-color, 15%);
         }
-    
+
         &:hover {
             color: lighten($brand-color, 20%);
             text-decoration: underline;
         }
-    
+
         &:hover:visited {
           color: lighten($brand-color, 30%);
         }

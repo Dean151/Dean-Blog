@@ -22,7 +22,7 @@ Of course we expect the annoucements of iOS 13, macOS 10.15, watchOS 6, tv
 
 Announced at last year WWDC, the [Marzipan project][marzipan] will allow UIKit apps to run on macOS. We can expect that the API should open this year to developers with macOS 10.15.
 
-I can't wait for my first tests, trying to build [DiliTrust Exec][dilitrust-exec] for macOS will be one of the first things I'll attempt during the WWDC 19. 
+I can't wait for my first tests, trying to build [DiliTrust Exec][dilitrust-exec] for macOS will be one of the first things I'll attempt during the WWDC 19.
 
 ### iOS 13 Dark Mode
 
@@ -31,11 +31,11 @@ A very [persistent rumor][dark-mode] would make the dark mode real with iOS 13. 
 ### Advanced iPad features
 
 Bringing new iPads features and make it "MacBook" capable, this is one of [the rumors that I like the most][ipad-features].
-Having multi-account abilities, more USB devices support (like USB drives), better multitasking... That would make the iPad more mature in the tablet market. 
+Having multi-account abilities, more USB devices support (like USB drives), better multitasking... That would make the iPad more mature in the tablet market.
 
 ## Will you write articles about the announcements?
 
-I'll try to write few WWDC articles on the blog, but I'll do that with care. The [WWDC policy][wwdc-policy] is clear that I should not share screenshots nor write "public reviews". It's possible that I will not release anything before the end of the WWDC, and none of those post will contains samplecode from Apple, or screenshot whatsoever. 
+I'll try to write few WWDC articles on the blog, but I'll do that with care. The [WWDC policy][wwdc-policy] is clear that I should not share screenshots nor write "public reviews". It's possible that I will not release anything before the end of the WWDC, and none of those post will contains samplecode from Apple, or screenshot whatsoever.
 
 ## Attending too?
 

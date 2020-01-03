@@ -23,7 +23,7 @@ You meet people, a lot and a lot of people. App developers, designers, product o
 All of those people shares different experiences, way of living, apps concepts. Discussing with all of them is thrilling and allow you to take a step back on a lot of point of view you may had on development.
 
 #### Labs
-Labs are an opportunity of a lifetime: being able to speak with the guys who make the API alive allows you to congratulate them on their hard work (Thanks guys from the PDFKit I met earlier today, it was a nice time with you!) 
+Labs are an opportunity of a lifetime: being able to speak with the guys who make the API alive allows you to congratulate them on their hard work (Thanks guys from the PDFKit I met earlier today, it was a nice time with you!)
 
 Also this is the opportunity to dig into bugs and weird behaviors will the engineers that designed the frameworks. They're the most willing to know what's going on on a specific bug, or when an API is wrongly used (this can happen a lot with some advanced UIKit API like [UIViewControllerTransitioningDelegate][uiviewcontrollertransitioningdelegate]).
 
@@ -41,7 +41,7 @@ I'm not going to attempt listing all the announcements made by Apple for the dev
 I'm just going to go back on a few improvements made, that I'm thrilled about.
 
 #### SwiftUI
-SwiftUI came out of nowhere, and it's stunning already! Sure, it's not going to replace UIKit or AppKit anytime soon (or maybe never?) since it heavily rely on them to work properly. 
+SwiftUI came out of nowhere, and it's stunning already! Sure, it's not going to replace UIKit or AppKit anytime soon (or maybe never?) since it heavily rely on them to work properly.
 
 Plus for now it's missing a lot of core components. There are no ActivityIndicator for example. But to fulfill those miss, the compatibility with old UI framework is complete! You may use a SwiftUI view in a UIView or a NSView. And you may use a UIView in a SwiftUI view. That's allow to use the old UIKit views that may not have their own SwiftUI implementations before years (like MKMapView or WKWebView).
 

@@ -22,39 +22,39 @@
         margin-bottom: 0;
         float: left;
         opacity: 0.8;
-    
+
         &:hover {
             opacity: 1;
         }
-    
+
         @media (prefers-color-scheme: dark) {
             color: $dark-title-color;
         }
     }
-    
+
     .site-nav {
         float: right;
         line-height: 60px;
-    
+
         .page-link {
             color: $title-color;
             line-height: $base-line-height;
             opacity: 0.8;
-    
+
             // Gaps between nav items, but not on the last one
             &:not(:last-child) {
                 margin-right: 20px;
             }
-    
+
             @media (prefers-color-scheme: dark) {
                 color: $dark-title-color;
             }
         }
-    
+
         .page-link:hover {
             color: $title-color;
             opacity: 1;
-    
+
             @media (prefers-color-scheme: dark) {
                 color: $dark-title-color;
             }
@@ -74,7 +74,7 @@
         background-color: $content-back-color;
         box-shadow: 0 1px 5px 1px rgba(150, 150, 150, 0.1);
 
-        @media (prefers-color-scheme: dark) { 
+        @media (prefers-color-scheme: dark) {
             background-color: $dark-content-back-color;
             box-shadow: none;
         }
@@ -90,7 +90,7 @@
 
         display: inline-flex;
         align-items: center;
-    
+
         &:hover, &:focus {
             color: $main-green-color;
             text-decoration: none;
@@ -164,7 +164,7 @@
                 background: lighten($brand-color, 15%);
             }
         }
-        
+
         &:visited::before {
             background: $content-back-color;
 
@@ -186,7 +186,7 @@
         font-size: $title-font-size;
         letter-spacing: -1px;
         line-height: 1;
-    
+
         @include media-query($on-laptop) {
             font-size: $title-font-size;
         }
@@ -304,13 +304,13 @@
             border-radius: 4px;
             font-size: $large-font-size;
             text-align: center;
-    
+
             width: 34px;
             height: 34px;
             display: flex;
             justify-content: center;
             align-items: center;
-    
+
             background-color: transparent;
             transition: background-color;
 
@@ -353,7 +353,7 @@
         &:hover a {
             color: white;
             text-decoration: none;
-    
+
             transition: 0.3s color;
         }
     }
@@ -392,7 +392,7 @@
         &:visited {
             color: lighten($brand-color, 10%);
         }
-    
+
         &:hover {
             color: lighten($brand-color, 5%);
             text-decoration: underline;
@@ -422,7 +422,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     .profile-picture {
         width: 100px;
         height: 100px;
-    
+
         float: left;
         margin-right: $spacing-unit / 2 !important;
         border-radius: 50% !important;

@@ -102,7 +102,7 @@ If the ping resolves, your network is correctly setted up. Otherwise, your IPv6 
 
 At your registar settings, you want to add a `AAAA` entry, corresponding to the IPv6 DNS resolution.
 
-Your entry should look like something like that: 
+Your entry should look like something like that:
 
 ```
 IN AAAA 2001:41d0:305:2100:0:0:0:10f2
