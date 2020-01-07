@@ -497,3 +497,46 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     }
 
 }
+
+/**
+ * Portfolio
+ */
+.porfolio-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.portfolio-item {
+    box-sizing: border-box;
+    padding: 8px;
+
+    width: 50%;
+    @include media-query($on-palm) {
+        width: 100%;
+    }
+
+    h4 .svg-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+
+        img {
+            box-shadow: none;
+            max-width: 33%;
+            max-height: 100%;
+
+            @include media-query($on-palm) {
+                max-width: 70%;
+                max-height: unset;
+            }
+        }
+
+        @include media-query($on-palm) {
+            flex-direction: column-reverse;
+        }
+    }
+}
