@@ -33,6 +33,9 @@ plugins:
   - jekyll-sitemap
   - jekyll-coffeescript
 
+collections:
+  - portfolio
+
 # Default author
 defaults:
   -

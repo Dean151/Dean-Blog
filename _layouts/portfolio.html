@@ -1,0 +1,14 @@
+<section class="portfolio-item">
+    <h4>
+    {{ page.title }}
+    <span>
+    {% if page.github -%}
+    <a href="https://github.com/{{ page.github | escape }}" title="{{ page.github | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg></a>
+    {%- endif -%}
+    </span>
+    </h4>
+    {%- if page.language -%}
+    <p class="portfolio-language portfolio-language-{{ page.language | downcase }}">{{ page.language | escape }}</p>
+    {%- endif %}
+    <div>{{ content }}</div>
+</section>

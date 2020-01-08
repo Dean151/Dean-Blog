@@ -508,10 +508,16 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
 
 .portfolio-item {
     box-sizing: border-box;
-    padding: 8px;
+    margin: 8px;
+    padding: 16px;
 
-    width: 50%;
+    width: calc(50% - 16px);
+    box-shadow: 0 1px 4px 1px rgba(150, 150, 150, 0.3);
+    border-radius: 4px;
+
     @include media-query($on-palm) {
+        box-shadow: none;
+        margin: 0;
         width: 100%;
     }
 
@@ -520,23 +526,48 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         height: 20px;
     }
 
+    p {
+        color: $grey-color;
+        font-size: $small-font-size;
+        margin-bottom: 0;
+
+        @media (prefers-color-scheme: dark) {
+            color: $dark-grey-color;
+        }
+
+        @include media-query($on-palm) {
+            margin-bottom: 15px;
+        }
+    }
+
     div {
         display: flex;
         align-items: center;
 
         img {
             box-shadow: none;
-            max-width: 33%;
-            max-height: 100%;
-
-            @include media-query($on-palm) {
-                max-width: 70%;
-                max-height: unset;
-            }
         }
 
         @include media-query($on-palm) {
             flex-direction: column-reverse;
         }
+    }
+
+    .portfolio-language {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+
+        &::before {
+            content:"";
+            width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            margin-right: 4px;
+            background: black;
+        }
+    }
+    .portfolio-language-swift::before {
+        background: #ffac45;
     }
 }
