@@ -1,14 +1,30 @@
-<section class="portfolio-item">
-    <h4>
-    {{ page.title }}
-    <span>
-    {% if page.github -%}
-    <a href="https://github.com/{{ page.github | escape }}" title="{{ page.github | escape }}" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg></a>
-    {%- endif -%}
-    </span>
-    </h4>
-    {%- if page.language -%}
-    <p class="portfolio-language portfolio-language-{{ page.language | downcase }}">{{ page.language | escape }}</p>
-    {%- endif %}
-    <div>{{ content }}</div>
-</section>
+---
+layout: page
+---
+
+{% assign all_categories = site.portfolio | map: "category" | uniq %}
+{% for category in all_categories %}
+<h3>{{ category }}</h3>
+<div class="porfolio-grid">
+    {% assign portfolios = site.portfolio | where: "category", category %}
+    {% for portfolio in portfolios %}
+        <section class="portfolio-item">
+            <h4>
+            {{ portfolio.title }}
+            <span>
+            {% if portfolio.github -%}
+            <a href="https://github.com/{{ portfolio.github | escape }}" title="Open {{ portfolio.github | escape }} on Github" target="_blank" rel="nofollow"><svg class="svg-icon" viewBox="0 0 16 16"><use xlink:href="{{ '/assets/design/icons.svg#g' | relative_url }}"></use></svg></a>
+            {%- endif -%}
+            </span>
+            </h4>
+            {%- if portfolio.language -%}
+            <p class="portfolio-language portfolio-language-{{ portfolio.language | downcase }}">{{ portfolio.language | escape }}</p>
+            {%- endif %}
+            <div>{{ portfolio.content }}</div>
+            {%- if portfolio.website -%}
+            <p><a href="{{ portfolio.website }}" target="_blank" rel="nofollow">{{ portfolio.website }}</a></p>
+            {%- endif %}
+        </section>
+    {% endfor %}
+</div>
+{% endfor %}

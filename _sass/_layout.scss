@@ -504,6 +504,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
 .porfolio-grid {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 30px;
 }
 
 .portfolio-item {
@@ -521,9 +522,17 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
         width: 100%;
     }
 
-    h4 .svg-icon {
-        width: 20px;
-        height: 20px;
+    h4 {
+        justify-content: space-between;
+
+        @include media-query($on-palm) {
+            justify-content: start;
+        }
+
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+        }
     }
 
     p {
@@ -556,16 +565,35 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
     .portfolio-language {
         display: flex;
         align-items: center;
+        margin-top: -15px;
         margin-bottom: 15px;
 
         &::before {
             content:"";
-            width: 14px;
-            height: 14px;
-            border-radius: 7px;
+            width: 12px;
+            height: 12px;
+            border-radius: 6px;
             margin-right: 4px;
             background: black;
         }
+    }
+    .portfolio-language-c\+\+::before {
+        background: #f34b7d;
+    }
+    .portfolio-language-haskell::before {
+        background: #5e5086;
+    }
+    .portfolio-language-java::before {
+        background: #b07219;
+    }
+    .portfolio-language-javascript::before {
+        background: #f1e05a;
+    }
+    .portfolio-language-jekyll::before {
+        background: #e34c26;
+    }
+    .portfolio-language-php::before {
+        background: #4f5d95;
     }
     .portfolio-language-swift::before {
         background: #ffac45;

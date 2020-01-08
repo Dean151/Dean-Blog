@@ -34,7 +34,8 @@ plugins:
   - jekyll-coffeescript
 
 collections:
-  - portfolio
+  portfolio:
+    sort_by: index
 
 # Default author
 defaults:

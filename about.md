@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-index: 99
+index: 100
 ---
 
 ### Me
