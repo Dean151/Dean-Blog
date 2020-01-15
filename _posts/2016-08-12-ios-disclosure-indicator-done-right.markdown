@@ -14,7 +14,7 @@ You can also read [Apple documentation][doc-apple-disclosure] about them.
 <!--more-->
 
 ![a cell with disclosure indicator][cell-with-disclosure-indicator]
-A cell with disclosure indicator
+*A cell with disclosure indicator*
 
 Adding a disclosure indicator may seem easy at first, but when you want to make
 a universal app supporting iPhone and iPad, things become trickier, and we'll
@@ -63,6 +63,7 @@ Build and run the app for iPad. You should see that every cell have a disclosure
 indicator, which is not what we expect in a Master-Detail split-view app on iPad.
 
 ![comparative between a correct split view and our split view with disclosure indicators][comparative-split-view]
+*Notice the indicator absence in settings app.*
 
 To make the magic happen, we need to detect when the view controller is currently
 presenting in a split view controller, and if it is, if we have two view controllers visible.

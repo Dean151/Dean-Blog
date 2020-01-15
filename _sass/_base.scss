@@ -141,6 +141,10 @@ hr {
     border: 0;
     text-align: center;
 
+    @include media-query($on-palm) {
+        margin: $spacing-unit $spacing-unit/2;
+    }
+
     height: 1px;
     color: rgba($text-color, 0.75);
     background-image: linear-gradient(to right, rgba($text-color, 0), rgba($text-color, 0.75), rgba($text-color, 0));
@@ -231,6 +235,13 @@ blockquote {
  */
 table {
     @extend %table;
+
+    @include media-query($on-palm) {
+        font-size: $base-font-size * 0.7;
+        margin-left: -$spacing-unit / 2;
+        width: calc(100% + #{$spacing-unit}) !important;
+        max-width: calc(100% + #{$spacing-unit}) !important;
+    }
 }
 
 table thead {
@@ -260,19 +271,10 @@ table td code {
  */
 pre,
 code {
-    font-size: 15px;
-    border: 1px solid $grey-color-light;
-    border-radius: 3px;
-    background-color: $code-block-color;
-
-    @media (prefers-color-scheme: dark) {
-        background-color: $dark-code-block-color;
-        border-color: $dark-grey-color-dark;
-    }
+    font-size: 1em * 14/16;
 }
 
 code {
-    padding: 1px 5px;
     color: $simple-code-color;
 
     @media (prefers-color-scheme: dark) {
@@ -283,18 +285,25 @@ code {
 pre {
     padding: 8px 12px;
     overflow-x: auto;
-    background: $code-block-color;
-
-    > code {
-        border: 0;
-        padding-right: 0;
-        padding-left: 0;
-        background: none;
-        color: inherit;
-    }
+    border: 1px solid $grey-color-light;
+    border-radius: 3px;
+    background-color: $code-block-color;
 
     @media (prefers-color-scheme: dark) {
-        background: $dark-code-block-color;
+        background-color: $dark-code-block-color;
+        border-color: $dark-grey-color-dark;
+    }
+
+    @include media-query($on-palm) {
+        line-height: 1.2;
+    }
+
+    > code {
+        color: inherit;
+
+        @include media-query($on-palm) {
+            font-size: $base-font-size * 0.7;
+        }
     }
 }
 
@@ -312,7 +321,7 @@ pre {
     padding-left: $spacing-unit;
     @extend %clearfix;
 
-    @include media-query($on-laptop) {
+    @include media-query($on-palm) {
         max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
         max-width:         calc(#{$content-width} - (#{$spacing-unit}));
         padding-right: $spacing-unit / 2;

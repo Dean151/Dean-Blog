@@ -44,6 +44,10 @@
             // Gaps between nav items, but not on the last one
             &:not(:last-child) {
                 margin-right: 20px;
+                
+                @include media-query($on-palm) {
+                    margin-right: 8px;
+                }
             }
 
             @media (prefers-color-scheme: dark) {
@@ -70,7 +74,8 @@
     padding: 0 0;
 
     .wrapper {
-        padding: $spacing-unit;
+        padding-top: $spacing-unit;
+        padding-bottom: $spacing-unit;
         background-color: $content-back-color;
         box-shadow: 0 1px 5px 1px rgba(150, 150, 150, 0.1);
 
@@ -143,6 +148,10 @@
         @media (prefers-color-scheme: dark) {
             color: $dark-grey-color;
         }
+
+        @include media-query($on-palm) {
+            display: none;
+        }
     }
 
     .post-link {
@@ -150,15 +159,25 @@
         align-items: center;
         font-size: 24px;
 
+        @include media-query($on-palm) {
+            font-size: 20px;
+        }
+
         &::before {
             content: '';
             display: block;
             background: $brand-color;
+            flex-shrink: 0;
 
             width: 14px;
             height: 14px;
             border-radius: 7px;
-            margin-right: 8px;
+            margin-left: -8px;
+            margin-right: 16px;
+
+            @include media-query($on-palm) {
+                margin-left: 0px;
+            }
 
             @media (prefers-color-scheme: dark) {
                 background: lighten($brand-color, 15%);
@@ -180,7 +199,7 @@
  * Posts
  */
 .post-header {
-    margin-bottom: $spacing-unit;
+    margin-bottom: $spacing-unit / 2;
 
     .post-title {
         font-size: $title-font-size;
@@ -188,7 +207,7 @@
         line-height: 1;
 
         @include media-query($on-laptop) {
-            font-size: $title-font-size;
+            font-size: $title-font-size * 0.8;
         }
     }
 }
@@ -241,7 +260,7 @@
         font-size: 30px;
 
         @include media-query($on-laptop) {
-            font-size: 28px;
+            font-size: 26px;
         }
     }
 
@@ -249,7 +268,7 @@
         font-size: 24px;
 
         @include media-query($on-laptop) {
-            font-size: 22px;
+            font-size: 20px;
         }
     }
 
@@ -257,7 +276,7 @@
         font-size: 20px;
 
         @include media-query($on-laptop) {
-            font-size: 18px;
+            font-size: 16px;
         }
     }
 
@@ -268,6 +287,18 @@
         margin-right: auto;
         box-shadow: 0 1px 4px 1px rgba(150, 150, 150, 0.3);
         border-radius: 4px;
+
+        @include media-query($on-palm) {
+            max-width: 100%;
+            max-height: 50vh;
+        }
+
+        & + em {
+            display: block;
+            margin-top: $spacing-unit / 6;
+            margin-bottom: $spacing-unit / 2;
+            text-align: center;
+        }
     }
 }
 

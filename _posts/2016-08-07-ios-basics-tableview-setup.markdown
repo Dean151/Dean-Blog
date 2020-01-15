@@ -20,6 +20,7 @@ This is the first article about *iOS* development on this blog and I really hope
 We are going to achieve today is the list of all elements from the periodic elements, ordered by atomic number.
 
 ![Screenshot of the result][screenshot]
+*Expected result*
 
 Thankfully, we're not going to implement all of the atoms data in the code. Instead, we are going to fetch it from a plist file from an Apple sample code :
 
@@ -186,6 +187,7 @@ class ViewController: UIViewController {
 When we check the Xcode console while executing, we find that the data is there ! Neat !
 
 ![The loaded elements in the console][elements-loaded]
+*A bit verbose, but it's here*
 
 **Important** : In `Element.from(dict: _)` function, there is a lot of force unwrapping `!` in the code. That's because the data is implemented code side and cannot be changed easily. But in a real world application, implement it that way could cause crash when the data is not what you expected, and it will happen !
 
@@ -265,6 +267,7 @@ If you build and run the application at the current state, it seems right. But *
 To understand why I'm saying that, during the debug session, use the memory footprint of your app in the Xcode debug console, and pay special attention on the memory as you scroll down and up in the app.
 
 ![Graphic of the memory growing up and up, diverging][memory-issue]
+*This is not going to end well...*
 
 What ? Just 33MB ? And that's why you say something is wrong ? Yes it is wrong, because we can see that when we scroll, the memory footprint just rise, some memory is never released. Witch mean the app could (and will !) eventually experience a memory crash. (hugh !)
 
@@ -353,6 +356,7 @@ Now when you build the app, it as completely the behavior we expected.
 If you need it, you can clone or download the project from [this branch on Github][repo-github]
 
 ![Screenshot of the result][screenshot]
+*Expected result*
 
 ## What to do next ?
 

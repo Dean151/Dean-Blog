@@ -165,6 +165,7 @@ If you want to be confident about the ECB lack of security, check this example
 of encryption using an image, from [Wikipedia][ecb-wikipedia].
 
 ![Illustration of ECB lack of security with a picture encryption][ecb-picture]
+*ECB is not very secure...*
 
 Wow, with ECB block mode, we cannot say that the content of the picture became
 unpredictable and unreadable. That's why it should **never** be used as a cryptographic

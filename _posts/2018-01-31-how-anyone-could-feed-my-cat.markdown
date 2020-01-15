@@ -23,6 +23,7 @@ I know that HomeKit already had some security flaw [in the past][homekit-flaw], 
 ## Where my cat comes in
 
 ![My cat, Newton][newton]
+*Newton*
 
 I adopted Newton in June 2016, and he's adorable… well… most of the time. But since we've got him neutralized, he became trapped in gluttony. Incapable of getting himself regulated with food, we had a pretty bad time trying him not to eat more food that he needs.
 
@@ -36,6 +37,7 @@ Indeed, it was one of the only models that allowed me to program 10 meals or mor
 I received the device about three weeks ago, and my cat adopted it very quickly!
 
 ![My cat, and his feeding machine][honey-guaridan]
+*Newton, claiming for food*
 
 Despite a buggy application, the machine works very well, and my cat gets less obsessed about food.
 
