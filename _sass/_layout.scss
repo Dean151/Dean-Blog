@@ -35,6 +35,7 @@
     .site-nav {
         float: right;
         line-height: 60px;
+        position: relative;
 
         .page-link {
             color: $title-color;
@@ -44,7 +45,7 @@
             // Gaps between nav items, but not on the last one
             &:not(:last-child) {
                 margin-right: 20px;
-                
+
                 @include media-query($on-palm) {
                     margin-right: 8px;
                 }
@@ -52,6 +53,11 @@
 
             @media (prefers-color-scheme: dark) {
                 color: $dark-title-color;
+            }
+
+            &.active {
+                opacity: 1;
+                font-weight: 500;
             }
         }
 
@@ -399,6 +405,10 @@
     justify-content: flex-end;
     align-items: center;
 
+    @include media-query($on-palm) {
+        display: none;
+    }
+
     opacity: 0;
 
     color: $grey-color;
@@ -549,7 +559,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover  {
 
     @include media-query($on-palm) {
         box-shadow: none;
-        margin: 0;
+        padding: 0;
         width: 100%;
     }
 

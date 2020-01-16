@@ -5,7 +5,7 @@ permalink: /about/
 index: 100
 ---
 
-### Me
+## Me
 
 Born near Paris, I've been a keen developer since my 11's ; and I've always loved understanding a bit more computer sciences and the development world in general.
 <!--more-->
@@ -14,7 +14,7 @@ Since then, I'm a security engineer, software architect, and code owner for [Dil
 
 Beside, I like sound design & music, cinema, Parisian french way of life ; and my cat Newton.
 
-### This blog
+## This blog
 
 This blog is powered by [Jekyll][jekyll], and uses a customized version of [Jekyll Minima][jekyll-minima] as theme.
 
@@ -23,7 +23,7 @@ Social media share links are just links. They have *no idea* you're reading one 
 
 The server is a VPS provided by [OVH][ovh] and is powered by [Debian][debian] and [Nginx][nginx].
 
-### The stories
+## The stories
 
 I'm not a really "content productive guy". Writing software is something, and writing about it is something else!
 
