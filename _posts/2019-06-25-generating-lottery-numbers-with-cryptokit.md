@@ -2,7 +2,7 @@
 layout: post
 title:  "Generating lottery numbers using CryptoKit"
 date:   2019-06-25 18:30:00 +0200
-categories: swift cryptokit
+categories: apple cryptography
 ---
 
 **Why?** Because we can!

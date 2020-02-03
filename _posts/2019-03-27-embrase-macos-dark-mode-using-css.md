@@ -2,7 +2,7 @@
 layout: post
 title:  "Embrace macOS's dark mode with Safari"
 date:   2019-03-27 12:00:00 +0000
-categories: web design
+categories: apple css
 ---
 
 This last monday (March 25, 2019), Apple released the last version of macOS 10.14.4, along with Safari 12.1.

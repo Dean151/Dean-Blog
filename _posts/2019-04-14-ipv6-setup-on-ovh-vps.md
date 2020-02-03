@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "IPv6 setup on a Debian 9 VPS"
+title:  "IPv6 setup on Debian 9 Stretch"
 date:   2019-04-14 12:00:00 +0000
-categories: server configuration
+categories: server stretch
 ---
 
 IPv6 isn't new at all, but it's stunning to see how much the web isn't ready for it at all!
 
-But that can change, and making your webserver compatible with it is a great start!
+But that can change, and making your web server compatible with it is a great start!
 
 <!--more-->
 

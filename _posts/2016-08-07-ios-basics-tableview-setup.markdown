@@ -2,7 +2,7 @@
 layout: post
 title:  "iOS basics: UITableView setup with Swift 3"
 date:   2016-08-07 12:00:00 +0000
-categories: Swift3 iOS
+categories: apple ios-dev
 ---
 
 **Updated for Swift 3 with Xcode 8.1**

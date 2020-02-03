@@ -27,11 +27,11 @@ All the stories were in french, but from now on, I decided the main language of 
 
 The main motivation is that there is not enough traffic for french articles, and english is the standard language for any developer.
 
-It would have been nice to maintain a french version as a multilingual blog. I've tryed that, but it's already complicated to write stories, and translating them have becomen a bottleneck, so I've decided to stop.
+It would have been nice to maintain a french version as a multilingual blog. I've tried that, but it's already complicated to write stories, and translating them became a bottleneck, so I've decided to stop.
 
 ## What kind of article will I find now on the blog?
 
-It depends on what topic I want to abord, but it'll be mainly about computing and other software tweaks I've been into in my past. Web or iOS development, few tools I've tried like Pi.Hole, Homebridge... etc. Also I'll try to abord topic about security, IoT...
+It depends on what topic I want to aboard, but it'll be mainly about computing and other software tweaks I've been into in my past. Web or iOS development, few tools I've tried like Pi.Hole, Homebridge... etc. Also I'll try to aboard topic about security, IoT...
 
 The only main lock for this blog is that I don't always have enough time or motivation to write. Don't expect an new story each week.
 

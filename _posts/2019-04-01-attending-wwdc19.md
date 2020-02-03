@@ -2,7 +2,7 @@
 layout: post
 title:  "Attending  WWDC19"
 date:   2019-04-01 12:00:00 +0000
-categories: conference apple
+categories: apple wwdc
 ---
 
 (This is not an April fool!)

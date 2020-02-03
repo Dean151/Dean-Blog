@@ -27,6 +27,7 @@ stackoverflow_name: dean
 linkedin: thomasdurandverjat
 
 # Build settings
+permalink: /:categories/:title/
 markdown: kramdown
 plugins:
   - jekyll-feed

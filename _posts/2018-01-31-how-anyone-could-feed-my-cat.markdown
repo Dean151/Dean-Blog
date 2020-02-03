@@ -2,7 +2,7 @@
 layout: post
 title:  "How anyone could feed my cat"
 date:   2018-01-31 12:00:00 +0000
-categories: Security IOT
+categories: security iot
 ---
 
 As a software engineer for [DiliTrust][dilitrust], I think software security as a primary feature for any kind of product or software.
