@@ -25,11 +25,13 @@ Thankfully, there is a very easy thing to do to prevent having to switch from on
 
 And it just takes a few steps:
 
-1. Install Xcode-beta.app from [developer.apple.com/downloads][developer-apple-download]
+#### Install Xcode-beta.app
+
+As always, you'll find it from from [developer.apple.com/downloads][developer-apple-download]
 
 It is required to have the latest SDK on your machine, and this one is only included in the latest beta version of Xcode. So we won't be skipping the unxiping this time!
 
-2. Symlink the SDK you wanna use from Xcode-beta
+#### Symlink the SDK you wanna use from Xcode-beta
 
 Example: if you want to use iOS 14.5 on your regular Xcode:
 
@@ -39,11 +41,11 @@ The same goes for WatchOS 7.4 support:
 
     sudo ln -s /Applications/Xcode-beta.app/Contents/Developer/Platforms/WatchOS.platform/DeviceSupport/7.4 /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/DeviceSupport/7.4
 
-3. Reboot Xcode
+#### Reboot Xcode
 
 Because if it were live, it need to reload the supported devices versions.
 
-4. Build!
+#### Build!
 
 That's it, now your beta iPhone will accept to run debugger from regular Xcode.
 
