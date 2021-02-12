@@ -3,7 +3,6 @@ layout: post
 title:  "Target iOS beta while using regular Xcode.app"
 date:   2021-02-12 09:00:00 +0100
 categories: apple xcode
-published: false
 ---
 
 One of the most frustrating thing that could happen when developing with Xcode is the fact that using release version of Xcode can't build an App for a device that is currently running a beta software.
