@@ -19,7 +19,7 @@ Beside, I like sound design & music, cinema, Parisian french way of life ; and m
 This blog is powered by [Jekyll][jekyll], and uses a customized version of [Jekyll Minima][jekyll-minima] as theme.
 
 All pages are *free of any social media tracker*: No other javascript than my self-hosted [Matomo][matomo]'s are ever included.\\
-Social media share links are just links. They have *no idea* you're reading one of my stories you click one of them!
+Social media share links are just links. They have *no idea* you're reading one of my stories until you click one of the buttons!
 
 The server is a VPS provided by [OVH][ovh] and is powered by [Debian][debian] and [Nginx][nginx].
 
